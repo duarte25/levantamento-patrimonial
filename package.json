@@ -1,0 +1,39 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "Projeto de criação de uma API para um sistema de Levantamento de Inventario do Instituto Federal de Rondônia - IFRO.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "seed": "node src/seeds/seeds.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:v": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.fslab.dev/levantamento-patrimonial/back-end.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "faker-br": "^0.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.1.1",
+    "mongoose-paginate-v2": "^1.8.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3",
+    "supertest": "^6.3.4"
+  }
+}
