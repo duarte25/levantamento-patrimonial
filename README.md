@@ -20,7 +20,7 @@ npm install mongoose
 ```
 * Bcrypt
 ```
- npm install bycrypt
+ npm install bcrypt
 ```
 * Cors
 ```
@@ -55,6 +55,15 @@ npm install mongoose
 ```
  npm install jsonwebtoken
 ```
+* Swagger UI Express
+```
+ npm i swagger-ui-express
+```
+* swagger-jsdoc
+```
+ npm i swagger-jsdoc
+```
+
 
 
 ## :rocket: Rodando o projeto
@@ -75,10 +84,13 @@ Comando para iniciar os testes unitarios e de integração:
  npm run teste:coverage
 ```
 
-## :soon: Implementação futura
-* Implementação de um metodo de validação para grupos de usuarios;
 ## :handshake: Colaboradores
-  
+- Estela
+- Luccas
+- Pablo
+- Theodoro
+- Alexandre
+- Gustavo
 
 
 ## :dart: Status do projeto
