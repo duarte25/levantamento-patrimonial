@@ -4,7 +4,7 @@
 Projeto de criação de uma API para um sistema de Levantamento de Inventario do Instituto Federal de Rondônia - IFRO.
 
 ## :books: Funcionalidades
-* <b>...Em Processo de Construção para um App Mobile - Front-End</b>: ...
+* <b>...Em Processo de Construção para um App Mobile</b>: ...
 
 ## :wrench: Tecnologias utilizadas
 
