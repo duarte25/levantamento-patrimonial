@@ -8,16 +8,9 @@ const usuarioSchema = new mongoose.Schema({
         maxlength: 200,
         index: true
     },
-    email: {
+    bloco: {
         type: String,
-        required: true,
-        unique: true,
-        index: true
-    },
-    senha: {
-        type: String,
-        required: true,
-        select: false
+        required: true
     },
     ativo: {
         type: Boolean,
@@ -30,6 +23,6 @@ const usuarioSchema = new mongoose.Schema({
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 usuarioSchema.plugin(paginate);
 
-const usuario = mongoose.model('usuarios', usuarioSchema);
+const usuario = mongoose.model('setores', usuarioSchema);
 
 export default usuario;
