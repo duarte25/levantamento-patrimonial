@@ -7,7 +7,7 @@ const usuarioSchema = new mongoose.Schema({
         unique: true,
         required: false
     },
-    nao_tiquetado: {
+    status_tiqueta: {
         type: Boolean,
         default: false
     },

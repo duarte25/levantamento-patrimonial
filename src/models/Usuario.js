@@ -8,6 +8,14 @@ const usuarioSchema = new mongoose.Schema({
         maxlength: 200,
         index: true
     },
+    cpf: {
+        type: String,
+        minlength: 11,
+        maxlength: 11,
+        required: true,
+        unique: true,
+        index: true
+    },
     email: {
         type: String,
         required: true,

@@ -6,6 +6,10 @@ const usuarioSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "setores"
     },
+    usuario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "usuarios"
+    },
     itens: [
         {
             type: mongoose.Schema.Types.ObjectId, 

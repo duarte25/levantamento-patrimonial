@@ -12,9 +12,9 @@ const usuarioSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    ativo: {
+    status: {
         type: Boolean,
-        default: false
+        default: true
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
