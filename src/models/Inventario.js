@@ -2,20 +2,19 @@ import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const inventarioSchema = new mongoose.Schema({
-    setor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "setores"
-    },
-    usuario: {
+    setor: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "setores"
+        }
+    ],
+    responsavel: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "usuarios"
     },
-    itens: [
-        {
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: 'itens'
-        }
-    ]
+    dataInicio: {
+        
+    }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );

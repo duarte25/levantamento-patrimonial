@@ -2,15 +2,13 @@ import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const setorSchema = new mongoose.Schema({
-    nome: {
-        type: String,
-        minlength: 4,
-        maxlength: 200,
-        index: true
-    },
     bloco: {
         type: String,
         required: true
+    },
+    local: {
+        type: String,
+        index: true
     },
     status: {
         type: Boolean,
