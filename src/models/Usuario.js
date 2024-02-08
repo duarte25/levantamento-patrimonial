@@ -27,7 +27,7 @@ const usuarioSchema = new mongoose.Schema({
         required: true,
         select: false
     },
-    ativo: {
+    status: {
         type: Boolean,
         default: false
     }
