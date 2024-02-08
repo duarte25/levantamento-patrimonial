@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
-const usuarioSchema = new mongoose.Schema({
+const itemSchema = new mongoose.Schema({
     etiqueta: {
         type: Number,
         unique: true,
         required: false
     },
-    status_tiqueta: {
+    nao_tiquetado: {
         type: Boolean,
         default: false
     },
@@ -27,18 +27,22 @@ const usuarioSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        required: true,
+        required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
         index: true
     },
     ativo: {
         type: String,
         default: "Ativo"  // Ativo, Inativo, Pendente
     },
+    ocioso: {
+        type: Boolean,
+        default: true
+    },
     descricao: {
         type: String,
         required: true
     },
-    responsavel: {
+    auditor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "usuarios"
     }, 
@@ -51,8 +55,8 @@ const usuarioSchema = new mongoose.Schema({
 );
 
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
-usuarioSchema.plugin(paginate);
+itemSchema.plugin(paginate);
 
-const usuario = mongoose.model('itens', usuarioSchema);
+const item = mongoose.model('itens', itemSchema);
 
-export default usuario;
+export default item;

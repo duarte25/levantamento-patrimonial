@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
-const usuarioSchema = new mongoose.Schema({
+const setorSchema = new mongoose.Schema({
     nome: {
         type: String,
         minlength: 4,
@@ -21,8 +21,8 @@ const usuarioSchema = new mongoose.Schema({
 );
 
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
-usuarioSchema.plugin(paginate);
+setorSchema.plugin(paginate);
 
-const usuario = mongoose.model('setores', usuarioSchema);
+const setor = mongoose.model('setores', setorSchema);
 
-export default usuario;
+export default setor;
