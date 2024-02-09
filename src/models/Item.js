@@ -21,10 +21,6 @@ const itemSchema = new mongoose.Schema({
         maxlength: 200,
         index: true
     },
-    setor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "setores"
-    },
     estado: {
         type: String,
         required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
@@ -35,16 +31,26 @@ const itemSchema = new mongoose.Schema({
         default: "Ativo"  // Ativo, Inativo, Pendente
     },
     ocioso: {
-        type: Boolean,
-        default: true
+        type: Boolean, // Não está sendo usado
+        default: false
     },
     descricao: {
-        type: String,
+        type: String
+    },
+    inventario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "inventarios",
+        required: true
+    },
+    setor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "setores",
         required: true
     },
     auditor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "usuarios"
+        ref: "usuarios",
+        required: true
     }, 
     imagem: {
         type: mongoose.Schema.Types.ObjectId,

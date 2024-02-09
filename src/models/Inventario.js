@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const inventarioSchema = new mongoose.Schema({
-    setor: [
+    setores: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "setores"
@@ -10,8 +10,18 @@ const inventarioSchema = new mongoose.Schema({
     ],
     responsavel: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "usuarios"
+        ref: "usuarios",
+        required: true
     },
+    auditores: [
+        {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "usuarios",
+                required: true
+            }
+        }
+    ],
     data_inicio: {
         type: Date,
         require: true,

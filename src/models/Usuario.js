@@ -30,7 +30,8 @@ const usuarioSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        default: false
+        required: true,
+        default: true
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
