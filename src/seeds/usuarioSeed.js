@@ -4,6 +4,7 @@ import Usuario from "../models/Usuario.js";
 export default async function usuarioSeed(quantidade) {
 
     const usuariosCriados = [];
+    
     for (let i = 0; i < quantidade; i++) {
 
         usuariosCriados.push({

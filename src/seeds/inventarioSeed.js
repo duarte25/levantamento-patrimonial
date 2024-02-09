@@ -8,7 +8,6 @@ export default async function inventarioSeed(quantidade) {
     const usuarios = await Usuario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const setores = await Setor.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const dataInicio = faker.date.between("2021-01-01", "2024-12-31");
-
     const inventariosCriados = [];
    
     for (let i = 0; i < quantidade; i++) {

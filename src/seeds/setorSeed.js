@@ -15,8 +15,8 @@ export default async function setorSeed() {
         "DIRETORIA DE PLANEJAMENTO E ADMINISTRAÇÃO (DPLAD) (VLH - BLOCO A)",
         "LAB. 03 - SOLOS (VLH - BLOCO C)"
     ];
-
     const setoresCriados = [];
+    
     for (let i = 0; i < local.length; i++) {
         setoresCriados.push({
             local: local[i]

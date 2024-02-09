@@ -6,7 +6,7 @@ import Setor from "../models/Setor.js";
 import inventarioSeed from "./inventarioSeed.js";
 import Inventario from "../models/Inventario.js";
 import itemSeed from "./itemSeeds.js";
-import Item from "../models/Image.js";
+import Item from "../models/Item.js";
 
 let quantidade = parseInt(50);
 
