@@ -2,12 +2,10 @@ import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const setorSchema = new mongoose.Schema({
-    bloco: {
-        type: String,
-        required: true
-    },
     local: {
         type: String,
+        unique: true,
+        required: true,
         index: true
     },
     status: {

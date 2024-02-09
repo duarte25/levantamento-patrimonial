@@ -12,8 +12,12 @@ const inventarioSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "usuarios"
     },
-    dataInicio: {
-        
+    data_inicio: {
+        type: Date,
+        require: true,
+    },
+    data_fim: {
+        type: Date
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }

@@ -6,6 +6,7 @@ const usuarioSchema = new mongoose.Schema({
         type: String,
         minlength: 4,
         maxlength: 200,
+        required: true,
         index: true
     },
     cpf: {
