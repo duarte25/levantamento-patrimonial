@@ -6,6 +6,7 @@ const usuarioSchema = new mongoose.Schema({
         type: String,
         minlength: 4,
         maxlength: 200,
+        required: true,
         index: true
     },
     cpf: {
@@ -29,7 +30,8 @@ const usuarioSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        default: false
+        required: true,
+        default: true
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
