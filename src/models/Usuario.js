@@ -4,7 +4,7 @@ import paginate from "mongoose-paginate-v2";
 const usuarioSchema = new mongoose.Schema({
     nome: {
         type: String,
-        minlength: 4,
+        minlength: 3,
         maxlength: 200,
         required: true,
         index: true
@@ -26,15 +26,19 @@ const usuarioSchema = new mongoose.Schema({
     senha: {
         type: String,
         required: true,
-        select: false
+        select: false,
+        minlength: 8
     },
-    status: {
+    ativo: {
         type: Boolean,
         required: true,
         default: true
     }
 },
-    { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
+    {
+        timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
+        versionKey: "_version"
+    }
 );
 
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
