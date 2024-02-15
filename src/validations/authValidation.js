@@ -2,6 +2,7 @@ import emailValidate from "../utils/emailValidate.js"
 import bcript from "bcryptjs"
 import messages from "../utils/mensagens.js"
 import Usuario from "../models/Usuario.js"
+import enviaEmailErro from "../utils/enviaEmailErro.js"
 
 export default class AuthValidate {
 
@@ -36,6 +37,7 @@ export default class AuthValidate {
             return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
         
         } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
             return res.status(500).json({
                 data: [],
                 error: true,

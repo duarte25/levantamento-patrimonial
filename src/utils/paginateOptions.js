@@ -12,6 +12,7 @@ const myCustomLabels = {
 };
 
 const paginateOptions = {
+    page: 1,
     limit: 10,
     customLabels: myCustomLabels
 };

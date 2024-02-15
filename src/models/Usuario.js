@@ -29,6 +29,12 @@ const usuarioSchema = new mongoose.Schema({
         select: false,
         minlength: 8
     },
+    codigo_confirma_email: {
+        type: String,
+        trim: true,
+        index: true,
+        select: false
+    },
     ativo: {
         type: Boolean,
         required: true,

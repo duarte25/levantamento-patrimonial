@@ -2,6 +2,7 @@ import logRoutes from "../middlewares/LogRoutesMiddleware.js";
 import uploads from "./imageRouter.js"
 import auth from "./authRouter.js"
 import usuarios from "./usuarioRouter.js"
+import recuperarSenha from "./recuperaSenhaRouter.js"
 
 const routes = (app) => {
 
@@ -16,7 +17,8 @@ const routes = (app) => {
     app.use(
         uploads,
         auth,
-        usuarios
+        usuarios,
+        recuperarSenha
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );

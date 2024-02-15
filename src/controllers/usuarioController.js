@@ -3,6 +3,7 @@ import Usuario from "../models/Usuario.js";
 import messages from "../utils/mensagens.js";
 import paginateOptions from "../utils/paginateOptions.js"
 import bcrypt from "bcryptjs"
+import enviaEmailErro from "../utils/enviaEmailErro.js";
 
 export default class UsuarioController {
 
@@ -25,6 +26,7 @@ export default class UsuarioController {
             });
 
         } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
             return res.status(500).json({
                 data: [],
                 error: true,
@@ -39,25 +41,27 @@ export default class UsuarioController {
     static async listarUsuario(req, res) {
         try {
 
-            const pagina = parseInt(req.query.pagina) || 1;
-            const {cpf} = req.query
+            const pagina = parseInt(req.query.pagina)
+            const {limite} = parseInt(req.query.limite)
+
+            const { cpf } = req.query
+
             const filtros = {}
 
-            if(cpf) filtros.cpf = cpf
-
-
-
+            if (cpf) filtros.cpf = cpf
 
             const findUser = await Usuario.paginate(filtros, {
                 ...paginateOptions, ...{
                     sort: { nome: 1 },
-                    page: pagina,
+                    page: pagina || 1,
+                    limit: limite || 10
                 }
             });
 
             if (pagina > findUser.totalPaginas) {
                 let link = `/usuarios?pagina=${findUser.totalPaginas}`
-                link += `&cpf=${cpf}`
+                if(limite) link += `&limite=${limite}`
+                if(cpf) link += `&cpf=${cpf}`
 
                 return res.redirect(link)
             }
@@ -72,6 +76,7 @@ export default class UsuarioController {
 
 
         } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
             return res.status(500).json({
                 data: [],
                 error: true,
@@ -100,6 +105,7 @@ export default class UsuarioController {
             return res.status(201).json({ data: findUser, error: false, code: 201, message: messages.httpCodes[201], errors: [] })
 
         } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
             return res.status(500).json({
                 data: [],
                 error: true,
@@ -135,6 +141,7 @@ export default class UsuarioController {
             })
 
         } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
             return res.status(500).json({
                 data: [],
                 error: true,
