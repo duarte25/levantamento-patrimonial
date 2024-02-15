@@ -11,8 +11,9 @@ const myCustomLabels = {
     nextPage: false
 };
 
-export const paginateOptions = {
-    page: 1,
+const paginateOptions = {
     limit: 10,
     customLabels: myCustomLabels
 };
+
+export default paginateOptions;

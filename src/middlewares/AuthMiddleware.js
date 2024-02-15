@@ -6,7 +6,7 @@ export const AuthMiddleware = async (req, res, next) => {
         let token = req.headers.authorization
 
         if (!token) {
-            res.status(498).json({data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.customValidation.invalidToken] })
+            res.status(498).json({data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.auth.invalidToken] })
         }
 
         [,token] = token.split(' ')
@@ -20,6 +20,6 @@ export const AuthMiddleware = async (req, res, next) => {
 
     } catch(err) {
         //console.log(err.message)
-        return res.status(498).json({data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.customValidation.invalidToken] })
+        return res.status(498).json({data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.auth.invalidToken] })
     }
 }

@@ -63,6 +63,7 @@ const messages = {
         invalidApiKey: "Chave de API inválida.",
         operationCanceled: "Operação cancelada pelo usuário.",
         resourceNotFound: (id) => `O campo ${id} não foi encontrado.`,
+        invalidID: "O ID informado deve estar em um formato válido (12 bytes)!"
     },
 
     // Mensagens de validação genéricas
@@ -81,27 +82,33 @@ const messages = {
             return `Recurso em uso em ${fieldName}.`
         },
         invalid: (fieldName) => {
-            return `Valor informato em ${fieldName} é inválido.` ; 
+            return `Valor informato em ${fieldName} é inválido.`;
         },
+        mascCamp: (campo) => {
+            return `${campo} não encontrado!`
+        },
+        femCamp: (campo) => {
+            return `${campo} não encontrada!`
+        }
     },
 
     // Mensagens de validação personalizadas
     customValidation: {
         invalidCPF: "CPF inválido. Verifique o formato e tente novamente.",
-        invalidCNPJ:  "CNPJ inválido. Verifique o formato e tente novamente.",
-        invalidCEP:  "CEP inválido. Verifique o formato e tente novamente.",
-        invalidPhoneNumber:  "Número de telefone inválido. Verifique o formato e tente novamente.",
-        invalidMail:  "Email no formato inválido.",
-        invalidYear:   "Ano inválido. Verifique o formato e tente novamente." ,
+        invalidCNPJ: "CNPJ inválido. Verifique o formato e tente novamente.",
+        invalidCEP: "CEP inválido. Verifique o formato e tente novamente.",
+        invalidPhoneNumber: "Número de telefone inválido. Verifique o formato e tente novamente.",
+        invalidMail: "Email no formato inválido.",
+        invalidYear: "Ano inválido. Verifique o formato e tente novamente.",
         invalidDate: "Data inválida. Verifique o formato e tente novamente.",
         invalidKilometerInitial: "Quilometragem inicial inválida.",
         invalidKilometer: "Quilometragem inválida.",
-        invalidDatePast:  "Data do inicio deve ser uma data atual ou futura.",
+        invalidDatePast: "Data do inicio deve ser uma data atual ou futura.",
         invalidDateFuture: "A data de conclusão deve ser maior do que a data de inicio!",
-        invalidDateCurrent:  "Data do inicio deve ser uma data atual ou passada.",
-        invalidDateMonths:  "A data final da vigência não pode ser um período maior que 12 meses após a data de início da vigência.",
-        invalidDataNascimento:  "Data de nascimento deve ser uma data passada e maior que 18.",
-        invalidDataAdmissao:  "Data de admissão deve ser uma data atual ou passada.",
+        invalidDateCurrent: "Data do inicio deve ser uma data atual ou passada.",
+        invalidDateMonths: "A data final da vigência não pode ser um período maior que 12 meses após a data de início da vigência.",
+        invalidDataNascimento: "Data de nascimento deve ser uma data passada e maior que 18.",
+        invalidDataAdmissao: "Data de admissão deve ser uma data atual ou passada.",
     },
 
 
