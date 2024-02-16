@@ -29,7 +29,7 @@ const usuarioSchema = new mongoose.Schema({
         select: false,
         minlength: 8
     },
-    codigo_confirma_email: {
+    tokenRecuperaSenha: {
         type: String,
         trim: true,
         index: true,

@@ -18,15 +18,15 @@ export default class AuthValidate {
                 userExist = await Usuario.findOne({ email }).select('+senha')
 
                 if (!userExist) {
-                    return res.status(400).json({ data: [], error: true, code: 400, message: messages.httpCodes[400], errors: messages.auth.authenticationFailed })
+                    return res.status(400).json({ data: [], error: true, code: 400, message: messages.httpCodes[400], errors: ["Usuário ou senha incorretos!"] })
                 }
 
                 if (!(await bcript.compare(senha, userExist.senha))) {
-                    return res.status(400).json({ error: true, code: 400, message: "Usuário ou senha incorretos!" })
+                    return res.status(400).json({ data: [], error: true, code: 400, message: messages.httpCodes[400], errors: ["Usuário ou senha incorretos!"] })
                 }
 
                 if (!userExist.ativo) {
-                    return res.status(400).json({ error: true, code: 400, message: "Usuário inativo!" })
+                    return res.status(400).json({ data: [], error: true, code: 400, message: messages.httpCodes[400], errors: ["Usuário inativo!"] })
                 }
 
             } else {
@@ -35,7 +35,7 @@ export default class AuthValidate {
 
 
             return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
-        
+
         } catch (err) {
             enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
             return res.status(500).json({

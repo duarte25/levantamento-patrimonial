@@ -1,44 +1,70 @@
 import messages from "../utils/mensagens.js";
 import enviaEmailErro from "../utils/enviaEmailErro.js";
+import senhaValidate from "../utils/senhaValidate.js";
+import jwt from "jsonwebtoken";
+import Usuario from "../models/Usuario.js";
 
-export default class recuperaSenhaValidation{
+export default class recuperaSenhaValidation {
+    static async recuperaSenhaValidate(req, res, next) {
+        const erros = []
 
-    static async alteraSenhaValidate(req, res, next){
+        const { email } = req.query
+
+        const findUser = await Usuario.findOne({ email: email })
+
+        if(!findUser){
+            erros.push(messages.validationGeneric.mascCamp("Usuário"))
+        }else{
+
+            if (!userExist.ativo) {
+                erros.push("Usuário inativo!")
+            }
+        }
+
+        return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
+    }
+
+    static async alteraSenhaValidate(req, res, next) {
         try {
             const erros = []
-            
-            const {token,email} = req.query
-            const {senha} = req.body
 
-            let tokendecoded = null
+            const { token, email } = req.query
+            const { senha } = req.body
 
             if (!token) {
-                erros.push = { error:true, code: 498, mensagem: "Token de autenticação não recebido na rota!" })
+                erros.push = ("O Token é obrigatório!")
+            } else {
+                try {
+                    await jwt.verify(token, process.env.JWT_SECRET)
+                } catch (err) {
+                    //console.log(err.message)
+                    return res.status(498).json({ error: true, code: 498, mensagem: "Token inválido!" })
+                }
             }
-            
-            try{
-                tokendecoded =jwt.verify(token, process.env.SECRET)
-            }catch(err){
-                return res.status(498).json({error:true, code: 498, mensagem: "Token inválido!" })
+
+            const findUser = await Usuario.findOne({ email: email }).select('+tokenRecuperaSenha')
+
+            if (!findUser) {
+                erros.push(messages.validationGeneric.mascCamp("Usuário"))
+            } else {
+
+                if (!userExist.ativo) {
+                    return res.status(400).json({ data: [], error: true, code: 400, message: messages.httpCodes[400], errors: ["Usuário inativo!"] })
+                }
+
+                if (!findUser.tokenRecuperaSenha) {
+                    return res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: ["Recuperação de senha não solicitada ou já efetuada!"] })
+                }
+                if (token != findUser.tokenRecuperaSenha) {
+                    return res.status(498).json({ data: [], error: true, code: 498, message: messages.httpCodes[422], errors: ["Token não corresponde com o enviado ao usuário!"] })
+                }
             }
 
-            await usuario.findOne({ email: email }).select('+tokenRecuperaSenha').then(async (user) => {
-
-                if(!user){
-                    return res.status(404).json({ error: true, code: 404, mensagem: "Usuário não encontrado!" })
-                }
-                
-                if(!user.tokenRecuperaSenha){
-                    return res.status(422).json({error:true, code: 422, mensagem: "Recuperação de senha não solicitada ou já efetuada!"})
-                }
-
-                if(token != user.tokenRecuperaSenha){
-                    return res.status(498).json({error:true, code: 498, mensagem: "Token não corresponde com o enviado ao usuário!" })
-                }
-
-                if(senha.length < 8){
-                    return res.status(422).json({error:true, code: 422, mensagem: "Senha não pode ter menos de 8 caracteres!"})
-                }
+            if (!senha) {
+                erros.push(messages.validationGeneric.fieldIsRequired("senha"))
+            } else {
+                await senhaValidate(senha, erros)
+            }
 
             return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
 
