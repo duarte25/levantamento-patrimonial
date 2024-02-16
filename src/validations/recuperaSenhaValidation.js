@@ -6,22 +6,33 @@ import Usuario from "../models/Usuario.js";
 
 export default class recuperaSenhaValidation {
     static async recuperaSenhaValidate(req, res, next) {
-        const erros = []
+        try {
+            const erros = []
 
-        const { email } = req.query
+            const { email } = req.query
 
-        const findUser = await Usuario.findOne({ email: email })
+            const findUser = await Usuario.findOne({ email: email })
 
-        if(!findUser){
-            erros.push(messages.validationGeneric.mascCamp("Usuário"))
-        }else{
+            if (!findUser) {
+                erros.push(messages.validationGeneric.mascCamp("Usuário"))
+            } else {
 
-            if (!userExist.ativo) {
-                erros.push("Usuário inativo!")
+                if (!userExist.ativo) {
+                    erros.push("Usuário inativo!")
+                }
             }
-        }
 
-        return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
+            return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
+        } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
+            return res.status(500).json({
+                data: [],
+                error: true,
+                code: 500,
+                message: messages.httpCodes[500],
+                errors: err.message
+            });
+        }
     }
 
     static async alteraSenhaValidate(req, res, next) {
