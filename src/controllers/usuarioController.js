@@ -117,6 +117,34 @@ export default class UsuarioController {
 
     }
 
+    static async alterarUsuario(req,res){
+        try{
+
+            const { id } = req.params
+            const {senha} = req.body
+
+            const dados = req.body
+
+            if(senha){
+                dados.senha = bcrypt.hashSync(senha, 10)
+            }
+
+            await Usuario.findByIdAndUpdate(id,dados)
+
+            return res.status(200).json({ data: [], error: false, code: 200, message: messages.httpCodes[200], errors: [] })
+
+        } catch (err) {
+            enviaEmailErro(err.message, new URL(import.meta.url).pathname, req)
+            return res.status(500).json({
+                data: [],
+                error: true,
+                code: 500,
+                message: messages.httpCodes[500],
+                errors: err.message
+            });
+        }
+    }
+
     static async deletarUsuario(req, res) {
         try {
 

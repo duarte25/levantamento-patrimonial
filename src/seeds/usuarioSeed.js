@@ -10,7 +10,7 @@ export default async function usuarioSeed(quantidade) {
         nome: "Dev Oliveira",
         cpf: faker.br.cpf(),
         email: "dev@gmail.com",
-        senha: bcrypt.hashSync("12345678",8)
+        senha: bcrypt.hashSync("Dev@1234",8)
     })
     
     for (let i = 0; i < quantidade; i++) {
@@ -19,7 +19,7 @@ export default async function usuarioSeed(quantidade) {
             nome: faker.name.findName(),
             cpf: faker.br.cpf(),
             email: faker.internet.email(),
-            senha: bcrypt.hashSync(faker.internet.password(),8)
+            senha: bcrypt.hashSync("Dev@1234",8)
         });
     }
 
