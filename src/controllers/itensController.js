@@ -4,10 +4,12 @@ import Item from "../models/Item.js"; // Corrigido aqui
 export default class itensController {
   static CadastrarItens = async (req, res) => {
     try {
-      const { nome, estado, descricao, inventario, setor, auditor, imagem } =
+      const { etiqueta, ativo, nome, estado, descricao, inventario, setor, auditor, imagem } =
         req.body;
 
       const item = new Item({
+        etiqueta,
+        ativo,
         nome,
         estado,
         descricao,
