@@ -47,7 +47,7 @@ export default class itensController {
 
       const item = await Item.findById(id);
 
-      if (!items) {
+      if (!item) {
         return res
           .status(404)
           .json({ error: true, code: 404, message: "Item não encontrado!" });
