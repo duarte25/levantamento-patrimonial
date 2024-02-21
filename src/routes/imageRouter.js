@@ -1,5 +1,5 @@
 import express from "express";
-import ImagemController from "../controllers/ImageController.js";
+import ImagemController from "../controllers/imageController.js";
 import upload from "../config/multer.js";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware.js";
 
