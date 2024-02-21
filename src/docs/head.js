@@ -1,4 +1,5 @@
 import { imagePaths, imageSchemas } from "./imagesPaths.js";
+import { itensPaths, itensSchemas } from "./itensPath.js";
 
 const swaggerOptions = {
   swaggerDefinition: {
