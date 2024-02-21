@@ -1,5 +1,5 @@
-import { imagePaths, imageSchemas } from "./imagesPaths.js";
-import { itensPaths, itensSchemas } from "./itensPath.js";
+import { imagePaths } from "../paths/imagePaths.js";
+import { imageSchemas } from "../schemas/imageSchema.js";
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -9,12 +9,6 @@ const swaggerOptions = {
       description:
         "O projeto foi desenvolvido para a Fabrica de Softwre(FSLab) do curso de Análise e Desenvolvimento de Sistemas do Instituto Federal de Rondônia - IFRO.",
       version: "0.0.1",
-      termsOfService: "http://localhost:3030",
-      // contact: {
-      //   name: "Alexandre Nogueira",
-      //   email: "alx.delira@gmail.com",
-      //   url: "https://portfolioalxdelira.vercel.app/",
-      // },
       license: {
         name: "GPLv3",
         url: "http://www.gnu.org/licenses/gpl-3.0.html",
@@ -27,13 +21,21 @@ const swaggerOptions = {
     servers: [
       {
         url: `http://localhost:${process.env.PORT}`,
-        description: `API em desenvovlvimento no localhost:${process.env.PORT}`,
+        description: `API em desenvovlvimento`,
       },
+      {
+        url: `http://localhost:${process.env.PORT}`,
+        description: `API em produção`,
+      }
     ],
     tags: [
       {
         name: "Login",
         description: "Login do usuário",
+      },
+      {
+        name: "Imagens",
+        description: "Upload de imagens",
       },
       {
         name: "Usuários",
