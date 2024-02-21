@@ -8,4 +8,4 @@ router
     .get("/listar", ItensController.ListarItens)
     .delete("/remover/:id", ItensController.RemoverItens)
     
-export default router
+export default router;
