@@ -1,8 +1,8 @@
-import messages from "../utils/mensagens.js";
-import enviaEmailErro from "../utils/enviaEmailErro.js";
-import senhaValidate from "../utils/senhaValidate.js";
+import messages from "../../utils/mensagens.js";
+import enviaEmailErro from "../../utils/enviaEmailErro.js";
+import senhaValidate from "../../utils/senhaValidate.js";
 import jwt from "jsonwebtoken";
-import Usuario from "../models/Usuario.js";
+import Usuario from "../../models/Usuario.js";
 
 export default class recuperaSenhaValidation {
     static async recuperaSenhaValidate(req, res, next) {
