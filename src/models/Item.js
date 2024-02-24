@@ -52,6 +52,11 @@ const itemSchema = new mongoose.Schema({
         ref: "usuarios",
         required: true
     }, 
+    responsavel: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "usuarios",
+        required: true
+    },
     imagem: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "imagens"

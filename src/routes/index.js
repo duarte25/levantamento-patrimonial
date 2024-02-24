@@ -3,6 +3,7 @@ import uploads from "./imageRouter.js"
 import auth from "./authRouter.js"
 import usuarios from "./usuarioRouter.js"
 import recuperarSenha from "./recuperaSenhaRouter.js"
+import itens from "./itemRoutes.js";
 
 const routes = (app) => {
 
@@ -18,7 +19,8 @@ const routes = (app) => {
         uploads,
         auth,
         usuarios,
-        recuperarSenha
+        recuperarSenha,
+        itens
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );

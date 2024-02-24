@@ -34,6 +34,7 @@ export default async function itemSeed(quantidade) {
             inventario: faker.random.arrayElement(inventarios.map(inventario => inventario._id)),
             setor: faker.random.arrayElement(setores.map(setor => setor._id)),
             auditor: faker.random.arrayElement(usuarios.map(usuario => usuario._id)),
+            responsavel: faker.random.arrayElement(usuarios.map(usuario => usuario._id)),
             //Incluir imagem primeiro depois inclui aqui o seu campo
         });
     }
