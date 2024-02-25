@@ -1,6 +1,6 @@
 import faker from "faker-br";
 import Usuario from "../models/Usuario.js";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
 
 export default async function usuarioSeed(quantidade) {
 
@@ -11,7 +11,7 @@ export default async function usuarioSeed(quantidade) {
         cpf: faker.br.cpf(),
         email: "dev@gmail.com",
         senha: bcrypt.hashSync("Dev@1234",8)
-    })
+    });
     
     for (let i = 0; i < quantidade; i++) {
 

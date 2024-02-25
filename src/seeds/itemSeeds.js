@@ -2,13 +2,13 @@ import faker from "faker-br";
 import Setor from "../models/Setor.js";
 import Usuario from "../models/Usuario.js";
 import Item from "../models/Item.js";
-import inventario from "../models/Inventario.js";
+import Inventario from "../models/Inventario.js";
 
 export default async function itemSeed(quantidade) {
 
     const estado = ["Bem danificado", "Bem em condições de uso", "Bem inservivel"];
     const ativo = ["Ativo", "Inativo", "Pendente"];
-    const inventarios = await inventario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
+    const inventarios = await Inventario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const usuarios = await Usuario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const setores = await Setor.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const itensCriados = [];

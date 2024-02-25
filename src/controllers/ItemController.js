@@ -51,8 +51,8 @@ export default class ItemController {
 
             return res.status(200).json(itens);
         } catch (error) {
-            console.log(error)
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+            console.log(error);
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
         }
     }
 
@@ -69,7 +69,7 @@ export default class ItemController {
         } catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
-    };
+    }
 
     static async criarItem(req, res) {
         try {
@@ -83,7 +83,7 @@ export default class ItemController {
         } catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
-    };
+    }
 
     static async deletarItem(req, res) {
         try {
@@ -95,9 +95,9 @@ export default class ItemController {
             }
             
             await Item.findByIdAndDelete(id);
-            res.status(200).json({ data: usuario, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+            res.status(200).json({ data: item, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
-    };
+    }
 }
