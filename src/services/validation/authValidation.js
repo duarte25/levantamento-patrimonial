@@ -1,8 +1,8 @@
 import emailValidate from "../../utils/emailValidate.js";
 import bcript from "bcryptjs";
-import messages from "../utils/mensagens.js";
-import Usuario from "../models/Usuario.js";
-import enviaEmailErro from "../utils/enviaEmailErro.js";
+import messages from "../../utils/mensagens.js";
+import Usuario from "../../models/Usuario.js";
+import enviaEmailErro from "../../utils/enviaEmailErro.js";
 
 export default class AuthValidate {
 

@@ -1,8 +1,8 @@
 import logRoutes from "../middlewares/LogRoutesMiddleware.js";
 import uploads from "./imageRouter.js";
 import auth from "./authRouter.js";
-import usuarios from "./usuarioRouter.js"
-import recuperarSenha from "./recuperaSenhaRouter.js"
+import usuarios from "./usuarioRouter.js";
+import recuperarSenha from "./recuperaSenhaRouter.js";
 import itens from "./itemRoutes.js";
 
 const routes = (app) => {
@@ -12,7 +12,7 @@ const routes = (app) => {
     }
 
     app.route("/").get((req, res) => {
-        res.status(200).redirect("/docs")
+        res.status(200).redirect("/docs");
     });
 
     app.use(

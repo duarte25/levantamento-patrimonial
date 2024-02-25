@@ -50,6 +50,6 @@ const usuarioSchema = new mongoose.Schema({
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 usuarioSchema.plugin(paginate);
 
-const usuario = mongoose.model('usuarios', usuarioSchema);
+const usuario = mongoose.model("usuarios", usuarioSchema);
 
 export default usuario;

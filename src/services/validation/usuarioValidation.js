@@ -1,10 +1,10 @@
-import messages from "../utils/mensagens.js";
-import Usuario from "../models/Usuario.js";
-import emailValidate from "../utils/emailValidate.js";
+import messages from "../../utils/mensagens.js";
+import Usuario from "../../models/Usuario.js";
+import emailValidate from "../../utils/emailValidate.js";
 import cpfValidate from "cpf-cnpj-validator";
-import senhaValidate from "../utils/senhaValidate.js";
-import enviaEmailErro from "../utils/enviaEmailErro.js";
-import idValidate from "../utils/idValidate.js";
+import senhaValidate from "../../utils/senhaValidate.js";
+import enviaEmailErro from "../../utils/enviaEmailErro.js";
+import idValidate from "../../utils/idValidate.js";
 export default class usuarioValidation {
 
     static async criarUsuarioValidate(req, res, next) {

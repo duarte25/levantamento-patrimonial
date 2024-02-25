@@ -23,7 +23,7 @@ const itemSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
+        required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
         index: true
     },
     ativo: {
@@ -31,7 +31,7 @@ const itemSchema = new mongoose.Schema({
         default: "Ativo"  // Ativo, Inativo, Pendente
     },
     ocioso: {
-        type: Boolean, // Não está sendo usado
+        type: Boolean, // Não está sendo usado
         default: false
     },
     descricao: {
@@ -68,6 +68,6 @@ const itemSchema = new mongoose.Schema({
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 itemSchema.plugin(paginate);
 
-const item = mongoose.model('itens', itemSchema);
+const item = mongoose.model("itens", itemSchema);
 
 export default item;

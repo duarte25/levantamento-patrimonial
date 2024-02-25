@@ -73,22 +73,22 @@ const messages = {
             return `O campo ${fieldName} é obrigatório!`;
         },
         fieldIsRepeated: (fieldName) => {
-            return `O campo ${fieldName} informado já está cadastrado!`
+            return `O campo ${fieldName} informado já está cadastrado!`;
         },
         invalidInputFormatForField: (fieldName) => {
-            return `Formato de entrada inválido para o campo ${fieldName}!`
+            return `Formato de entrada inválido para o campo ${fieldName}!`;
         },
         resourceInUse: (fieldName) => {
-            return `Recurso em uso em ${fieldName}!`
+            return `Recurso em uso em ${fieldName}!`;
         },
         invalid: (fieldName) => {
             return `Valor informado em ${fieldName} é inválido!`;
         },
         mascCamp: (campo) => {
-            return `${campo} não encontrado!`
+            return `${campo} não encontrado!`;
         },
         femCamp: (campo) => {
-            return `${campo} não encontrada!`
+            return `${campo} não encontrada!`;
         }
     },
 

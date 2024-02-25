@@ -1,7 +1,7 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-import enviaEmailErro from '../utils/enviaEmailErro.js';
-import { URL } from 'url';
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+import enviaEmailErro from "../utils/enviaEmailErro.js";
+import { URL } from "url";
 
 dotenv.config()
 
