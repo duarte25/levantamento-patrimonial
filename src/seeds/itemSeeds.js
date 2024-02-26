@@ -2,13 +2,13 @@ import faker from "faker-br";
 import Setor from "../models/Setor.js";
 import Usuario from "../models/Usuario.js";
 import Item from "../models/Item.js";
-import inventario from "../models/Inventario.js";
+import Inventario from "../models/Inventario.js";
 
 export default async function itemSeed(quantidade) {
 
     const estado = ["Bem danificado", "Bem em condições de uso", "Bem inservivel"];
     const ativo = ["Ativo", "Inativo", "Pendente"];
-    const inventarios = await inventario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
+    const inventarios = await Inventario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const usuarios = await Usuario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const setores = await Setor.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const itensCriados = [];
@@ -34,6 +34,7 @@ export default async function itemSeed(quantidade) {
             inventario: faker.random.arrayElement(inventarios.map(inventario => inventario._id)),
             setor: faker.random.arrayElement(setores.map(setor => setor._id)),
             auditor: faker.random.arrayElement(usuarios.map(usuario => usuario._id)),
+            responsavel: faker.random.arrayElement(usuarios.map(usuario => usuario._id)),
             //Incluir imagem primeiro depois inclui aqui o seu campo
         });
     }
