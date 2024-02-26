@@ -71,12 +71,28 @@ export default class ItemController {
         }
     }
 
+    static atualizarItem = async (req, res) => {
+        try {
+            const { id } = req.params;
+            let item = await Item.findById(id);
+            if (!item) {
+                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrado!"] });
+            }
+            item = await Item.findByIdAndUpdate(id, req.body, { new: true });
+            return res.status(200).json({ data: [], error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+        }
+        catch (err) {
+            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+        }
+    };
+
     static async criarItem(req, res) {
         try {
             const item = new Item(req.body);
             const savedItem = await item.save();
 
-            // Retornar a resposta após todas as operações concluídas
+            // Corrigir ****
+            // O campos inventario tem que vim automaticamente ao ser definido pelo responsavel?
             return res.status(201).json({
                 data: savedItem, error: false, code: 201, message: messages.httpCodes[201], errors: []
             });

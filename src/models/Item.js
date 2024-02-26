@@ -4,7 +4,7 @@ import paginate from "mongoose-paginate-v2";
 const itemSchema = new mongoose.Schema({
     etiqueta: {
         type: Number,
-        unique: true,
+        unique: true, // Na vdd ele não pode ser unique so vai ser unique no inventario X
         required: false
     },
     nao_tiquetado: {
@@ -24,7 +24,7 @@ const itemSchema = new mongoose.Schema({
     estado: {
         type: String,
         required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
-        index: true
+        index: true // Incluir default para bem em condiçoes
     },
     ativo: {
         type: String,
@@ -35,11 +35,11 @@ const itemSchema = new mongoose.Schema({
         default: false
     },
     descricao: {
-        type: String
+        type: String // Alterar para ter um maximo de texto
     },
     inventario: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "inventarios",
+        ref: "inventarios", // Ja tem que puxar automatico
         required: true
     },
     setor: {
@@ -59,7 +59,7 @@ const itemSchema = new mongoose.Schema({
     },
     imagem: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "imagens"
+        ref: "imagens" // Incluir regra de negocio 
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }

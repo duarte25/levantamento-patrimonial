@@ -84,11 +84,8 @@ const messages = {
         invalid: (fieldName) => {
             return `Valor informado em ${fieldName} é inválido!`;
         },
-        mascCamp: (campo) => {
+        searchCamp: (campo) => {
             return `${campo} não encontrado!`;
-        },
-        femCamp: (campo) => {
-            return `${campo} não encontrada!`;
         }
     },
 

@@ -82,7 +82,7 @@ export default class usuarioValidation {
             const findUser = await Usuario.findById(id);
 
             if (!findUser) {
-                return res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: [messages.validationGeneric.mascCamp("Usuário")] });
+                return res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: [messages.validationGeneric.searchCamp("Usuário")] });
             }
 
             if (nome) {
