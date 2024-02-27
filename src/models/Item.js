@@ -4,7 +4,7 @@ import paginate from "mongoose-paginate-v2";
 const itemSchema = new mongoose.Schema({
     etiqueta: {
         type: Number,
-        unique: true,
+        unique: true, // Na vdd ele não pode ser unique so vai ser unique no inventario X
         required: false
     },
     nao_tiquetado: {
@@ -23,23 +23,23 @@ const itemSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
-        index: true
+        required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
+        index: true // Incluir default para bem em condiçoes
     },
     ativo: {
         type: String,
         default: "Ativo"  // Ativo, Inativo, Pendente
     },
     ocioso: {
-        type: Boolean, // Não está sendo usado
+        type: Boolean, // Não está sendo usado
         default: false
     },
     descricao: {
-        type: String
+        type: String // Alterar para ter um maximo de texto
     },
     inventario: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "inventarios",
+        ref: "inventarios", // Ja tem que puxar automatico
         required: true
     },
     setor: {
@@ -52,9 +52,14 @@ const itemSchema = new mongoose.Schema({
         ref: "usuarios",
         required: true
     }, 
+    responsavel: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "usuarios",
+        required: true
+    },
     imagem: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "imagens"
+        ref: "imagens" // Incluir regra de negocio 
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
@@ -63,6 +68,6 @@ const itemSchema = new mongoose.Schema({
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 itemSchema.plugin(paginate);
 
-const item = mongoose.model('itens', itemSchema);
+const item = mongoose.model("itens", itemSchema);
 
 export default item;

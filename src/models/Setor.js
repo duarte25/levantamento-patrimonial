@@ -19,6 +19,6 @@ const setorSchema = new mongoose.Schema({
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 setorSchema.plugin(paginate);
 
-const setor = mongoose.model('setores', setorSchema);
+const setor = mongoose.model("setores", setorSchema);
 
 export default setor;

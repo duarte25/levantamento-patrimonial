@@ -4,6 +4,7 @@ import auth from "./authRouter.js"
 import usuarios from "./usuarioRouter.js"
 import recuperarSenha from "./recuperaSenhaRouter.js"
 import setor from "./setorRouter.js";
+import itens from "./itemRoutes.js";
 
 const routes = (app) => {
 
@@ -12,7 +13,7 @@ const routes = (app) => {
     }
 
     app.route("/").get((req, res) => {
-        res.status(200).redirect("/docs")
+        res.status(200).redirect("/docs");
     });
 
     app.use(
@@ -20,7 +21,8 @@ const routes = (app) => {
         auth,
         usuarios,
         recuperarSenha,
-        setor
+        setor,
+        itens
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );
