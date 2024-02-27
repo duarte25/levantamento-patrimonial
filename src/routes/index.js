@@ -1,8 +1,9 @@
 import logRoutes from "../middlewares/LogRoutesMiddleware.js";
-import uploads from "./imageRouter.js";
-import auth from "./authRouter.js";
-import usuarios from "./usuarioRouter.js";
-import recuperarSenha from "./recuperaSenhaRouter.js";
+import uploads from "./imageRouter.js"
+import auth from "./authRouter.js"
+import usuarios from "./usuarioRouter.js"
+import recuperarSenha from "./recuperaSenhaRouter.js"
+import setor from "./setorRouter.js";
 import itens from "./itemRoutes.js";
 
 const routes = (app) => {
@@ -20,6 +21,7 @@ const routes = (app) => {
         auth,
         usuarios,
         recuperarSenha,
+        setor,
         itens
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
