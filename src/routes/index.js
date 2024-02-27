@@ -4,6 +4,7 @@ import auth from "./authRouter.js";
 import usuarios from "./usuarioRouter.js";
 import recuperarSenha from "./recuperaSenhaRouter.js";
 import itens from "./itemRoutes.js";
+import inventarios from "./inventarioRoutes.js";
 
 const routes = (app) => {
 
@@ -20,7 +21,8 @@ const routes = (app) => {
         auth,
         usuarios,
         recuperarSenha,
-        itens
+        itens,
+        inventarios
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );
