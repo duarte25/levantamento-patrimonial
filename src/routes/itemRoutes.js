@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/itens", ItemController.pesquisarItem);
 router.get("/itens/:id", ItemController.listarItemID);
-router.post("/itens", ValidateItem.validateCriar, ItemController.criarItem);
+router.post("/itens", ValidateItem.validate, ItemController.criarItem);
 router.delete("/itens/:id", ItemController.deletarItem);
 
 export default router;

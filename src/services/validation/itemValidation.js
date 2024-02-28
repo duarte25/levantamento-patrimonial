@@ -1,11 +1,45 @@
-import messages from "../../utils/mensagens.js";
+import messages, { sendError } from "../../utils/mensagens.js";
 import Item from "../../models/Item.js";
 import Inventario from "../../models/Inventario.js";
 import Setor from "../../models/Setor.js";
 import Usuario from "../../models/Usuario.js";
 import validateID from "./validateId.js";
 
+import { Validator, ValidationFuncs as v } from "./validation.js";
+
 class ValidadeItem {
+
+    static async validate(req, res, next) {
+        const val = new Validator(req.body);
+
+        await val.validate("etiqueta", v.required(), v.toInt(), v.unique({ model: Item, query: { item: req.body.item } }));
+
+        const { estado } = req.body;
+
+        // eslint-disable-next-line no-shadow
+        const validarEstado = () => async (value, val) => {
+            const estadosValidos = ["Bem danificado", "Bem em condições de uso", "Bem inservivel"];
+
+            if (!estadosValidos.includes(estado)) {
+                // return sendError(res, 422, messages.validationGeneric.invalid("estado"));
+                return  messages.validationGeneric.invalid(val.path).message;
+            }
+            return true;
+        };
+
+        await val.validate("nome", v.required());
+
+        await val.validate("estado", v.required(), validarEstado("estado"));
+
+        // if (!["Bem danificado", "Bem em condições de uso", "Bem inservivel"].includes(estado)) {
+        //     return sendError(res, 422, messages.validationGeneric.invalid("estado"));
+        //     // erros.errors.push(messages.validationGeneric.invalid("estado"));
+        // }
+
+        if (val.anyErrors()) return sendError(res, 422, val.getErrors());
+
+        return next();
+    }
 
     static async validateCriar(req, res, next) {
         try {
@@ -24,7 +58,7 @@ class ValidadeItem {
                 inventario: inventario,
                 etiqueta: etiqueta
             });
-    
+
             if (!etiqueta) {
                 erros.errors.push(messages.validationGeneric.fieldIsRequired("etiqueta"));
             } else if (etiquetaExiste[0]) {
@@ -62,7 +96,7 @@ class ValidadeItem {
 
             if (!setor) {
                 erros.errors.push(messages.validationGeneric.fieldIsRequired("setor"));
-            }  else if (!validateID(setor)) {
+            } else if (!validateID(setor)) {
                 erros.push("O ID informado ao veiculo deve estar em um formato válido (12 bytes)!");
             } else {
                 const findSetor = await Setor.findById(setor);
