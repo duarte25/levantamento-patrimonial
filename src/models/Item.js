@@ -22,12 +22,13 @@ const itemSchema = new mongoose.Schema({
         index: true
     },
     estado: {
-        type: String,
-        required: true, // Bem danificado, Bem em condições de uso, Bem inservivel
-        index: true // Incluir default para bem em condiçoes
+        type: String, // Bem danificado, Bem em condições de uso, Bem inservivel
+        index: true, // Incluir default para bem em condiçoes
+        default: "Bem em condições de uso"
     },
     ativo: {
         type: String,
+        index: true,
         default: "Ativo"  // Ativo, Inativo, Pendente
     },
     ocioso: {
@@ -35,7 +36,8 @@ const itemSchema = new mongoose.Schema({
         default: false
     },
     descricao: {
-        type: String // Alterar para ter um maximo de texto
+        type: String, // Alterar para ter um maximo de texto
+        maxlength: 256,
     },
     inventario: {
         type: mongoose.Schema.Types.ObjectId,

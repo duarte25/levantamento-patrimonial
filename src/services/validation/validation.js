@@ -430,10 +430,10 @@ export class ValidationFuncs {
     };
 
     static enum = (opcoes = {values: []}) => async (value, val) => {
-        if(!Array.isArray(opcoes.values) || opcoes.values.length === 0) throw new Error("A função de validação enum deve receber um array values");
+        if(!Array.isArray(opcoes) || opcoes.length === 0) throw new Error("A função de validação enum deve receber um array values");
 
-        if (!opcoes.values.includes(value)) {
-            return opcoes.message || messages.validationGeneric.mustBeOneOf(val.path,opcoes.values).message;
+        if (!opcoes.includes(value)) {
+            return opcoes.message || messages.validationGeneric.mustBeOneOf(val.path,opcoes).message;
         } else return true;
     };
 
