@@ -35,7 +35,8 @@
     "nodemailer": "^6.9.9",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "validation-br": "^1.4.5"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

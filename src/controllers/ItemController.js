@@ -24,7 +24,7 @@ export default class ItemController {
 
             const filtros = {};
 
-            if (etiqueta) filtros.etiqueta = { $regex: new RegExp(etiqueta, "i") };
+            if (etiqueta) filtros.etiqueta = etiqueta;
             if (nao_tiquetado) filtros.nao_tiquetado = nao_tiquetado;
             if (encontrado) filtros.encontrado = encontrado;
             if (nome) filtros.nome = { $regex: new RegExp(nome, "i") };
@@ -49,7 +49,7 @@ export default class ItemController {
             itens.error = false;
             itens.errors = [];
 
-            return res.status(200).json(itens);
+            res.status(200).json({ ...itens, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
