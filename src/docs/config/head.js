@@ -1,5 +1,6 @@
 import { imagePaths } from "../paths/imagePaths.js";
 import { imageSchemas } from "../schemas/imageSchema.js";
+import loginPaths from "../paths/loginPaths.js";
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -44,6 +45,7 @@ const swaggerOptions = {
     ],
     paths: {
       ...imagePaths,
+      ...loginPaths
     },
     components: {
       securitySchemes: {
