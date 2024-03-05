@@ -1,9 +1,9 @@
 import messages from "../../utils/mensagens.js";
 
-const loginPaths = {
-    "/login": {
+const recuperarSenhaPaths = {
+    "/recuperarsenha": {
         post: {
-            tags: ["Login"],
+            tags: ["Recuperar senha"],
             description: "Esta função é responsável por logar um usuário na API",
             summary: "Cadastro de abastecimento",
             requestBody: {
@@ -16,10 +16,6 @@ const loginPaths = {
                                 email: {
                                     type: "string",
                                     example: "dev@gmail.com"
-                                },
-                                senha: {
-                                    type: "id",
-                                    example: "Dev@1234"
                                 }
                             }
                         }
@@ -166,5 +162,4 @@ const loginPaths = {
     }
 }
 
-
-export default loginPaths;
+export default recuperarSenhaPaths;

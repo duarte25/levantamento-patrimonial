@@ -9,9 +9,10 @@ export default class recuperaSenhaValidation {
         try {
             const erros = [];
 
-            const { email } = req.query;
+            const { email } = req.body;
 
-            const findUser = await Usuario.findOne({ email: email });
+            console.log("email: " + email)
+            const findUser = await Usuario.findOne({ email });
 
             if (!findUser) {
                 erros.push(messages.validationGeneric.mascCamp("Usuário"));
