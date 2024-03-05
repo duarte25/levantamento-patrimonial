@@ -5,7 +5,7 @@ const loginPaths = {
         post: {
             tags: ["Login"],
             description: "Esta função é responsável por logar um usuário na API",
-            summary: "Cadastro de abastecimento",
+            summary: "Login de usuário",
             requestBody: {
                 required: true,
                 content: {

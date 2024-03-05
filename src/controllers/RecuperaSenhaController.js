@@ -36,7 +36,7 @@ export default class RecuperaSenhaController {
             });
 
             await enviaemail(info).then(() => {
-                return res.status(201).json({ data: [], error: false, code: 201, message: "Solicitação de alteração de senha enviada com sucesso!", errors: [] });
+                return res.status(200).json({ data: [], error: false, code: 200, message: "Solicitação de alteração de senha enviada com sucesso!", errors: [] });
             });
 
         } catch (err) {

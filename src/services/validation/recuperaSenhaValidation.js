@@ -3,6 +3,7 @@ import enviaEmailErro from "../../utils/enviaEmailErro.js";
 import senhaValidate from "../../utils/senhaValidate.js";
 import jwt from "jsonwebtoken";
 import Usuario from "../../models/Usuario.js";
+import emailValidate from "../../utils/emailValidate.js";
 
 export default class recuperaSenhaValidation {
     static async recuperaSenhaValidate(req, res, next) {
@@ -11,16 +12,21 @@ export default class recuperaSenhaValidation {
 
             const { email } = req.body;
 
-            console.log("email: " + email)
-            const findUser = await Usuario.findOne({ email });
+            if (emailValidate(email)) {
 
-            if (!findUser) {
-                erros.push(messages.validationGeneric.mascCamp("Usuário"));
-            } else {
-
-                if (!findUser.ativo) {
-                    erros.push("Usuário inativo!");
+                const findUser = await Usuario.findOne({ email });
+    
+                if (!findUser) {
+                    return res.status(200).json({ data: [], error: false, code: 200, message: "Solicitação de alteração de senha enviada com sucesso!", errors: [] });
+                } else {
+    
+                    if (!findUser.ativo) {
+                        erros.push("Usuário inativo!");
+                    }
                 }
+                
+            } else {
+                erros.push(messages.customValidation.invalidMail);
             }
 
             return erros.length > 0 ? res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: erros }) : next();
