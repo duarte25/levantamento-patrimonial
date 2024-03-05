@@ -63,7 +63,7 @@ export default class RecuperaSenhaController {
 
             res.status(200).json({
                 data: [],
-                error: true,
+                error: false,
                 code: 200,
                 message: "Senha atualizada com sucesso!",
                 errors: []

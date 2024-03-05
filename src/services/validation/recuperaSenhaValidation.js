@@ -56,7 +56,7 @@ export default class recuperaSenhaValidation {
                     await jwt.verify(token, process.env.JWT_SECRET);
                 } catch (err) {
                     //console.log(err.message)
-                    return res.status(498).json({ error: true, code: 498, mensagem: "Token inválido!" });
+                    return res.status(498).json({data: [], error: true, code: 498, message: messages.httpCodes[498], errors: ["Token inválido!"] });
                 }
             }
 
@@ -67,7 +67,7 @@ export default class recuperaSenhaValidation {
             } else {
 
                 if (!findUser.ativo) {
-                    return res.status(400).json({ data: [], error: true, code: 400, message: messages.httpCodes[400], errors: ["Usuário inativo!"] });
+                    return res.status(422).json({ data: [], error: true, code: 422, message: messages.httpCodes[422], errors: ["Usuário inativo!"] });
                 }
 
                 if (!findUser.tokenRecuperaSenha) {

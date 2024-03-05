@@ -24,7 +24,7 @@ const recuperarSenhaPaths = {
             },
             responses: {
                 200: {
-                    description: "Login efetuado com sucesso",
+                    description: "Pedido de recuperação de senha efetuado com sucesso",
                     content: {
                         "application/json": {
                             schema: {
@@ -100,7 +100,7 @@ const recuperarSenhaPaths = {
                                     },
                                     error: {
                                         type: "bollean",
-                                        example: "false"
+                                        example: "true"
                                     },
                                     code: {
                                         type: "integer",
@@ -166,7 +166,7 @@ const recuperarSenhaPaths = {
             },
             responses: {
                 200: {
-                    description: "Login efetuado com sucesso",
+                    description: "Alteração de senha efetuada com sucesso",
                     content: {
                         "application/json": {
                             schema: {
@@ -186,7 +186,7 @@ const recuperarSenhaPaths = {
                                     },
                                     message: {
                                         type: "string",
-                                        example: "Solicitação de alteração de senha enviada com sucesso!"
+                                        example: "Senha atualizada com sucesso!"
                                     },
                                     errors: {
                                         type: "array",
@@ -229,6 +229,38 @@ const recuperarSenhaPaths = {
                         }
                     }
                 },
+                498: {
+                    description: "Erro de token",
+                    content: {
+                        "application/json": {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    data: {
+                                        type: "array",
+                                        example: "[]"
+                                    },
+                                    error: {
+                                        type: "bollean",
+                                        example: "true"
+                                    },
+                                    code: {
+                                        type: "integer",
+                                        example: "498"
+                                    },
+                                    message: {
+                                        type: "string",
+                                        example: messages.httpCodes[498]
+                                    },
+                                    errors: {
+                                        type: "array",
+                                        example: ["Token inválido!"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 500: {
                     description: "Erro interno",
                     content: {
@@ -242,7 +274,7 @@ const recuperarSenhaPaths = {
                                     },
                                     error: {
                                         type: "bollean",
-                                        example: "false"
+                                        example: "true"
                                     },
                                     code: {
                                         type: "integer",
