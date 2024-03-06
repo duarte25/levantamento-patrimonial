@@ -4,9 +4,9 @@ import ValidateItem from "../services/validation/itemValidation.js";
 
 const router = express.Router();
 
-router.get("/itens", ItemController.pesquisarItem);
-router.get("/itens/:id", ItemController.listarItemID);
-router.post("/itens", ValidateItem.validateCriar, ItemController.criarItem);
-router.delete("/itens/:id", ItemController.deletarItem);
+router.get("/buscarItens", ItemController.pesquisarItem);
+router.get("/buscarItens/:id", ItemController.listarItemID);
+router.post("/cadastrarItens", ValidateItem.validateCriar, ItemController.criarItem);
+router.delete("/excluirItens/:id", ItemController.deletarItem);
 
 export default router;

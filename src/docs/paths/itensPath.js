@@ -1,5 +1,5 @@
-const itensPaths = {
-  "/uploads": {
+export const itensPaths = {
+  "/cadastrarItens": {
     post: {
       tags: ["Itens"],
       summary: "Cadastra um item no Inventário",
@@ -31,7 +31,7 @@ const itensPaths = {
       },
     },
   },
-  "/itens": {
+  "/buscarItens": {
     get: {
       tags: ["Itens"],
       summary: "Lista todos os itens",
@@ -54,7 +54,7 @@ const itensPaths = {
       },
     },
   },
-  "/remover/{id}": {
+  "/excluirItens/{id}": {
     delete: {
       tags: ["Itens"],
       summary: "Remove um item do Inventário",
@@ -84,5 +84,3 @@ const itensPaths = {
     },
   },
 };
-
-export { itensSchemas, itensPaths };
