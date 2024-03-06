@@ -1,4 +1,4 @@
-const itensSchemas = {
+export const itensSchemas = {
   Itens: {
     type: "object",
     properties: {

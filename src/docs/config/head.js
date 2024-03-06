@@ -2,6 +2,9 @@ import { imagePaths } from "../paths/imagePaths.js";
 import { imageSchemas } from "../schemas/imageSchema.js";
 import loginPaths from "../paths/loginPaths.js";
 import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
+import { itensPaths } from "../paths/itensPath.js";
+import { itensSchemas } from "../schemas/itensSchema.js";
+
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -47,11 +50,16 @@ const swaggerOptions = {
         name: "Usuários",
         description: "Usuários do sistema",
       },
+      {
+        name: "Itens",
+        description: "Itens do inventário",
+      },
     ],
     paths: {
       ...imagePaths,
       ...loginPaths,
-      ...recuperarSenhaPaths
+      ...recuperarSenhaPaths,
+      ...itensPaths,
     },
     components: {
       securitySchemes: {
@@ -63,6 +71,7 @@ const swaggerOptions = {
       },
       schemas: {
         ...imageSchemas,
+        ...itensSchemas,
       },
     },
   },
