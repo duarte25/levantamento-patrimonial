@@ -6,6 +6,7 @@ import recuperarSenha from "./recuperaSenhaRouter.js";
 import setor from "./setorRouter.js";
 import itens from "./itemRoutes.js";
 import inventarios from "./inventarioRoutes.js";
+import campus from "./campusRouter.js";
 
 const routes = (app) => {
 
@@ -24,7 +25,8 @@ const routes = (app) => {
         recuperarSenha,
         itens,
         inventarios,
-        setor
+        setor,
+        campus
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );
