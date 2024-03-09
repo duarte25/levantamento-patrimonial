@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 import { describe, expect, test } from "@jest/globals";
 import request from "supertest";
 import app from "../../src/app.js";
@@ -10,6 +9,66 @@ describe("Item", () => {
     let setorID;
     let inventarioID;
     let usuarioID;
+    let token;
+
+    const userlogin = {
+        email: "dev@gmail.com",
+        senha: "Dev@1234"
+    };
+
+    // eslint-disable-next-line no-undef
+    it("Deve autenticar o usuário e retornar um token", async () => {
+        const resposta = await request(app)
+            .post("/login")
+            .send(userlogin)
+            .set("Accept", "aplication/json")
+            .expect(200);
+
+        expect(resposta.body.token).toBeDefined();
+        return token = resposta.body.token;
+    });
+
+    // eslint-disable-next-line no-undef
+    async function obterSetor() {
+        const res = await req
+            .get("/setores")
+            .set("Accept", "aplication/json")
+            .expect(200);
+
+        const setorSelecionado = res.body.data[0];
+        expect(setorSelecionado).toBeDefined();
+        expect(setorSelecionado._id).toBeDefined();
+
+        return setorID = setorSelecionado._id;
+    }
+
+    // eslint-disable-next-line no-undef
+    async function obterInventario() {
+        const res = await req
+            .get("/inventarios")
+            .set("Accept", "aplication/json")
+            .expect(200);
+
+        const inventarioSelecionado = res.body.data[0];
+        expect(inventarioSelecionado).toBeDefined();
+        expect(inventarioSelecionado._id).toBeDefined();
+
+        return inventarioID = inventarioSelecionado._id;
+    }
+
+    async function obterUsuario() {
+        const res = await req
+            .get("/usuarios")
+            .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200);
+
+        const usuarioSelecionado = res.body.data[0];
+        expect(usuarioSelecionado).toBeDefined();
+        expect(usuarioSelecionado._id).toBeDefined();
+
+        return usuarioID = usuarioSelecionado._id;
+    }
 
     // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de itens", async () => {
@@ -25,6 +84,10 @@ describe("Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um item", async () => {
 
+        setorID = obterSetor();
+        inventarioID = obterInventario();
+        usuarioID = obterUsuario();
+
         const resposta = await req
             .post("/itens")
             .send({
@@ -33,13 +96,13 @@ describe("Item", () => {
                 encontrado: true,
                 nome: "Refined Plastic Ball",
                 estado: "Bem em condições de uso",
-                ativo: "Inativo",
+                ativo: "Ativo",
                 ocioso: false,
                 descricao: "radical",
-                inventario: "65de780e1dfefb1e27eb2de7",
-                setor: "65de780e1dfefb1e27eb2dd2",
-                responsavel: "65de780e1dfefb1e27eb2d97",
-                auditor: "65de780e1dfefb1e27eb2d97"
+                inventario: inventarioID,
+                setor: setorID,
+                responsavel: usuarioID,
+                auditor: usuarioID
             })
             .set("Accept", "application/json")
             .expect(201);
@@ -51,7 +114,7 @@ describe("Item", () => {
 
     // Teste de Deletar ITEM ---------------------------------------------------
     // eslint-disable-next-line no-undef
-    it("Deve deletar um deslocamento", async () => {
+    it("Deve deletar um item", async () => {
         const resposta = await req
             .delete(`/itens/${itemID}`)
             .set("Accept", "application/json")

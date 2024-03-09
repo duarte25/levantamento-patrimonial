@@ -164,7 +164,7 @@ const loginPaths = {
             }
         },
     }
-}
+};
 
 
 export default loginPaths;

@@ -62,8 +62,6 @@ class ValidadeItem {
 
         return next();
     }
-
-
 }
 
 export default ValidadeItem;
