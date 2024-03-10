@@ -35,7 +35,7 @@ export default class InventarioController {
             inventarios.error = false;
             inventarios.errors = [];
 
-            return res.status(200).json(inventarios);
+            res.status(200).json({ ...inventarios, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });

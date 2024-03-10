@@ -13,7 +13,14 @@ export default async function inventarioSeed(quantidade) {
     for (let i = 0; i < quantidade; i++) {
 
         inventariosCriados.push({
-            setores:  faker.random.arrayElement(setores.map(setor => setor._id)),
+            setores:  [
+                {
+                    _id: faker.random.arrayElement(setores.map(setor => setor._id))
+                },
+                {
+                    _id: faker.random.arrayElement(setores.map(setor => setor._id))
+                }
+            ],
             responsavel:  faker.random.arrayElement(usuarios.map(usuario => usuario._id)),
             auditores: [
                 {

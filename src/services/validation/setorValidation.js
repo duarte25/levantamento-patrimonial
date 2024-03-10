@@ -1,46 +1,19 @@
-import messages from "../../utils/mensagens.js";
-import Setor from "../models/Setor.js";
-import validateID from "./validateId.js";
+import messages, { sendError } from "../../utils/mensagens.js";
+import { Validator, ValidationFuncs as v } from "./validation.js";
 
 class ValidadeSetor {
 
     static async validateCriar(req, res, next) {
-        try {
-            const erros = {
-                "error": "true",
-                "code": "422",
-                "data": null,
-                "message": messages.httpCodes[422],
-                "errors": []
-            };
+        // local e Status depois incluiremos campus
+        const val = new Validator(req.body);
 
-            const { local, status } = req.body;
+        await val.validate("local", v.required(), v.length({ max: 256 }));
 
-            if (!local) {
-                erros.errors.push(messages.validationGeneric.fieldIsRequired("local"));
-            }
+        await val.validate("status", v.optional(), v.toBoolean());
 
-            if (!status) {
-                erros.errors.push(messages.validationGeneric.fieldIsRequired("status"));
-            } else if (!["Ativo", "Inativo"].includes(status)) {
-                erros.errors.push(messages.validationGeneric.invalid("status"));
-            }
+        if (val.anyErrors()) return sendError(res, 422, val.getErrors());
 
-            // remover todos os elementos undefined do array de erros
-            erros.errors = erros.errors.filter((element) => element);
-
-            //percorre o array de erros e verifica se todos os elementos são diferentes de null, undefined, 0, false, NaN, ""
-            if (erros.errors.length > 0) {
-                if (erros.errors.every((element) => element)) {
-                    return res.status(422).json(erros);
-                }
-            }
-
-            next();
-        }
-        catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: [] });
-        }
+        return next();
     }
 }
 

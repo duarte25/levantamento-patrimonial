@@ -65,7 +65,7 @@ export default class SetorController {
         catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
-    };
+    }
 
     static async criarSetor(req, res) {
         try {

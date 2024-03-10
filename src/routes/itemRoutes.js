@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/itens", ItemController.pesquisarItem);
 router.get("/itens/:id", ItemController.listarItemID);
-router.patch("itens/:id", ValidateItem.validateAlterar, ItemController.atualizarItem);
+router.patch("/itens/:id", ItemController.atualizarItem);
 router.post("/itens", ValidateItem.validateCriar, ItemController.criarItem);
 router.delete("/itens/:id", ItemController.deletarItem);
 

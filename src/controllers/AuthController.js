@@ -1,13 +1,13 @@
-import Usuario from "../models/Usuario.js"
-import jwt from "jsonwebtoken"
+import Usuario from "../models/Usuario.js";
+import jwt from "jsonwebtoken";
 
 export default class AuthController{
 
     static async logar (req,res){
 
-        const {email} = req.body
+        const {email} = req.body;
 
-        const userExist = await Usuario.findOne({ email })
+        const userExist = await Usuario.findOne({ email });
 
         return res.status(200).json({
             
@@ -30,7 +30,7 @@ export default class AuthController{
                 user: userExist.user,
                 ativo: userExist.ativo
             }   
-        })
+        });
 
     }
 
