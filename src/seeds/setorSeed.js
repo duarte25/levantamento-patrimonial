@@ -1,7 +1,9 @@
 import faker from "faker-br";
 import Setor from "../models/Setor.js";
+import Campus from "../models/Campus.js";
 
 export default async function setorSeed() {
+    const campusID = await Campus.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const local = [
         "BIBLIOTECA - ACERVO (VLH - BLOCO A)",
         "LABORATÓRIO DE ANÁLISE E DESENV. DE SISTEMAS (VLH - BLOCO A)",
@@ -19,6 +21,7 @@ export default async function setorSeed() {
     
     for (let i = 0; i < local.length; i++) {
         setoresCriados.push({
+            campus: faker.random.arrayElement(campusID.map(campus => campus._id)),
             local: local[i]
         });
     }

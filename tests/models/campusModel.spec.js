@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import mongoose from "mongoose";
 import db from "../../src/config/db_config.js";
 import Campus from "../../src/models/Campus.js";

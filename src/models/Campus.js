@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
-
-
 const campusSchema = new mongoose.Schema({
     nome: {
         type: String,

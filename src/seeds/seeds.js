@@ -7,6 +7,10 @@ import campusSeed from "./campusSeed.js";
 
 let quantidade = parseInt(50);
 
+// CAMPUS
+await db.collection("campus").deleteMany();
+await campusSeed();
+
 // USUARIO
 await db.collection("usuarios").deleteMany();
 await usuarioSeed(quantidade);
@@ -23,8 +27,5 @@ await inventarioSeed(quantidade);
 await db.collection("itens").deleteMany();
 await itemSeed(quantidade * 10);
 
-// CAMPUS
-await db.collection("campus").deleteMany();
-await campusSeed();
 
 db.close();
