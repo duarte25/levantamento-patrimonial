@@ -461,7 +461,7 @@ export class ValidationFuncs {
     /**
      * Verifica se o valor é um id do Mongoose válido
      */
-    static mongooseID = (opcoes = {}) => (value, val) => {
+    static mongooseID = (opcoes = {}) => async (value, val) => {
         if(!mongoose.Types.ObjectId.isValid(value)) {
             return opcoes.message || messages.validationGeneric.invalid(val.path).message;
         } else return true;

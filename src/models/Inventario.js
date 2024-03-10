@@ -4,8 +4,10 @@ import paginate from "mongoose-paginate-v2";
 const inventarioSchema = new mongoose.Schema({
     setores: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "setores"
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "setores"
+            }
         }
     ],
     responsavel: {

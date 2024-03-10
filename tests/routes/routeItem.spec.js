@@ -67,6 +67,7 @@ describe("Item", () => {
         expect(usuarioSelecionado).toBeDefined();
         expect(usuarioSelecionado._id).toBeDefined();
 
+        console.log("USuario", usuarioSelecionado._id);
         return usuarioID = usuarioSelecionado._id;
     }
 
@@ -84,9 +85,9 @@ describe("Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um item", async () => {
 
-        setorID = obterSetor();
-        inventarioID = obterInventario();
-        usuarioID = obterUsuario();
+        setorID = await obterSetor();
+        inventarioID = await obterInventario();
+        usuarioID = await obterUsuario();
 
         const resposta = await req
             .post("/itens")
@@ -122,6 +123,4 @@ describe("Item", () => {
 
         expect(resposta.body.message).toContain(messages.httpCodes[200]);
     });
-
-
 });

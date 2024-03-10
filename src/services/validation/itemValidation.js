@@ -6,7 +6,7 @@ import Usuario from "../../models/Usuario.js";
 
 import { Validator, ValidationFuncs as v } from "./validation.js";
 
-class ValidadeItem {
+class ValidateItem {
 
     static async validateCriar(req, res, next) {
 
@@ -64,4 +64,4 @@ class ValidadeItem {
     }
 }
 
-export default ValidadeItem;
+export default ValidateItem;

@@ -70,25 +70,25 @@ const messages = {
     validationGeneric: {
         // deve retornar um objeto com a propriedade message
         fieldIsRequired: (fieldName) => {
-            return `O campo ${fieldName} é obrigatório!`;
+            return { message: `O campo ${fieldName} é obrigatório!` };
         },
         fieldIsRepeated: (fieldName) => {
-            return `O campo ${fieldName} informado já está cadastrado!`;
+            return { message: `O campo ${fieldName} informado já está cadastrado!` };
         },
         invalidInputFormatForField: (fieldName) => {
-            return `Formato de entrada inválido para o campo ${fieldName}!`;
+            return { message: `Formato de entrada inválido para o campo ${fieldName}!` };
         },
         resourceInUse: (fieldName) => {
-            return `Recurso em uso em ${fieldName}!`;
+            return { message:`Recurso em uso em ${fieldName}!` };
         },
         invalid: (fieldName) => {
-            return `Valor informado em ${fieldName} é inválido!`;
+            return { message: `Valor informado em ${fieldName} é inválido!` };
         },
         mascCamp: (campo) => {
-            return `${campo} não encontrado!`;
+            return { message: `${campo} não encontrado!` };
         },
         femCamp: (campo) => {
-            return `${campo} não encontrada!`;
+            return { message: `${campo} não encontrada!` };
         },
         notFound: (fieldName) => {
             return { message: `Nenhum registro encontrado com este ${fieldName}.` };
