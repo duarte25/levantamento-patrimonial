@@ -7,10 +7,9 @@
   "scripts": {
     "dev": "nodemon server.js",
     "seed": "node src/seeds/seeds.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:v": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
-    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --coverage"
+    "test": " node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose --runInBand",
+    "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand"
   },
   "repository": {
     "type": "git",
