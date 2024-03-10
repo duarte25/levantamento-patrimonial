@@ -30,7 +30,7 @@ export default class SetorController {
             setores.error = false;
             setores.errors = [];
 
-            return res.status(200).json(setores);
+            res.status(200).json({ ...setores, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });

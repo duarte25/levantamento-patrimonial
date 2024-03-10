@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/setores", SetorController.pesquisarSetor);
 router.get("/setores/:id", SetorController.listarSetorID);
 router.post("/setores", ValidadeSetor.validateCriar, SetorController.criarSetor);
-router.patch("/setores/:id", SetorController.atualizarSetor);
+router.patch("/setores/:id", ValidadeSetor.validateAlterar, SetorController.atualizarSetor);
 router.delete("/setores/:id", SetorController.deletarSetor);
 
 export default router;
