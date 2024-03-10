@@ -102,7 +102,7 @@ export default class UsuarioController {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: [messages.validationGeneric.mascCamp("Usuário")] });
             }
 
-            return res.status(201).json({ data: findUser, error: false, code: 201, message: messages.httpCodes[201], errors: [] });
+            return res.status(200).json({ data: findUser, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
 
         } catch (err) {
             enviaEmailErro(err.message, new URL(import.meta.url).pathname, req);
@@ -160,11 +160,11 @@ export default class UsuarioController {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: [messages.validationGeneric.mascCamp("Usuário")] });
             }
 
-            return res.status(201).json({
+            return res.status(200).json({
                 data: [],
                 error: false,
-                code: 201,
-                message: messages.httpCodes[201],
+                code: 200,
+                message: messages.httpCodes[200],
                 errors: []
             });
 
