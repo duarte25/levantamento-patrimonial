@@ -396,7 +396,6 @@ export class ValidationFuncs {
      */
     static exists = (opcoes = {model: false, query: false}) => async (value, val) => {
         if(opcoes.model === false) throw new Error("A função de validação exists deve receber o Model que irá pesquisar!");
-
         let resultado = await opcoes.model.findOne(opcoes.query || {[val.path]: value});
         if (!resultado) {
             return opcoes.message || messages.validationGeneric.notFound(val.path).message;
@@ -461,8 +460,8 @@ export class ValidationFuncs {
     /**
      * Verifica se o valor é um id do Mongoose válido
      */
-    static mongooseID = (opcoes = {}) => async (value, val) => {
-        if(!mongoose.Types.ObjectId.isValid(value)) {
+    static mongooseID = (opcoes = {valorMongo: false}) => async (value, val) => {
+        if(!mongoose.Types.ObjectId.isValid(opcoes.valorMongo || value)) {
             return opcoes.message || messages.validationGeneric.invalid(val.path).message;
         } else return true;
     };

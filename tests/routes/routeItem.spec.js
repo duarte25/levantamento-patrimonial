@@ -67,7 +67,6 @@ describe("Item", () => {
         expect(usuarioSelecionado).toBeDefined();
         expect(usuarioSelecionado._id).toBeDefined();
 
-        console.log("USuario", usuarioSelecionado._id);
         return usuarioID = usuarioSelecionado._id;
     }
 
