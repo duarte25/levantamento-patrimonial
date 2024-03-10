@@ -3,7 +3,7 @@ import request from "supertest";
 import app from "../../src/app.js";
 import messages from "../../src/utils/mensagens.js";
 
-describe("Item", () => {
+describe("Rotas de Item", () => {
     const req = request(app);
     let itemID;
     let setorID;
@@ -70,6 +70,7 @@ describe("Item", () => {
         return usuarioID = usuarioSelecionado._id;
     }
 
+    // Teste de listar ITEM ---------------------------------------------------
     // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de itens", async () => {
         const dados = await req
@@ -110,6 +111,41 @@ describe("Item", () => {
         expect(resposta.body.message).toContain(messages.httpCodes[201]);
 
         itemID = resposta.body.data._id;
+    });
+
+    // Teste de atualizar ITEM ---------------------------------------------------
+    // eslint-disable-next-line no-undef
+    it("Deve atualizar um item pelo ID", async () => {
+        const dados = await req
+            .patch(`/itens/${itemID}`)
+            .set("Accept", "application/json")
+            .send({
+                etiqueta: 244,
+                nao_tiquetado: false,
+                encontrado: true,
+                nome: "Refined Plastic Ball",
+                estado: "Bem em condições de uso",
+                ativo: "Ativo",
+                ocioso: false,
+                descricao: "radical",
+                inventario: inventarioID,
+                setor: setorID,
+                responsavel: usuarioID,
+                auditor: usuarioID
+            });
+        expect(200);
+        expect(dados.body.message).toEqual(messages.httpCodes[200]);
+    });
+
+    // Teste de listar por ID ITEM ---------------------------------------------------
+    // eslint-disable-next-line no-undef
+    it("Deve retornar uma lista de itens por ID", async () => {
+        const dados = await req
+            .get(`/itens/${itemID}`)
+            .set("Accept", "aplication/json")
+            .expect(200);
+
+        expect(dados.body.message).toEqual(messages.httpCodes[200]);
     });
 
     // Teste de Deletar ITEM ---------------------------------------------------

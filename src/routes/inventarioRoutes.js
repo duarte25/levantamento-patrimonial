@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/inventarios", InventarioController.pesquisarInventario);
 router.get("/inventarios/:id", InventarioController.listarInventarioID);
+router.patch("/inventarios/:id", ValidateInventario.validateAlterar, InventarioController.atualizarInventario);
 router.post("/inventarios", ValidateInventario.validateCriar, InventarioController.criarInventario);
 router.delete("/inventarios/:id", InventarioController.deletarInventario);
 

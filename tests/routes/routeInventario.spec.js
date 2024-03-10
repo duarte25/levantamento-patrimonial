@@ -4,7 +4,7 @@ import app from "../../src/app.js";
 import messages from "../../src/utils/mensagens.js";
 import usuario from "../../src/models/Usuario.js";
 
-describe("inventario", () => {
+describe("Rotas de Inventario", () => {
     const req = request(app);
     let inventarioID;
     let setorID = [];
@@ -62,6 +62,7 @@ describe("inventario", () => {
         return usuarioID;
     }
 
+    // Teste de listar de INVENTARIO ---------------------------------------------------
     // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de inventarios", async () => {
         const dados = await req
@@ -72,7 +73,7 @@ describe("inventario", () => {
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
     });
 
-    // Teste de Criar inventario ---------------------------------------------------
+    // Teste de criar INVENTARIO ---------------------------------------------------
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um inventario", async () => {
 
@@ -99,7 +100,7 @@ describe("inventario", () => {
                         _id: usuarioID[2]
                     },
                 ],
-                data_inicio: "2021-12-26"
+                data_inicio: "2024-01-02"
             })
             .set("Accept", "application/json")
             .expect(201);
@@ -107,9 +108,51 @@ describe("inventario", () => {
         expect(resposta.body.message).toContain(messages.httpCodes[201]);
 
         inventarioID = resposta.body.data._id;
-    }, 10000);
+    });
 
-    // Teste de Deletar inventario ---------------------------------------------------
+    // Teste de atualizar INVENTARIO ---------------------------------------------------
+    // eslint-disable-next-line no-undef
+    it("Deve atualizar um inventario pelo ID", async () => {
+        const dados = await req
+            .patch(`/inventarios/${inventarioID}`)
+            .set("Accept", "application/json")
+            .send({
+                setores: [
+                    {
+                        _id: setorID[0]
+                    },
+                    {
+                        _id: setorID[1]
+                    }
+                ],
+                responsavel: usuarioID[0],
+                auditores: [
+                    {
+                        _id: usuarioID[1]
+                    },
+                    {
+                        _id: usuarioID[2]
+                    },
+                ],
+                data_inicio: "2024-01-02",
+                data_final:  "2024-02-26"
+            });
+        expect(200);
+        expect(dados.body.message).toEqual(messages.httpCodes[200]);
+    });
+
+    // Teste de listar por ID INVENTARIO ---------------------------------------------------
+    // eslint-disable-next-line no-undef
+    it("Deve retornar uma lista de inventario por ID", async () => {
+        const dados = await req
+            .get(`/inventarios/${inventarioID}`)
+            .set("Accept", "aplication/json")
+            .expect(200);
+
+        expect(dados.body.message).toEqual(messages.httpCodes[200]);
+    });
+
+    // Teste de deletar INVENTARIO ---------------------------------------------------
     // eslint-disable-next-line no-undef
     it("Deve deletar um inventario", async () => {
         const resposta = await req
