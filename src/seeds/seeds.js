@@ -3,6 +3,7 @@ import usuarioSeed from "./usuarioSeed.js";
 import setorSeed from "./setorSeed.js";
 import inventarioSeed from "./inventarioSeed.js";
 import itemSeed from "./itemSeeds.js";
+import campusSeed from "./campusSeed.js";
 
 let quantidade = parseInt(50);
 
@@ -21,5 +22,9 @@ await inventarioSeed(quantidade);
 // ITEM
 await db.collection("itens").deleteMany();
 await itemSeed(quantidade * 10);
+
+// CAMPUS
+await db.collection("campus").deleteMany();
+await campusSeed();
 
 db.close();

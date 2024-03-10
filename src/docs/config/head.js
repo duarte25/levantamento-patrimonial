@@ -4,6 +4,8 @@ import loginPaths from "../paths/loginPaths.js";
 import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
 import { itensPaths } from "../paths/itensPath.js";
 import { itensSchemas } from "../schemas/itensSchema.js";
+import { campusPaths } from "../paths/capusPaths.js";
+import { campusSchema } from "../schemas/campusSchema.js";
 
 
 const swaggerOptions = {
@@ -60,6 +62,7 @@ const swaggerOptions = {
       ...loginPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
+      ...campusPaths,
     },
     components: {
       securitySchemes: {
@@ -72,6 +75,7 @@ const swaggerOptions = {
       schemas: {
         ...imageSchemas,
         ...itensSchemas,
+        ...campusSchema,
       },
     },
   },
