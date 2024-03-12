@@ -22,7 +22,7 @@ export default async function setorSeed() {
     for (let i = 0; i < local.length; i++) {
         setoresCriados.push({
             campus: faker.random.arrayElement(campusID.map(campus => campus._id)),
-            local: local[i]
+            local: faker.commerce.productName()
         });
     }
 
