@@ -9,13 +9,15 @@ export default class SetorController {
 
             const {
                 local,
-                status
+                status,
+                campus
             } = req.query;
 
             const filtros = {};
 
             if (local) filtros.local = { $regex: new RegExp(local, "i") };
             if (status) filtros.status = status;
+            if (campus) filtros.campus = campus;
 
             const setores = await Setor.paginate(
                 { ...filtros },

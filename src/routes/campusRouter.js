@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
     .get("/campus", AuthMiddleware, CampusController.pesquisarCampus)
-    .get("/capus/:id", AuthMiddleware, CampusController.listarCampusID)
+    .get("/campus/:id", AuthMiddleware, CampusController.listarCampusID)
     .post("/campus", AuthMiddleware, ValidateCampus.validateCriar, CampusController.criarCampus)
     .delete("/campus/:id", AuthMiddleware, CampusController.deletarCampus);
 

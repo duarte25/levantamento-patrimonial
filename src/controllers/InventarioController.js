@@ -12,7 +12,7 @@ export default class InventarioController {
             const token = req.headers.authorization;
             const tokenDecoded = jwtDecode(token);
             const campus = tokenDecoded.campus;
-            console.log(campus);
+            console.log("Campus", campus);
 
             // Atributos esperados na requisição, validação foi feita no middleware antes de chegar aqui
             const {
@@ -25,7 +25,6 @@ export default class InventarioController {
             const idSetor = await Setor.find({ campus }).select("_id");
             const idsArray = idSetor.map(setor => setor._id);
 
-            console.log("ids",idsArray);
             // Se houver setores associados ao campus, aplicar o filtro de setores
             if (idSetor.length > 0) {
                 filtros.setores = { $in: idsArray };
@@ -34,11 +33,11 @@ export default class InventarioController {
             if (responsavel) filtros.responsavel = responsavel;
             if (auditores) filtros.auditores = auditores;
 
-            console.log("filtros ", filtros);
+            console.log("idsArray ", idsArray);
 
             const inventarios = await Inventario.paginate(
-                filtros.setores,
-                { ...paginateOptions, sort: { sigla: 1 }, page: pagina }
+                { setores: { $in: idsArray} },
+                { page: pagina, limit: 10 } // Exemplo: limite de 10 itens por página
             );
 
             inventarios.code = 200;
