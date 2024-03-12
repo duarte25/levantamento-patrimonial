@@ -31,7 +31,7 @@ export const itensPaths = {
       },
     },
   },
-  "/buscarItens": {
+  "/itens": {
     get: {
       tags: ["Itens"],
       summary: "Lista todos os itens",
@@ -47,6 +47,45 @@ export const itensPaths = {
               },
             },
           },
+        },
+        500: {
+          description: "Erro interno no servidor.",
+        },
+      },
+    },
+  },
+  "/alterarItnens/{id}": {
+    patch: {
+      tags: ["Itens"],
+      summary: "Atualiza um item no Inventário",
+      description: "Atualize um item no inventário.",
+      parameters: [
+        {
+          in: "path",
+          name: "id",
+          required: true,
+          description: "ID do item",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/Itens",
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Item atualizado com sucesso!",
+        },
+        404: {
+          description: "Item não encontrado!",
         },
         500: {
           description: "Erro interno no servidor.",
