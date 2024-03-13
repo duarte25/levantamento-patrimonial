@@ -17,7 +17,7 @@ await usuarioSeed(quantidade);
 
 // SETOR
 await db.collection("setores").deleteMany();
-await setorSeed();
+await setorSeed(quantidade * 2);
 
 // INVENTARIO
 await db.collection("inventarios").deleteMany();

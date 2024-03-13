@@ -25,10 +25,10 @@ export default class InventarioController {
             const idSetor = await Setor.find({ campus }).select("_id");
             const idsArray = idSetor.map(setor => setor._id);
 
-            // Se houver setores associados ao campus, aplicar o filtro de setores
-            if (idSetor.length > 0) {
-                filtros.setores = { $in: idsArray };
-            }
+            // // Se houver setores associados ao campus, aplicar o filtro de setores
+            // if (idSetor.length > 0) {
+            //     filtros.setores = { $in: idsArray };
+            // }
 
             if (responsavel) filtros.responsavel = responsavel;
             if (auditores) filtros.auditores = auditores;
@@ -36,7 +36,7 @@ export default class InventarioController {
             console.log("idsArray ", idsArray);
 
             const inventarios = await Inventario.paginate(
-                { setores: { $in: idsArray} },
+                { setores: { $elemMatch: { _id: { $in: idsArray } } }, ...filtros },
                 { page: pagina, limit: 10 } // Exemplo: limite de 10 itens por página
             );
 
