@@ -14,7 +14,6 @@ export default class InventarioController {
 
             const {
                 responsavel,
-                auditores,
                 data_inicial_inicial: data_inicial_inicial,
                 data_inicial_final: data_final_inicial,
                 data_final_inicial: data_inicial_final,
@@ -24,11 +23,10 @@ export default class InventarioController {
             const filtros = { campus };
             let sort = { sigla: 1 };
 
-            const idSetor = await Setor.find({ campus }).select("_id");
-            const idsArray = idSetor.map(setor => setor._id);
+            // const idSetor = await Setor.find({ campus }).select("_id");
+            // const idsArray = idSetor.map(setor => setor._id);
 
             if (responsavel) filtros.responsavel = responsavel;
-            if (auditores) filtros.auditores = auditores;
 
             if (data_inicial_inicial || data_final_inicial) {
                 filtros.data_inicial_reserva = {};
@@ -55,7 +53,7 @@ export default class InventarioController {
             }
 
             const inventarios = await Inventario.paginate(
-                { setores: { $elemMatch: { _id: { $in: idsArray } } }, ...filtros },
+                { campus: { $elemMatch: { _id:  campus } }, ...filtros },
                 { 
                     ...paginateOptions, ...{
                         sort: sort,
