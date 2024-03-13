@@ -3,7 +3,6 @@ import messages from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
 import { jwtDecode } from "jwt-decode";
 import Setor from "../models/Setor.js";
-import { ObjectId } from "mongodb";
 
 export default class InventarioController {
     static async pesquisarInventario(req, res) {
@@ -12,32 +11,57 @@ export default class InventarioController {
             const token = req.headers.authorization;
             const tokenDecoded = jwtDecode(token);
             const campus = tokenDecoded.campus;
-            console.log("Campus", campus);
 
-            // Atributos esperados na requisição, validação foi feita no middleware antes de chegar aqui
             const {
                 responsavel,
-                auditores
+                auditores,
+                data_inicial_inicial: data_inicial_inicial,
+                data_inicial_final: data_final_inicial,
+                data_final_inicial: data_inicial_final,
+                data_final_final: data_final_final,    
             } = req.query;
 
             const filtros = { campus };
+            let sort = { sigla: 1 };
 
             const idSetor = await Setor.find({ campus }).select("_id");
             const idsArray = idSetor.map(setor => setor._id);
 
-            // // Se houver setores associados ao campus, aplicar o filtro de setores
-            // if (idSetor.length > 0) {
-            //     filtros.setores = { $in: idsArray };
-            // }
-
             if (responsavel) filtros.responsavel = responsavel;
             if (auditores) filtros.auditores = auditores;
 
-            console.log("idsArray ", idsArray);
+            if (data_inicial_inicial || data_final_inicial) {
+                filtros.data_inicial_reserva = {};
+                if (data_inicial_inicial) filtros.data_inicial_reserva.$gte = new Date(data_inicial_inicial);
+                if (data_final_inicial) {
+                    const dataFinal = new Date(data_final_inicial);
+                    dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
+                    filtros.data_inicial_reserva.$lte = dataFinal;
+                }
+    
+                sort = { data_inicial_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+            }
+    
+            if (data_inicial_final || data_final_final) {
+                filtros.data_final_reserva = {};
+                if (data_inicial_final) filtros.data_final_reserva.$gte = new Date(data_inicial_final);
+                if (data_final_final) {
+                    const dataFinal = new Date(data_final_final);
+                    dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
+                    filtros.data_final_reserva.$lte = dataFinal;
+                }
+    
+                sort = { data_final_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+            }
 
             const inventarios = await Inventario.paginate(
                 { setores: { $elemMatch: { _id: { $in: idsArray } } }, ...filtros },
-                { page: pagina, limit: 10 } // Exemplo: limite de 10 itens por página
+                { 
+                    ...paginateOptions, ...{
+                        sort: sort,
+                        page: pagina,
+                    }       
+                } 
             );
 
             inventarios.code = 200;
