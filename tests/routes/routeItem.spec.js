@@ -90,7 +90,7 @@ describe("Rotas de Item", () => {
         usuarioID = await obterUsuario();
 
         const resposta = await req
-            .post("/cadastrarItens")
+            .post("/itens")
             .send({
                 etiqueta: 244,
                 nao_tiquetado: false,
@@ -117,7 +117,7 @@ describe("Rotas de Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve atualizar um item pelo ID", async () => {
         const dados = await req
-            .patch(`/alterarItens/${itemID}`)
+            .patch(`/itens/${itemID}`)
             .set("Accept", "application/json")
             .send({
                 etiqueta: 244,
@@ -152,7 +152,7 @@ describe("Rotas de Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve deletar um item", async () => {
         const resposta = await req
-            .delete(`/excluirItens/${itemID}`)
+            .delete(`/itens/${itemID}`)
             .set("Accept", "application/json")
             .expect(200);
 
