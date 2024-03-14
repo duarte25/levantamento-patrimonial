@@ -26,7 +26,7 @@ const swaggerOptions = {
     servers: [
       {
         url: `http://localhost:${process.env.PORT}`,
-        description: `API em desenvovlvimento`,
+        description: `API em desenvolvimento`,
       },
       {
         url: `http://localhost:${process.env.PORT}`,
@@ -54,6 +54,10 @@ const swaggerOptions = {
         name: "Itens",
         description: "Itens do inventário",
       },
+      {
+        name: "Setores",
+        description: "Setores do inventário",
+      },
     ],
     paths: {
       ...imagePaths,
@@ -72,6 +76,7 @@ const swaggerOptions = {
       schemas: {
         ...imageSchemas,
         ...itensSchemas,
+        ...campusSchema,
       },
     },
   },

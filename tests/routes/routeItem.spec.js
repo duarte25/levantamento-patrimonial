@@ -33,6 +33,7 @@ describe("Rotas de Item", () => {
         const res = await req
             .get("/setores")
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         const setorSelecionado = res.body.data[0];
@@ -47,6 +48,7 @@ describe("Rotas de Item", () => {
         const res = await req
             .get("/inventarios")
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         const inventarioSelecionado = res.body.data[0];
@@ -76,6 +78,7 @@ describe("Rotas de Item", () => {
         const dados = await req
             .get("/itens")
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -106,6 +109,7 @@ describe("Rotas de Item", () => {
                 auditor: usuarioID
             })
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(201);
 
         expect(resposta.body.message).toContain(messages.httpCodes[201]);
@@ -119,6 +123,7 @@ describe("Rotas de Item", () => {
         const dados = await req
             .patch(`/itens/${itemID}`)
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .send({
                 etiqueta: 244,
                 nao_tiquetado: false,
@@ -143,6 +148,7 @@ describe("Rotas de Item", () => {
         const dados = await req
             .get(`/itens/${itemID}`)
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -154,6 +160,7 @@ describe("Rotas de Item", () => {
         const resposta = await req
             .delete(`/itens/${itemID}`)
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(resposta.body.message).toContain(messages.httpCodes[200]);

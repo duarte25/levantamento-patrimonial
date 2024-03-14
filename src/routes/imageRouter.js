@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
     .post("/images/uploads", AuthMiddleware, upload.single("file"), ImagemController.uploadImage)
-    .get("/images", ImagemController.findAllImage)
-    .delete("/images/remover/:id", ImagemController.removeImage);
+    .get("/images", AuthMiddleware, ImagemController.findAllImage)
+    .delete("/images/remover/:id", AuthMiddleware, ImagemController.removeImage);
 
 export default router;
