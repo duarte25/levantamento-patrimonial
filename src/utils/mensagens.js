@@ -96,26 +96,22 @@ const messages = {
         mustBeOneOf: (fieldName, values) => {
             return { message: `O campo ${fieldName} deve ser um dos seguintes valores: ${values.join(", ")}` };
         }
-
     },
 
     // Mensagens de validação personalizadas
     customValidation: {
         invalidCPF: "CPF inválido, Verifique o formato e tente novamente!",
         invalidCNPJ: "CNPJ inválido, Verifique o formato e tente novamente!",
-        invalidCEP: "CEP inválido, Verifique o formato e tente novamente!",
         invalidPhoneNumber: "Número de telefone inválido, Verifique o formato e tente novamente!",
         invalidMail: "Email no formato inválido!",
         invalidYear: "Ano inválido, Verifique o formato e tente novamente!",
         invalidDate: "Data inválida, Verifique o formato e tente novamente!",
-        invalidKilometerInitial: "Quilometragem inicial inválida!",
-        invalidKilometer: "Quilometragem inválida!",
         invalidDatePast: "Data do inicio deve ser uma data atual ou futura!",
         invalidDateFuture: "A data de conclusão deve ser maior do que a data de inicio!",
         invalidDateCurrent: "Data do inicio deve ser uma data atual ou passada!",
         invalidDateMonths: "A data final da vigência não pode ser um período maior que 12 meses após a data de início da vigência!",
         invalidDataNascimento: "Data de nascimento deve ser uma data passada e maior que 18!",
-        invalidDataAdmissao: "Data de admissão deve ser uma data atual ou passada!",
+        inventarioAndamento: "Inventario em andamento."
     },
 
 

@@ -4,7 +4,6 @@ import paginate from "mongoose-paginate-v2";
 const itemSchema = new mongoose.Schema({
     etiqueta: {
         type: Number,
-        unique: true, // Na vdd ele não pode ser unique so vai ser unique no inventario X
         required: false
     },
     nao_tiquetado: {
@@ -23,12 +22,10 @@ const itemSchema = new mongoose.Schema({
     },
     estado: {
         type: String, // Bem danificado, Bem em condições de uso, Bem inservivel
-        index: true, // Incluir default para bem em condiçoes
         default: "Bem em condições de uso"
     },
     ativo: {
         type: String,
-        index: true,
         default: "Ativo"  // Ativo, Inativo, Pendente
     },
     ocioso: {
@@ -66,6 +63,9 @@ const itemSchema = new mongoose.Schema({
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );
+
+// O item pode ser criado apenas uma uma vez em cada inventario
+// itemSchema.index({ inventario: 1, etiqueta: 1 }, { unique: true });
 
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 itemSchema.plugin(paginate);

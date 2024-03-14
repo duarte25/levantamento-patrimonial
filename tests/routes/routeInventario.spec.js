@@ -34,6 +34,7 @@ describe("Rotas de Inventario", () => {
             const res = await req
                 .get("/setores")
                 .set("Accept", "aplication/json")
+                .set("Authorization", `Bearer ${token}`)
                 .expect(200);
 
             const setorSelecionado = res.body.data[i];
@@ -68,6 +69,7 @@ describe("Rotas de Inventario", () => {
         const dados = await req
             .get("/inventarios")
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -103,6 +105,7 @@ describe("Rotas de Inventario", () => {
                 data_inicio: "2024-01-02"
             })
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(201);
 
         expect(resposta.body.message).toContain(messages.httpCodes[201]);
@@ -116,6 +119,7 @@ describe("Rotas de Inventario", () => {
         const dados = await req
             .patch(`/inventarios/${inventarioID}`)
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .send({
                 setores: [
                     {
@@ -147,6 +151,7 @@ describe("Rotas de Inventario", () => {
         const dados = await req
             .get(`/inventarios/${inventarioID}`)
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -158,6 +163,7 @@ describe("Rotas de Inventario", () => {
         const resposta = await req
             .delete(`/inventarios/${inventarioID}`)
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(resposta.body.message).toContain(messages.httpCodes[200]);

@@ -2,14 +2,18 @@ import mongoose, { mongo } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const inventarioSchema = new mongoose.Schema({
-    setores: [
-        {
-            _id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "setores"
-            }
-        }
-    ],
+    // setores: [
+    //     {
+    //         _id: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: "setores"
+    //         }
+    //     }
+    // ],
+    campus: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "campus"
+    },
     responsavel: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "usuarios",

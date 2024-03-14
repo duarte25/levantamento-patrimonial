@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const setorSchema = new mongoose.Schema({
+    campus: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "campus",
+        required: true
+    },
     local: {
         type: String,
         unique: true,

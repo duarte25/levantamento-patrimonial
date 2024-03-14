@@ -8,6 +8,8 @@ export default class AuthController{
         const {email} = req.body;
 
         const userExist = await Usuario.findOne({ email });
+        
+        console.log(userExist);
 
         return res.status(200).json({
             
@@ -17,7 +19,8 @@ export default class AuthController{
                     nome: userExist.nome,
                     email: userExist.email,
                     user: userExist.user,
-                    ativo: userExist.ativo
+                    ativo: userExist.ativo,
+                    campus: userExist.campus
                 },
                 process.env.JWT_SECRET,
                 {expiresIn: process.env.JWT_EXPIREIN}
@@ -28,7 +31,8 @@ export default class AuthController{
                 nome: userExist.nome,
                 email: userExist.email,
                 user: userExist.user,
-                ativo: userExist.ativo
+                ativo: userExist.ativo,
+                campus: userExist.campus
             }   
         });
 

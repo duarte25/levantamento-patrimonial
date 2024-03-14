@@ -1,35 +1,66 @@
 import Inventario from "../models/Inventario.js";
 import messages from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
+import { jwtDecode } from "jwt-decode";
+import Setor from "../models/Setor.js";
 
 export default class InventarioController {
     static async pesquisarInventario(req, res) {
         try {
             const pagina = parseInt(req.query.pagina) || 1;
+            const token = req.headers.authorization;
+            const tokenDecoded = jwtDecode(token);
+            const campus = tokenDecoded.campus;
 
-            // Atributos esperados na requisição, validação foi feita no middleware antes de chegar aqui
             const {
-                setores,
                 responsavel,
-                auditores,
-                data_inicio,
-                data_fim
+                data_inicial_inicial: data_inicial_inicial,
+                data_inicial_final: data_final_inicial,
+                data_final_inicial: data_inicial_final,
+                data_final_final: data_final_final,    
             } = req.query;
 
-            const filtros = {};
+            const filtros = { campus };
+            let sort = { sigla: 1 };
 
-            if (setores) filtros.setores = setores;
+            // const idSetor = await Setor.find({ campus }).select("_id");
+            // const idsArray = idSetor.map(setor => setor._id);
+
             if (responsavel) filtros.responsavel = responsavel;
-            if (auditores) filtros.auditores = auditores;
+
+            if (data_inicial_inicial || data_final_inicial) {
+                filtros.data_inicial_reserva = {};
+                if (data_inicial_inicial) filtros.data_inicial_reserva.$gte = new Date(data_inicial_inicial);
+                if (data_final_inicial) {
+                    const dataFinal = new Date(data_final_inicial);
+                    dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
+                    filtros.data_inicial_reserva.$lte = dataFinal;
+                }
+    
+                sort = { data_inicial_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+            }
+    
+            if (data_inicial_final || data_final_final) {
+                filtros.data_final_reserva = {};
+                if (data_inicial_final) filtros.data_final_reserva.$gte = new Date(data_inicial_final);
+                if (data_final_final) {
+                    const dataFinal = new Date(data_final_final);
+                    dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
+                    filtros.data_final_reserva.$lte = dataFinal;
+                }
+    
+                sort = { data_final_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+            }
 
             const inventarios = await Inventario.paginate(
-                { ...filtros },
-                {
+                { campus: { $elemMatch: { _id:  campus } }, ...filtros },
+                { 
                     ...paginateOptions, ...{
-                        sort: { sigla: 1 },
+                        sort: sort,
                         page: pagina,
-                    },
-                });
+                    }       
+                } 
+            );
 
             inventarios.code = 200;
             inventarios.error = false;
@@ -94,7 +125,7 @@ export default class InventarioController {
             if (!inventario) {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Inventario não encontrado!"] });
             }
-            
+
             await Inventario.findByIdAndDelete(id);
             res.status(200).json({ data: inventario, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (err) {

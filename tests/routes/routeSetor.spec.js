@@ -6,6 +6,7 @@ import usuario from "../../src/models/Usuario.js";
 
 describe("Rotas de Setor", () => {
     const req = request(app);
+    let campusID;
     let setorID;
     let token;
 
@@ -26,12 +27,28 @@ describe("Rotas de Setor", () => {
         return token = resposta.body.token;
     });
 
+    // eslint-disable-next-line no-undef
+    async function obterCampus() {
+        const res = await req
+            .get("/campus")
+            .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200);
+
+        const setorSelecionado = res.body.data[0];
+        expect(setorSelecionado).toBeDefined();
+        expect(setorSelecionado._id).toBeDefined();
+
+        return campusID = setorSelecionado._id;
+    }
+
     // Teste de listar SETOR ---------------------------------------------------
     // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de setores", async () => {
         const dados = await req
             .get("/setores")
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -41,13 +58,17 @@ describe("Rotas de Setor", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um setor", async () => {
 
+        campusID = await obterCampus();
+
         const resposta = await req
             .post("/setores")
             .send({
+                campus: campusID,
                 local: "Garagem (VLH - BLOCO A)",
                 status: true
             })
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(201);
 
         expect(resposta.body.message).toContain(messages.httpCodes[201]);
@@ -61,7 +82,9 @@ describe("Rotas de Setor", () => {
         const dados = await req
             .patch(`/setores/${setorID}`)
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .send({
+                campus: campusID,
                 local: "Garagem (VLH - BLOCO B)",
                 status: true
             });
@@ -75,6 +98,7 @@ describe("Rotas de Setor", () => {
         const dados = await req
             .get(`/setores/${setorID}`)
             .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -86,6 +110,7 @@ describe("Rotas de Setor", () => {
         const resposta = await req
             .delete(`/setores/${setorID}`)
             .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
             .expect(200);
 
         expect(resposta.body.message).toContain(messages.httpCodes[200]);

@@ -39,6 +39,11 @@ const usuarioSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    campus: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "campus",
+        // O required aqui não está funcionando não sei pq, ele cracha o seed
     }
 },
     {
