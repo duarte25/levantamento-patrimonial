@@ -111,7 +111,8 @@ const messages = {
         invalidDateCurrent: "Data do inicio deve ser uma data atual ou passada!",
         invalidDateMonths: "A data final da vigência não pode ser um período maior que 12 meses após a data de início da vigência!",
         invalidDataNascimento: "Data de nascimento deve ser uma data passada e maior que 18!",
-        inventarioAndamento: "Inventario em andamento."
+        inventarioAndamento: "Inventario em andamento.",
+        itemCadastrado: "Esse Item já foi levantado."
     },
 
 

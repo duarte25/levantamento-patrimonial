@@ -28,10 +28,18 @@ class ValidateItem {
 
         val.body.inventario = inventario.toString();
 
-        console.log(val);
         const valuesEstado = ["Bem danificado", "Bem em condições de uso", "Bem inservível"];
         const valuesAtivo = ["Ativo", "Inativo", "Pendente"];
+        
+        const etiqueta = req.body.etiqueta;
 
+        const etiquetaUnica = await Item.find({etiqueta, inventario});
+        
+        console.log(etiquetaUnica);
+        if(etiquetaUnica.length != 0) {
+            return sendError(res, 422, messages.customValidation.itemCadastrado);
+        }
+        
         await val.validate("etiqueta", v.required(), v.toInt());
         await val.validate("nao_etiquetado", v.optional(), v.toBoolean());
         await val.validate("encontrado", v.optional(), v.toBoolean());
@@ -58,7 +66,8 @@ class ValidateItem {
         const valuesEstado = ["Bem danificado", "Bem em condições de uso", "Bem inservível"];
         const valuesAtivo = ["Ativo", "Inativo", "Pendente"];
 
-        await val.validate("etiqueta", v.optional(), v.toInt(), v.unique({ model: Item, query: { etiqueta: req.body.item } }));
+        // ** TEM QUE TER UMA VALIDAÇÂO PARA NÂO MODIFICAR ETIQUETA OU SE MODIFICAR ELA PROCURAR SE JÁ EXISTE E SE FOI A MESMA ALGO ASSIM
+        await val.validate("etiqueta", v.optional(), v.toInt(), v.unique({ model: Item, query: { etiqueta: req.body.etiqueta } }));
         await val.validate("nao_etiquetado", v.optional(), v.toBoolean());
         await val.validate("encontrado", v.optional(), v.toBoolean());
         await val.validate("nome", v.optional());
