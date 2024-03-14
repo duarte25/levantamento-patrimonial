@@ -1,25 +1,5 @@
 export const setorPaths = {
     "/buscarSetores": {
-      get: {
-        tags: ["Setores"],
-        summary: "Listar todos os setores",
-        description: "Retorna uma lista de todos os setores cadastrados.",
-        responses: {
-          200: {
-            description: "Retorna os setores cadastrados.",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Setor",
-                },
-              },
-            },
-          },
-          500: {
-            description: "Erro interno no servidor.",
-          },
-        },
-      },
       post: {
         tags: ["Setores"],
         summary: "Cadastrar um novo setor",
@@ -51,6 +31,27 @@ export const setorPaths = {
         },
       },
     },
+      get: {
+        tags: ["Setores"],
+        summary: "Listar todos os setores",
+        description: "Retorna uma lista de todos os setores cadastrados.",
+        responses: {
+          200: {
+            description: "Retorna os setores cadastrados.",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Setor",
+                },
+              },
+            },
+          },
+          500: {
+            description: "Erro interno no servidor.",
+          },
+        },
+      },
+      
     "/setores/{id}": {
       get: {
         tags: ["Setores"],

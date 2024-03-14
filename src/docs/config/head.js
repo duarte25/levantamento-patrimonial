@@ -4,6 +4,9 @@ import loginPaths from "../paths/loginPaths.js";
 import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
 import { itensPaths } from "../paths/itensPath.js";
 import { itensSchemas } from "../schemas/itensSchema.js";
+import { campusSchema } from "../schemas/campusSchema.js";
+import { setorSchema } from "../schemas/setorSchema.js";
+import { setorPaths } from "../paths/setorPaths.js";
 
 
 const swaggerOptions = {
@@ -26,11 +29,11 @@ const swaggerOptions = {
     servers: [
       {
         url: `http://localhost:${process.env.PORT}`,
-        description: `API em desenvolvimento`,
+        description: "API em desenvolvimento",
       },
       {
         url: `http://localhost:${process.env.PORT}`,
-        description: `API em produção`,
+        description: "API em produção",
       }
     ],
     tags: [
@@ -64,6 +67,7 @@ const swaggerOptions = {
       ...loginPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
+      ...setorPaths,
     },
     components: {
       securitySchemes: {
@@ -77,6 +81,7 @@ const swaggerOptions = {
         ...imageSchemas,
         ...itensSchemas,
         ...campusSchema,
+        ...setorSchema,
       },
     },
   },
