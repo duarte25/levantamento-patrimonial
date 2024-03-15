@@ -15,19 +15,19 @@ class ValidateInventario {
         const token = req.headers.authorization;
         const tokenDecoded = jwtDecode(token);
         const campus = tokenDecoded.campus;
-        
+
         // Inseri em val.body o id do usuario e o campus
         val.body.responsavel = tokenDecoded.id;
         val.body.campus = campus;
 
         console.log(val);
-        const inventario = await Inventario.distinct("_id",{
+        const inventario = await Inventario.distinct("_id", {
             $and: [
-                { campus: campus } ,
+                { campus: campus },
                 { data_fim: { $exists: false } }
             ]
         });
-        
+
         if (inventario != 0) {
             return sendError(res, 422, messages.customValidation.inventarioAndamento);
         }
@@ -53,32 +53,42 @@ class ValidateInventario {
     // Crie uma rota PATCH para alterar amigo
     static async validateAlterar(req, res, next) {
         // Setores, responsavel, auditores, data_inicio, data_fim data fim apenas ao finalizar que seria editado
-
         // * INCLUIR NO CODIGO REGRA DE NEGOCIO PARA DATA QUE A DATA FINAL NUNCA PODERA SER MENOR QUE DATA INICIO
-        const val = new Validator(req.body);
+        let val = new Validator(req.params);
 
-        await val.validate("setores", v.optional());
+        // Validar id
+        await val.validate("id",
+            v.required(),
+            v.mongooseID(),
+            v.toMongooseObj({ model: Inventario, query: { _id: req.params.id } })
+        );
 
-        for (const setor of val.body.setores) {
-            const valorID = setor._id;
+        // Erro 404 quando id não existe
+        if (val.anyErrors()) return sendError(res, 404, val.getErrors());
 
-            // CORRIGIDO O v.mongooseID = coloque o valor dessa forma que ele aparecera lá 1-1
-            await val.validate("setores", v.mongooseID({ valorMongo: valorID }), v.exists({ model: Setor, query: { _id: setor } }));
-        }
+        const inventario = val.getValue("id");
+        val = new Validator(req.body);
 
         await val.validate("responsavel", v.optional(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
         await val.validate("auditores", v.optional());
 
-        for (const auditor of val.body.auditores) {
-            const valorID = auditor._id;
+        if (req.body.auditores) {
+            for (const auditor of val.body.auditores) {
+                const valorID = auditor._id;
 
-            await val.validate("auditores", v.mongooseID({ valorMongo: valorID }), v.exists({ model: Usuario, query: { _id: valorID } }));
+                await val.validate("auditores", v.mongooseID({ valorMongo: valorID }), v.exists({ model: Usuario, query: { _id: valorID } }));
+            }
         }
 
         await val.validate("data_inicio", v.optional(), v.toUTCDate());
         await val.validate("data_fim", v.optional(), v.toUTCDate());
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
+
+        req.body = val.getSanitizedBody();
+        req.validateResult = {
+            inventario: inventario,
+        };
 
         return next();
     }

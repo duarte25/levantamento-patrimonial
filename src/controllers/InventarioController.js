@@ -77,7 +77,7 @@ export default class InventarioController {
             let val = new Validator(req.params);
             await val.validate("id", v.required(), v.mongooseID());
             if (val.anyErrors()) return sendError(res, 400, val.getErrors());
-        
+
             // DEFINIR OQ O MOBILE NECESSITA E SOMENTE PUXAR ISSO PLEASE
             const inventario = await Inventario.findById(req.params.id);
 
@@ -95,31 +95,30 @@ export default class InventarioController {
         try {
             const inventario = new Inventario(req.body);
             const savedInventario = await inventario.save();
-            
+
             return sendResponse(res, 201, { data: savedInventario });
         } catch (err) {
             return sendError(res, 500, messages.httpCodes[500]);
         }
     }
-    
+
     static atualizarInventario = async (req, res) => {
         try {
-            // PEGAR DADOS VINDO DO VALIDATION DIMINUIR CODIGO PLEASE
-            const { id } = req.params;
-            let inventario = await Inventario.findById(id);
+            const inventario = req.validateResult.inventario;
 
-            if (!inventario) {
-                return sendError(res, 404);
+            // Só atualiza os campos que foram enviados
+            for (let key in req.body) {
+                inventario[key] = req.body[key];
             }
 
-            await Inventario.findByIdAndUpdate(id, req.body, { new: true });
+            await inventario.save();
             return sendResponse(res, 200, { data: inventario });
         }
         catch (err) {
             return sendError(res, 500, messages.httpCodes[500]);
         }
     };
-    
+
     static async deletarInventario(req, res) {
         try {
             let val = new Validator(req.params);
