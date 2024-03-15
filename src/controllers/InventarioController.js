@@ -3,7 +3,6 @@ import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
 import { jwtDecode } from "jwt-decode";
 import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
-import Setor from "../models/Setor.js";
 
 export default class InventarioController {
     static async pesquisarInventario(req, res) {
@@ -69,8 +68,7 @@ export default class InventarioController {
 
             res.status(200).json({ ...inventarios, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
@@ -93,6 +91,17 @@ export default class InventarioController {
         }
     }
 
+    static async criarInventario(req, res) {
+        try {
+            const inventario = new Inventario(req.body);
+            const savedInventario = await inventario.save();
+            
+            return sendResponse(res, 201, { data: savedInventario });
+        } catch (err) {
+            return sendError(res, 500, messages.httpCodes[500]);
+        }
+    }
+    
     static atualizarInventario = async (req, res) => {
         try {
             // PEGAR DADOS VINDO DO VALIDATION DIMINUIR CODIGO PLEASE
@@ -110,18 +119,7 @@ export default class InventarioController {
             return sendError(res, 500, messages.httpCodes[500]);
         }
     };
-
-    static async criarInventario(req, res) {
-        try {
-            const inventario = new Inventario(req.body);
-            const savedInventario = await inventario.save();
-
-            return sendResponse(res, 201, { data: savedInventario });
-        } catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
-    }
-
+    
     static async deletarInventario(req, res) {
         try {
             let val = new Validator(req.params);
