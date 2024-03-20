@@ -121,19 +121,18 @@ export default class InventarioController {
 
     static async deletarInventario(req, res) {
         try {
-            let val = new Validator(req.params);
-            await val.validate("id", v.required(), v.mongooseID());
-            if (val.anyErrors()) return sendError(res, 400, val.getErrors());
-
-            const inventario = await Inventario.findByIdAndDelete(req.params.id);
+            const { id } = req.params;
+            const inventario = await Inventario.findById(id);
 
             if (!inventario) {
-                return sendError(res, 404);
+                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Inventario não encontrado!"] });
             }
 
-            return sendResponse(res, 200);
+            await Inventario.findByIdAndDelete(id);
+            res.status(200).json({ data: inventario, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
+            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
     }
+
 }

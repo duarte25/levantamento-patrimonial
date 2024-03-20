@@ -73,7 +73,6 @@ export default class CampusController {
 
             return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200], campus });
         } catch (error) {
-            console.log(error);
             return sendError(res, 500, messages.httpCodes[500]);
         }
     }
@@ -89,7 +88,6 @@ export default class CampusController {
 
             return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200] });
         } catch (error) {
-            console.log(error);
             return sendError(res, 500, messages.httpCodes[500]);
         }
     }

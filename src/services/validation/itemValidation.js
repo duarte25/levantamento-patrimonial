@@ -35,7 +35,6 @@ class ValidateItem {
 
         const etiquetaUnica = await Item.find({ etiqueta, inventario });
 
-        console.log(etiquetaUnica);
         if (etiquetaUnica.length != 0) {
             return sendError(res, 422, messages.customValidation.itemCadastrado);
         }
