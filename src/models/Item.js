@@ -65,7 +65,7 @@ const itemSchema = new mongoose.Schema({
 );
 
 // O item pode ser criado apenas uma uma vez em cada inventario
-// itemSchema.index({ inventario: 1, etiqueta: 1 }, { unique: true });
+itemSchema.index({ inventario: 1, etiqueta: 1 }, { unique: true });
 
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
 itemSchema.plugin(paginate);

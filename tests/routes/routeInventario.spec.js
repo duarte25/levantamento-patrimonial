@@ -85,15 +85,6 @@ describe("Rotas de Inventario", () => {
         const resposta = await req
             .post("/inventarios")
             .send({
-                setores: [
-                    {
-                        _id: setorID[0]
-                    },
-                    {
-                        _id: setorID[1]
-                    }
-                ],
-                responsavel: usuarioID[0],
                 auditores: [
                     {
                         _id: usuarioID[1]
@@ -121,15 +112,6 @@ describe("Rotas de Inventario", () => {
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${token}`)
             .send({
-                setores: [
-                    {
-                        _id: setorID[0]
-                    },
-                    {
-                        _id: setorID[1]
-                    }
-                ],
-                responsavel: usuarioID[0],
                 auditores: [
                     {
                         _id: usuarioID[1]

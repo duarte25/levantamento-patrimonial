@@ -84,13 +84,37 @@ describe("Rotas de Item", () => {
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
     });
 
+     // Teste de criar INVENTARIO ---------------------------------------------------
+    // eslint-disable-next-line no-undef
+    it("Deve cadastrar um inventario", async () => {
+
+        setorID = await obterSetor();
+        usuarioID = await obterUsuario();
+
+        const resposta = await req
+            .post("/inventarios")
+            .send({
+                auditores: [
+                    {
+                        _id: usuarioID
+                    }
+                ],
+                data_inicio: "2024-01-02"
+            })
+            .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(201);
+
+        expect(resposta.body.message).toContain(messages.httpCodes[201]);
+
+        inventarioID = resposta.body.data._id;
+    });
+
     // Teste de Criar ITEM ---------------------------------------------------
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um item", async () => {
 
-        setorID = await obterSetor();
         inventarioID = await obterInventario();
-        usuarioID = await obterUsuario();
 
         const resposta = await req
             .post("/itens")
@@ -152,6 +176,18 @@ describe("Rotas de Item", () => {
             .expect(200);
 
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
+    });
+
+    // Teste de deletar INVENTARIO ---------------------------------------------------
+    // eslint-disable-next-line no-undef
+    it("Deve deletar um inventario", async () => {
+        const resposta = await req
+            .delete(`/inventarios/${inventarioID}`)
+            .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200);
+
+        expect(resposta.body.message).toContain(messages.httpCodes[200]);
     });
 
     // Teste de Deletar ITEM ---------------------------------------------------
