@@ -5,12 +5,10 @@ import app from "../../src/app.js";
 import messages from "../../src/utils/mensagens.js";
 import faker from "faker-br";
 
-
 const exemplo_campus = {
     nome: faker.name.findName(),
     cidade: faker.address.city(),
     ativo: true
-
 };
 
 describe("Campus", () => {
@@ -54,8 +52,7 @@ describe("Campus", () => {
             .expect(201);
 
         expect(resposta.body.message).toContain(messages.httpCodes[201]);
-
-        campusID = resposta.body.campus._id;
+        campusID = resposta.body.data._id;
     });
 
     it("Deve deletar um campus", async () => {
@@ -69,5 +66,3 @@ describe("Campus", () => {
     });
 
 });
-
-

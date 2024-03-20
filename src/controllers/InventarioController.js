@@ -1,8 +1,8 @@
 import Inventario from "../models/Inventario.js";
-import messages from "../utils/mensagens.js";
+import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
 import { jwtDecode } from "jwt-decode";
-import Setor from "../models/Setor.js";
+import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
 
 export default class InventarioController {
     static async pesquisarInventario(req, res) {
@@ -17,7 +17,7 @@ export default class InventarioController {
                 data_inicial_inicial: data_inicial_inicial,
                 data_inicial_final: data_final_inicial,
                 data_final_inicial: data_inicial_final,
-                data_final_final: data_final_final,    
+                data_final_final: data_final_final,
             } = req.query;
 
             const filtros = { campus };
@@ -36,10 +36,10 @@ export default class InventarioController {
                     dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
                     filtros.data_inicial_reserva.$lte = dataFinal;
                 }
-    
+
                 sort = { data_inicial_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
             }
-    
+
             if (data_inicial_final || data_final_final) {
                 filtros.data_final_reserva = {};
                 if (data_inicial_final) filtros.data_final_reserva.$gte = new Date(data_inicial_final);
@@ -48,18 +48,18 @@ export default class InventarioController {
                     dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
                     filtros.data_final_reserva.$lte = dataFinal;
                 }
-    
+
                 sort = { data_final_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
             }
 
             const inventarios = await Inventario.paginate(
-                { campus: { $elemMatch: { _id:  campus } }, ...filtros },
-                { 
+                { campus: { $elemMatch: { _id: campus } }, ...filtros },
+                {
                     ...paginateOptions, ...{
                         sort: sort,
                         page: pagina,
-                    }       
-                } 
+                    }
+                }
             );
 
             inventarios.code = 200;
@@ -68,54 +68,56 @@ export default class InventarioController {
 
             res.status(200).json({ ...inventarios, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
     static async listarInventarioID(req, res) {
         try {
-            const { id } = req.params;
-            const inventario = await Inventario.findById(id);
+            let val = new Validator(req.params);
+            await val.validate("id", v.required(), v.mongooseID());
+            if (val.anyErrors()) return sendError(res, 400, val.getErrors());
+
+            // DEFINIR OQ O MOBILE NECESSITA E SOMENTE PUXAR ISSO PLEASE
+            const inventario = await Inventario.findById(req.params.id);
 
             if (!inventario) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Inventario não encontrada!"] });
+                return sendError(res, 404);
             }
 
-            res.status(200).json({ inventario, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+            return sendResponse(res, 200, { data: inventario });
         } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
-
-    static atualizarInventario = async (req, res) => {
-        try {
-            const { id } = req.params;
-            let inventario = await Inventario.findById(id);
-            if (!inventario) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Inventario não encontrado!"] });
-            }
-            inventario = await Inventario.findByIdAndUpdate(id, req.body, { new: true });
-            return res.status(200).json({ data: [], error: false, code: 200, message: messages.httpCodes[200], errors: [] });
-        }
-        catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
-        }
-    };
 
     static async criarInventario(req, res) {
         try {
             const inventario = new Inventario(req.body);
             const savedInventario = await inventario.save();
 
-
-            return res.status(201).json({
-                data: savedInventario, error: false, code: 201, message: messages.httpCodes[201], errors: []
-            });
+            return sendResponse(res, 201, { data: savedInventario });
         } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
+
+    static atualizarInventario = async (req, res) => {
+        try {
+            const inventario = req.validateResult.inventario;
+
+            // Só atualiza os campos que foram enviados
+            for (let key in req.body) {
+                inventario[key] = req.body[key];
+            }
+
+            await inventario.save();
+            return sendResponse(res, 200, { data: inventario });
+        }
+        catch (err) {
+            return sendError(res, 500, messages.httpCodes[500]);
+        }
+    };
 
     static async deletarInventario(req, res) {
         try {
@@ -132,4 +134,5 @@ export default class InventarioController {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
     }
+
 }
