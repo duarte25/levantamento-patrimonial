@@ -1,19 +1,45 @@
-export const imagePaths = {
-  "/uploads": {
+import messages from "../../utils/mensagens.js";
+
+const imagePath = {
+  "/imagens": {
+    get: {
+      tags: ["Imagens"],
+      summary: "Lista todas as imagens",
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Imagem"
+              },
+            },
+          },
+        },
+        401: {
+          description: messages.httpCodes[401],
+        },
+        403: {
+          description: messages.httpCodes[403],
+        },
+        500: {
+          description: messages.httpCodes[500],
+        },
+      },
+    },
     post: {
       tags: ["Imagens"],
-      summary: "Envia um arquivo tipo imagem (.png, .jpg, .jpeg)",
-      description:
-        "Faça o upload de um arquivo de imagem no formato .png, .jpg ou .jpeg.",
+      summary: "Envia uma imagem",
       requestBody: {
-        required: true,
         content: {
           "multipart/form-data": {
             schema: {
               type: "object",
               properties: {
-                file: { type: "string", format: "binary" },
-                nome: { type: "string", example: "Imagem cadeira" },
+                image: {
+                  type: "string",
+                  format: "binary",
+                },
               },
             },
           },
@@ -21,71 +47,106 @@ export const imagePaths = {
       },
       responses: {
         201: {
-          description: "Imagem salva com sucesso!",
+          description: messages.httpCodes[201],
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Imagem",
+                $ref: "#/components/schemas/Imagem"
               },
             },
           },
         },
+        400: {
+          description: messages.httpCodes[400],
+        },
+        401: {
+          description: messages.httpCodes[401],
+        },
+        403: {
+          description: messages.httpCodes[403],
+        },
         500: {
-          description: "Erro interno Servidor",
+          description: messages.httpCodes[500],
         },
       },
     },
   },
-  "/images": {
-    get: {
-      tags: ["Imagens"],
-      summary: "Lista todas as imagens",
-      description: "Retorna uma lista de todas as imagens salvas no servidor.",
-      responses: {
-        200: {
-          description: "Retorna a imagens salvas no servidor.",
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/Imagem",
-              },
-            },
-          },
-        },
-        500: {
-          description: "Erro interno no servidor.",
-        },
-      },
-    },
-  },
-  "/remover/{id}": {
+  "/imagens/{id}": {
     delete: {
       tags: ["Imagens"],
-      summary: "Deleta Imagem do Servidor por Id",
-      description:
-        "Deleta a imagem selecionada pela escolha do Id informado nos parametros da requisição.",
+      summary: "Deleta uma imagem",
       parameters: [
         {
-          in: "path",
           name: "id",
+          in: "path",
+          required: true,
+          description: "Id da imagem que vai ser deletada",
           schema: {
             type: "string",
           },
-          description: "ID da Imagem a ser deletada",
         },
       ],
       responses: {
         200: {
-          description: "Imagem removida com sucesso",
+          description: messages.httpCodes[200],
+        },
+        401: {
+          description: messages.httpCodes[401],
+        },
+        403: {
+          description: messages.httpCodes[403],
         },
         404: {
-          description: "Imagem não encontrada",
+          description: messages.httpCodes[404],
         },
         500: {
-          description: "Erro interno do servidor",
+          description: messages.httpCodes[500],
+        },
+      },
+    },
+    get: {
+      tags: ["Imagens"],
+      summary: "Recupera uma imagem pelo ID",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          description: "Id da imagem que vai ser exibida",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
+          content: {
+            image: {
+              schema: {
+                type: "string",
+                format: "binary",
+              },
+            },
+          },
+        },
+        401: {
+          description: messages.httpCodes[401],
+        },
+        403: {
+          description: messages.httpCodes[403],
+        },
+        404: {
+          description: messages.httpCodes[404],
+        },
+        500: {
+          description: messages.httpCodes[500],
         },
       },
     },
   },
-};
+}
 
+
+
+export default imagePath;
