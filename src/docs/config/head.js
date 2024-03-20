@@ -1,4 +1,4 @@
-import { imagePaths } from "../paths/imagePaths.js";
+import imagePaths from "../paths/imagePaths.js";
 import { imageSchemas } from "../schemas/imageSchema.js";
 import loginPaths from "../paths/loginPaths.js";
 import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
@@ -7,7 +7,6 @@ import { itensSchemas } from "../schemas/itensSchema.js";
 import { campusSchema } from "../schemas/campusSchema.js";
 import { setorSchema } from "../schemas/setorSchema.js";
 import { setorPaths } from "../paths/setorPaths.js";
-
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -35,6 +34,26 @@ const swaggerOptions = {
         url: `http://localhost:${process.env.PORT}`,
         description: "API em produção",
       }
+    ],
+    components: {
+      securitySchemes: {
+        jwtAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+      schemas: {
+        ...imageSchemas,
+        ...itensSchemas,
+        ...campusSchema,
+        ...setorSchema,
+      },
+    },
+    security: [
+      {
+        jwtAuth: [],
+      },
     ],
     tags: [
       {
@@ -68,21 +87,6 @@ const swaggerOptions = {
       ...recuperarSenhaPaths,
       ...itensPaths,
       ...setorPaths,
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-      schemas: {
-        ...imageSchemas,
-        ...itensSchemas,
-        ...campusSchema,
-        ...setorSchema,
-      },
     },
   },
   apis: ["./src/routes/*.js"],
