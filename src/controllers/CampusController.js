@@ -1,6 +1,7 @@
 import Campus from "../models/Campus.js";
-import messages from "../utils/mensagens.js";
+import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
+import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
 
 export default class CampusController {
     static async pesquisarCampus(req, res) {
@@ -26,26 +27,26 @@ export default class CampusController {
             campus.errors = [];
 
             res.status(200).json({ ...campus, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
-
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+        } catch (err) {
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
     static async listarCampusID(req, res) {
         try {
-            const { id } = req.params;
-            const campus = await Campus.findById(id);
+            let val = new Validator(req.params);
+            await val.validate("id", v.required(), v.mongooseID());
+            if (val.anyErrors()) return sendError(res, 400, val.getErrors());
+
+            const campus = await Campus.findById(req.params.id);
 
             if (!campus) {
-                return res.status(404).json({ error: true, code: 404, message: "Campus não encontrado" });
+                return sendError(res, 404);
             }
 
-            return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200], campus });
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendResponse(res, 200, { data: campus });
+        } catch (err) {
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
@@ -54,10 +55,9 @@ export default class CampusController {
             const { nome, cidade, ativo } = req.body;
             const campus = await Campus.create({ nome, cidade, ativo });
 
-            return res.status(201).json({ error: false, code: 201, message: messages.httpCodes[201], campus });
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendResponse(res, 201, { data: campus });
+        } catch (err) {
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
@@ -73,8 +73,7 @@ export default class CampusController {
 
             return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200], campus });
         } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
@@ -89,8 +88,7 @@ export default class CampusController {
 
             return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200] });
         } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 }
