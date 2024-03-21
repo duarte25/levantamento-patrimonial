@@ -6,7 +6,7 @@ const itemSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
-    nao_tiquetado: {
+    nao_etiquetado: {
         type: Boolean,
         default: false
     },

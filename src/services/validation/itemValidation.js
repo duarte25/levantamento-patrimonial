@@ -28,7 +28,7 @@ class ValidateItem {
 
         val.body.inventario = inventario.toString();
 
-        console.log(val);
+        // console.log(val);
         const valuesEstado = ["Bem danificado", "Bem em condições de uso", "Bem inservível"];
         const valuesAtivo = ["Ativo", "Inativo", "Pendente"];
 

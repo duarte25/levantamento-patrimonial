@@ -11,7 +11,7 @@ export default class ItemController {
             // Atributos esperados na requisição, validação foi feita no middleware antes de chegar aqui
             const {
                 etiqueta,
-                nao_tiquetado,
+                nao_etiquetado,
                 encontrado,
                 nome,
                 estado,
@@ -26,7 +26,7 @@ export default class ItemController {
             const filtros = {};
 
             if (etiqueta) filtros.etiqueta = etiqueta;
-            if (nao_tiquetado) filtros.nao_tiquetado = nao_tiquetado;
+            if (nao_etiquetado) filtros.nao_etiquetado = nao_etiquetado;
             if (encontrado) filtros.encontrado = encontrado;
             if (nome) filtros.nome = { $regex: new RegExp(nome, "i") };
             if (estado) filtros.estado = estado;
