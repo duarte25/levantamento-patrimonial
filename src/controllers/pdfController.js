@@ -9,7 +9,7 @@ export default class PdfController {
 
             const htmlContent = tabela;
             const pdf = await pdfConfig({ htmlContent });
-            console.log(tabela)
+            
 
             const fileName = uuidv4();
 

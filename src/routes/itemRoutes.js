@@ -5,7 +5,7 @@ import { AuthMiddleware } from "../middlewares/AuthMiddleware.js";
 
 const router = express.Router();
 
-router.get("/itens", AuthMiddleware, ItemController.pesquisarItem);
+router.get("/itens", ItemController.pesquisarItem);
 router.get("/itens/:id", AuthMiddleware, ItemController.listarItemID);
 router.patch("/itens/:id", AuthMiddleware, ValidateItem.validateAlterar, ItemController.atualizarItem);
 router.post("/itens", AuthMiddleware, ValidateItem.validateCriar, ItemController.criarItem);

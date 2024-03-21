@@ -1,5 +1,5 @@
 export const itensPaths = {
-  "/cadastrarItens": {
+  "/itens": {
     post: {
       tags: ["Itens"],
       summary: "Cadastra um item no Inventário",
@@ -54,7 +54,7 @@ export const itensPaths = {
       },
     },
   },
-  "/alterarItnens/{id}": {
+  "/itens/{id}": {
     patch: {
       tags: ["Itens"],
       summary: "Atualiza um item no Inventário",
@@ -93,7 +93,6 @@ export const itensPaths = {
       },
     },
   },
-  "/excluirItens/{id}": {
     delete: {
       tags: ["Itens"],
       summary: "Remove um item do Inventário",
@@ -121,5 +120,5 @@ export const itensPaths = {
         },
       },
     },
-  },
+  
 };
