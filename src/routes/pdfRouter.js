@@ -4,6 +4,6 @@ import { AuthMiddleware } from '../middlewares/AuthMiddleware.js';
 
 const router = express.Router();
 
-router.get('/relatorio', PdfController.gerarPdf);
+router.get('/relatorio/itens', PdfController.gerarPdf);
 
 export default router;
