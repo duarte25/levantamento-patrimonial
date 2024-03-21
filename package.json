@@ -35,7 +35,6 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.9",
     "pdfmake": "^0.2.10",
-    "puppeteer": "^22.6.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",

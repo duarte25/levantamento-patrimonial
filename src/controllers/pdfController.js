@@ -24,7 +24,7 @@ export default class PdfController {
             // Criar objeto de filtro com os parâmetros da consulta
             const filtro = {};
             if (etiqueta) filtro.etiqueta = etiqueta;
-            if (nao_tiquetado) filtro.nao_tiquetado = nao_tiquetado;
+            if (nao_etiquetado) filtro.nao_etiquetado = nao_etiquetado;
             if (encontrado) filtro.encontrado = encontrado;
             if (nome) filtro.nome = new RegExp(nome, "i");
             if (estado) filtro.estado = estado;
@@ -61,7 +61,7 @@ export default class PdfController {
                 rows.push(item.ocioso = item.ocioso ? 'Sim' : 'Não');
                 rows.push(item.setor.local);
                 rows.push(item.encontrado = item.encontrado ? 'Sim' : 'Não');
-                rows.push(item.nao_tiquetado = item.nao_tiquetado ? 'Sim' : 'Não');
+                rows.push(item.nao_etiquetado = item.nao_etiquetado ? 'Sim' : 'Não');
                 body.push(rows);
             }
 
@@ -106,7 +106,7 @@ export default class PdfController {
                             { text: ocioso ? `Ocioso: ${ocioso}` : '' },
                             { text: setor ? `Setor: ${setor}` : '' },
                             { text: encontrado ? `Encontrado: ${encontrado}` : '' },
-                            { text: nao_tiquetado ? `Não Etiquetado: ${nao_tiquetado}` : '' }
+                            { text: nao_etiquetado ? `Não Etiquetado: ${nao_etiquetado}` : '' }
                         ],
 
                         margin: [0, 0, 0, 20],
