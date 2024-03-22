@@ -9,7 +9,7 @@ export default class PdfController {
             // Extrair parâmetros da consulta
             const {
                 etiqueta,
-                nao_tiquetado,
+                nao_etiquetado,
                 encontrado,
                 nome,
                 estado,
@@ -151,17 +151,17 @@ export default class PdfController {
             };
 
             const pdfDoc = printer.createPdfKitDocument(docDefinition);
-            res.setHeader('Content-Disposition', 'attachment; filename="relatorio-itens.pdf"');
-            pdfDoc.pipe(res);
-            // const chunks = [];
-            // pdfDoc.on("data", (chunk) => {
-            //     chunks.push(chunk);
-            // });
+            // res.setHeader('Content-Disposition', 'attachment; filename="relatorio-itens.pdf"');
+            // pdfDoc.pipe(res);
+            const chunks = [];
+            pdfDoc.on("data", (chunk) => {
+                chunks.push(chunk);
+            });
             pdfDoc.end();
-            // pdfDoc.on("end", () => {
-            //     const result = Buffer.concat(chunks);
-            //     res.end(result);
-            // });
+            pdfDoc.on("end", () => {
+                const result = Buffer.concat(chunks);
+                res.end(result);
+            });
         } catch (error) {
             console.error('Erro ao gerar PDF:', error);
             res.status(500).send(messages.httpCodes[500]);
