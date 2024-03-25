@@ -5,6 +5,7 @@ import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
 import { itensPaths } from "../paths/itensPath.js";
 import { itensSchemas } from "../schemas/itensSchema.js";
 import { campusSchema } from "../schemas/campusSchema.js";
+import { campusPaths } from "../paths/campusPaths.js";
 import { setorSchema } from "../schemas/setorSchema.js";
 import { setorPaths } from "../paths/setorPaths.js";
 
@@ -86,7 +87,9 @@ const swaggerOptions = {
       ...loginPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
+      ...campusPaths,
       ...setorPaths,
+
     },
   },
   apis: ["./src/routes/*.js"],
