@@ -81,14 +81,18 @@ const swaggerOptions = {
         name: "Setores",
         description: "Setores do inventário",
       },
+      {
+        name: "Campus",
+        description: "Campus do usuário"
+      },
     ],
     paths: {
       ...imagePaths,
       ...loginPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
-      ...campusPaths,
       ...setorPaths,
+      ...campusPaths,
 
     },
   },
