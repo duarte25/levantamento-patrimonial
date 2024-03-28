@@ -1,9 +1,34 @@
+
+import messages from "../../utils/mensagens.js";
+
 export const itensPaths = {
-  "/cadastrarItens": {
+  "/itens": {
+    get: {
+      tags: ["Itens"],
+      summary: "Lista todos os itens",
+      description:
+        "Retorna uma lista de todos os itens cadastrados no inventário.",
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Itens",
+              }
+            }
+          }
+        },
+        500: {
+          description: messages.httpCodes[500],
+        }
+      }
+    },
+
     post: {
       tags: ["Itens"],
-      summary: "Cadastra um item no Inventário",
-      description: "Faça o cadastro de um item no inventário.",
+      summary: "Cadastrar Item",
+      description: "Cadastra um novo item no inventário.",
       requestBody: {
         required: true,
         content: {
@@ -16,55 +41,33 @@ export const itensPaths = {
       },
       responses: {
         201: {
-          description: "Item cadastrado com sucesso!",
+          description: messages.httpCodes[201],
           content: {
             "application/json": {
               schema: {
                 $ref: "#/components/schemas/Itens",
-              },
-            },
-          },
+              }
+            }
+          }
         },
         500: {
-          description: "Erro interno no servidor",
-        },
-      },
-    },
+          description: messages.httpCodes[500],
+        }
+      }
+    }
   },
-  "/itens": {
-    get: {
-      tags: ["Itens"],
-      summary: "Lista todos os itens",
-      description:
-        "Retorna uma lista de todos os itens cadastrados no inventário.",
-      responses: {
-        200: {
-          description: "Retorna os itens cadastrados no inventário.",
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/Itens",
-              },
-            },
-          },
-        },
-        500: {
-          description: "Erro interno no servidor.",
-        },
-      },
-    },
-  },
-  "/alterarItnens/{id}": {
+  
+  "/Itens/{id}": {
     patch: {
       tags: ["Itens"],
-      summary: "Atualiza um item no Inventário",
-      description: "Atualize um item no inventário.",
+      summary: "Atualizar Item",
+      description: "Atualiza um item no inventário.",
       parameters: [
         {
-          in: "path",
           name: "id",
-          required: true,
+          in: "path",
           description: "ID do item",
+          required: true,
           schema: {
             type: "string",
           },
@@ -82,44 +85,47 @@ export const itensPaths = {
       },
       responses: {
         200: {
-          description: "Item atualizado com sucesso!",
-        },
-        404: {
-          description: "Item não encontrado!",
+          description: messages.httpCodes[200],
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Itens"
+              }
+            }
+          }
         },
         500: {
-          description: "Erro interno no servidor.",
-        },
-      },
+          description: messages.httpCodes[500],
+        }
+      }
     },
-  },
-  "/excluirItens/{id}": {
+
     delete: {
       tags: ["Itens"],
-      summary: "Remove um item do Inventário",
-      description: "Remova um item do inventário.",
+      summary: "Deletar Item",
+      description: "Deleta um item do inventário.",
       parameters: [
         {
-          in: "path",
           name: "id",
-          required: true,
+          in: "path",
           description: "ID do item",
+          required: true,
           schema: {
             type: "string",
           },
         },
       ],
       responses: {
-        200: {
-          description: "Item removido com sucesso!",
+        204: {
+          description: messages.httpCodes[204]
         },
         404: {
-          description: "Item não encontrado!",
+          description: messages.httpCodes[404]
         },
         500: {
-          description: "Erro interno no servidor.",
-        },
-      },
-    },
-  },
+          description: messages.httpCodes[500],
+        }
+      }
+    }
+  }
 };
