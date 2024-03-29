@@ -8,6 +8,8 @@ import { campusSchema } from "../schemas/campusSchema.js";
 import { campusPaths } from "../paths/campusPaths.js";
 import { setorSchema } from "../schemas/setorSchema.js";
 import { setorPaths } from "../paths/setorPaths.js";
+// import { inventarioSchemas } from "../schemas/inventarioSchema.js"
+import { inventarioPaths } from "../paths/inventarioPaths.js";
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -47,6 +49,7 @@ const swaggerOptions = {
       schemas: {
         ...imageSchemas,
         ...itensSchemas,
+        // ...inventarioSchemas,
         ...campusSchema,
         ...setorSchema,
       },
@@ -77,6 +80,10 @@ const swaggerOptions = {
         name: "Itens",
         description: "Itens do inventário",
       },
+      { 
+        name: "Inventários",
+        description: "Invetários do campus"
+      },
       {
         name: "Setores",
         description: "Setores do inventário",
@@ -91,6 +98,7 @@ const swaggerOptions = {
       ...loginPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
+      ...inventarioPaths,
       ...setorPaths,
       ...campusPaths,
 
