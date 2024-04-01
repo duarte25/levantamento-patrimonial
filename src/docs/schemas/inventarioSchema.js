@@ -1,28 +1,16 @@
 export const inventarioSchema = {
-  inventario: {
+  Inventario: {
     type: "object",
     properties: {
-      campus: {
-        type: "string",
-        example: "6605ad8fcd03e0e45692c91c"
-      },
-      responsavel: {
-        type: "string",
-        required: true
-      },
       auditores: {
-        type: "array",
-        items: {
-          type: "string",
-          required: true
-        }
+        type: "string",
+        description: "Auditor do inventario",
+        example: "65de780e1dfefb1e27eb2d91"
       },
       data_inicio: {
-        type: "Date",
-        required: true,
-      },
-      data_fim: {
-        type: "Date"
+        type: "string",
+        format: "date-time", 
+        example: "2024-04-01" 
       }
     }
   }

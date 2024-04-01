@@ -1,9 +1,9 @@
 import messages from "../../utils/mensagens.js";
 
 export const inventarioPaths = {
-  "/inventario": {
+  "/inventarios": {
     get: {
-      tags: ["Inventario"],
+      tags: ["Inventarios"],
       summary: "Listar todos os itens do inventário",
       description: "Retorna uma lista de todos os itens do inventário",
       responses: {
@@ -26,7 +26,7 @@ export const inventarioPaths = {
       }
     },
     post: {
-      tags: ["Inventario"],
+      tags: ["Inventarios"],
       summary: "Cadastrar Item no inventário",
       description: "Cadastra um novo item no inventário",
       requestBody: {
@@ -55,9 +55,9 @@ export const inventarioPaths = {
       }
     }
   },
-  "/inventario/{id}": {
+  "/inventarios/{id}": {
     get: {
-      tags: ["Inventario"],
+      tags: ["Inventarios"],
       summary: "Buscar item do inventário por ID",
       description: "Retorna um item do inventário pelo seu ID",
       parameters: [
@@ -88,7 +88,7 @@ export const inventarioPaths = {
       }
     },
     patch: {
-      tags: ["Inventario"],
+      tags: ["Inventarios"],
       summary: "Atualizar item do inventário",
       description: "Atualiza um item do inventário",
       parameters: [
@@ -129,7 +129,7 @@ export const inventarioPaths = {
       }
     },
     delete: {
-      tags: ["Inventario"],
+      tags: ["Inventarios"],
       summary: "Deletar item do inventário",
       description: "Deleta um item do inventário",
       parameters: [
