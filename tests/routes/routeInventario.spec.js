@@ -9,6 +9,7 @@ describe("Rotas de Inventario", () => {
     let inventarioID;
     let setorID = [];
     let usuarioID = [];
+    let campusID = ""
     let token;
 
     const userlogin = {
@@ -22,7 +23,6 @@ describe("Rotas de Inventario", () => {
             .post("/login")
             .send(userlogin)
             .set("Accept", "aplication/json")
-            .expect(200);
 
         expect(resposta.body.token).toBeDefined();
         return token = resposta.body.token;
@@ -47,7 +47,7 @@ describe("Rotas de Inventario", () => {
     }
 
     async function obterUsuario() {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 4; i++) {
             const res = await req
                 .get("/usuarios")
                 .set("Accept", "aplication/json")
@@ -61,6 +61,31 @@ describe("Rotas de Inventario", () => {
         }
 
         return usuarioID;
+    }
+
+    async function criarcampus() {
+        const res = await req
+            .post("/campus")
+            .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
+            .send({
+                nome: "Campus Teste da alvorada",
+                cidade: "Teste d'Oeste"
+            })
+            .expect(201);
+
+        const campus = res.body.data._id;
+        expect(campus).toBeDefined();
+        return campus;
+    }
+
+
+    async function apagarCampus() {
+        const res = await req
+            .delete(`/campus/${campusID}`)
+            .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200)
     }
 
     // Teste de listar de INVENTARIO ---------------------------------------------------
@@ -81,6 +106,7 @@ describe("Rotas de Inventario", () => {
 
         setorID = await obterSetor();
         usuarioID = await obterUsuario();
+        campusID = await criarcampus();
 
         const resposta = await req
             .post("/inventarios")
@@ -93,7 +119,10 @@ describe("Rotas de Inventario", () => {
                         _id: usuarioID[2]
                     },
                 ],
-                data_inicio: "2024-01-02"
+                campus: campusID,
+                responsavel: usuarioID[3],
+                data_inicio: "2024-01-02",
+                data_fim: "2024-02-26"
             })
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${token}`)
@@ -121,7 +150,7 @@ describe("Rotas de Inventario", () => {
                     },
                 ],
                 data_inicio: "2024-01-02",
-                data_final:  "2024-02-26"
+                data_final: "2024-02-26"
             });
         expect(200);
         expect(dados.body.message).toEqual(messages.httpCodes[200]);
@@ -149,5 +178,6 @@ describe("Rotas de Inventario", () => {
             .expect(200);
 
         expect(resposta.body.message).toContain(messages.httpCodes[200]);
+        apagarCampus()
     });
 });

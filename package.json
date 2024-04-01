@@ -7,8 +7,9 @@
   "scripts": {
     "dev": "nodemon server.js",
     "seed": "node src/seeds/seeds.js",
-    "test": " node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose --runInBand",
-    "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "grupos": "node src/utils/GruposDeUsuarios.js",
+    "test": " node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose --runInBand --detectOpenHandles",
+    "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch ",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand"
   },
   "repository": {

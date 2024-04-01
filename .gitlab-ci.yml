@@ -1,0 +1,39 @@
+variables:
+  KUBECTL_CONFIG: $KUBECTL_CONFIG
+  IMAGEM_DOCKER: registry.fslab.dev/pablosmolak/levantamento
+
+stages:
+  - build
+  - deploy
+
+buildar-docker:
+  stage: build
+  image: docker:dind
+  only:
+    - master
+  script:
+    - cp .env.example .env 
+    - docker build -t $IMAGEM_DOCKER .
+    - docker push $IMAGEM_DOCKER
+
+fazer-deploy:
+  stage: deploy
+  needs: ['buildar-docker']
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  only:
+    - master
+  script:
+    - cat $KUBECTL_CONFIG > ~/.kube/config
+    - kubectl config get-contexts
+    - kubectl get node
+    - kubectl get pods
+    - kubectl delete deployment api-levantamento || true
+    - kubectl apply -f deployment.yaml
+    - sleep 60
+    - kubectl get pods
+    - kubectl describe deploy/api-levantamento
+    - kubectl logs deploy/api-levantamento
+
+

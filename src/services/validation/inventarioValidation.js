@@ -14,20 +14,19 @@ class ValidateInventario {
         const val = new Validator(req.body);
         const token = req.headers.authorization;
         const tokenDecoded = jwtDecode(token);
-        const campus = tokenDecoded.campus;
-        
+       
         // Inseri em val.body o id do usuario e o campus
         val.body.responsavel = tokenDecoded.id;
-        val.body.campus = campus;
-
+        
         // console.log(val);
         const inventario = await Inventario.distinct("_id",{
             $and: [
-                { campus: campus } ,
+                { campus: req.body.campus } ,
                 { data_fim: { $exists: false } }
             ]
         });
         
+
         if (inventario != 0) {
             return sendError(res, 422, messages.customValidation.inventarioAndamento);
         }
@@ -58,13 +57,14 @@ class ValidateInventario {
         const val = new Validator(req.body);
 
         await val.validate("setores", v.optional());
-
+      
         for (const setor of val.body.setores) {
             const valorID = setor._id;
 
             // CORRIGIDO O v.mongooseID = coloque o valor dessa forma que ele aparecera lá 1-1
             await val.validate("setores", v.mongooseID({ valorMongo: valorID }), v.exists({ model: Setor, query: { _id: setor } }));
         }
+        
 
         await val.validate("responsavel", v.optional(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
         await val.validate("auditores", v.optional());

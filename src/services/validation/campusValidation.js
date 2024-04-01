@@ -8,7 +8,7 @@ class ValidateCampus {
     
             const val = new Validator(req.body);
     
-            await val.validate("nome", v.required());
+            await val.validate("nome", v.required(),v.unique({ model: Campus, query: { nome: req.body.nome } }));
             await val.validate("cidade", v.required());
             await val.validate("ativo", v.optional(), v.toBoolean());
     
