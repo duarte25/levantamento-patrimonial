@@ -65,7 +65,6 @@ export default class ItemController {
             if (!item) {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrada!"] });
             }
-
             res.status(200).json({ item, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
