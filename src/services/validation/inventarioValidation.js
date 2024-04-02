@@ -20,7 +20,7 @@ class ValidateInventario {
         val.body.responsavel = tokenDecoded.id;
         val.body.campus = campus;
 
-        console.log(val);
+        // console.log(val);
         const inventario = await Inventario.distinct("_id",{
             $and: [
                 { campus: campus } ,
