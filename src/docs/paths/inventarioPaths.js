@@ -3,9 +3,9 @@ import messages from "../../utils/mensagens.js";
 export const inventarioPaths = {
   "/inventarios": {
     get: {
-      tags: ["Inventarios"],
-      summary: "Listar todos os itens do inventário",
-      description: "Retorna uma lista de todos os itens do inventário",
+      tags: ["Inventários"],
+      summary: "Listar inventários",
+      description: "Retorna uma lista de todos os inventários",
       responses: {
         200: {
           description: messages.httpCodes[200],
@@ -26,9 +26,9 @@ export const inventarioPaths = {
       }
     },
     post: {
-      tags: ["Inventarios"],
-      summary: "Cadastrar Item no inventário",
-      description: "Cadastra um novo item no inventário",
+      tags: ["Inventários"],
+      summary: "Cadastrar inventário",
+      description: "Cadastra um novo inventário",
       requestBody: {
         content: {
           "application/json": {
@@ -57,14 +57,14 @@ export const inventarioPaths = {
   },
   "/inventarios/{id}": {
     get: {
-      tags: ["Inventarios"],
-      summary: "Buscar item do inventário por ID",
-      description: "Retorna um item do inventário pelo seu ID",
+      tags: ["Inventários"],
+      summary: "Buscar um inventário por ID",
+      description: "Retorna um inventário pelo seu ID",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do item do inventário",
+          description: "ID do inventário",
           required: true,
           schema: {
             type: "string"
@@ -88,14 +88,14 @@ export const inventarioPaths = {
       }
     },
     patch: {
-      tags: ["Inventarios"],
-      summary: "Atualizar item do inventário",
-      description: "Atualiza um item do inventário",
+      tags: ["Inventários"],
+      summary: "Atualizar inventário",
+      description: "Atualiza o inventário",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do item do inventário",
+          description: "ID do inventário",
           required: true,
           schema: {
             type: "string"
@@ -129,14 +129,14 @@ export const inventarioPaths = {
       }
     },
     delete: {
-      tags: ["Inventarios"],
-      summary: "Deletar item do inventário",
-      description: "Deleta um item do inventário",
+      tags: ["Inventários"],
+      summary: "Deletar inventário",
+      description: "Deleta o inventário",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do item do inventário",
+          description: "ID do inventário",
           required: true,
           schema: {
             type: "string"
