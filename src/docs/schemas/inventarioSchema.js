@@ -5,7 +5,14 @@ export const inventarioSchema = {
       auditores: {
         type: "string",
         description: "Auditor do inventario",
-        example: "65de780e1dfefb1e27eb2d91"
+        example: [
+          {
+            "_id": "660c7b166b21494b232c8228"
+          },
+          {
+            "_id": "660c7b166b21494b232c8200"
+          }
+        ]
       },
       data_inicio: {
         type: "string",
