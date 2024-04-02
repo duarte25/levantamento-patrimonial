@@ -12,31 +12,23 @@ export const itensSchemas = {
       },
       etiqueta: {
         type: "string",
-        example: "Cadeira01"
+        example: "10378"
       },
-      ativo: {
+      Ativo: {
         type: "boolean",
         example: true
       },
       estado: {
         type: "string",
-        example: "Bom"
-      },
-      inventario: {
-        type: "string",
-        example: "Inventario01"
+        example: "Bem danificado"
       },
       setor: {
         type: "string", 
-        example: "Setor01"
+        example: "660c7b166b21494b232c8284"
       },
-      auditor: {
+      responsavel: {
         type: "string",
-        example: "Luccas"
-      },
-      imagem: {
-        type: "string",
-        example: "http://localhost:3000/images/1"
+        example: ""
       }
     }
   }
