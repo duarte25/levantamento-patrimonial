@@ -24,7 +24,7 @@ export const itensSchemas = {
       },
       setor: {
         type: "string", 
-        example: "660c7b166b21494b232c8284"
+        example: ""
       },
       responsavel: {
         type: "string",

@@ -5,7 +5,7 @@ export const itensPaths = {
   "/itens": {
     get: {
       tags: ["Itens"],
-      summary: "Lista todos os itens",
+      summary: "Listar itens",
       description:
         "Retorna uma lista de todos os itens cadastrados no inventário.",
       responses: {
@@ -57,7 +57,38 @@ export const itensPaths = {
     }
   },
   
-  "/Itens/{id}": {
+  "/itens/{id}": {
+    get: {
+      tags: ["Itens"],
+      summary: "Buscar Item por ID",
+      description: "Retorna um item pelo ID do inventário.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "ID do item",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Itens"
+              }
+            }
+          }
+        },
+        500: {
+          description: messages.httpCodes[500],
+        }
+      }
+    },
     patch: {
       tags: ["Itens"],
       summary: "Atualizar Item",
