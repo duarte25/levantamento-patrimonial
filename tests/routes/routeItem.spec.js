@@ -37,7 +37,6 @@ describe("Rotas de Item", () => {
             .expect(200);
 
         const setorSelecionado = res.body.data[0];
-        expect(setorSelecionado).toBeDefined();
         expect(setorSelecionado._id).toBeDefined();
 
         return setorID = setorSelecionado._id;
@@ -88,7 +87,6 @@ describe("Rotas de Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um inventario", async () => {
 
-        setorID = await obterSetor();
         usuarioID = await obterUsuario();
 
         const resposta = await req
@@ -114,6 +112,7 @@ describe("Rotas de Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um item", async () => {
 
+        setorID = await obterSetor();
         inventarioID = await obterInventario();
 
         const resposta = await req
