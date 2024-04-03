@@ -10,6 +10,7 @@ import { setorSchema } from "../schemas/setorSchema.js";
 import { setorPaths } from "../paths/setorPaths.js";
 import { inventarioSchema } from "../schemas/inventarioSchema.js";
 import { inventarioPaths } from "../paths/inventarioPaths.js";
+import relatorioPath from "../paths/relatorioPath.js";
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -73,6 +74,14 @@ const swaggerOptions = {
         description: "Upload de imagens",
       },
       {
+        name: "Campus",
+        description: "Campus do IFRO",
+      },
+      {
+        name: "Relatórios",
+        description: "Relatórios do sistema",
+      },
+      {
         name: "Usuários",
         description: "Usuários do sistema",
       },
@@ -101,7 +110,7 @@ const swaggerOptions = {
       ...inventarioPaths,
       ...setorPaths,
       ...campusPaths,
-
+      ...relatorioPath
     },
   },
   apis: ["./src/routes/*.js"],

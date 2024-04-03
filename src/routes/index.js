@@ -7,6 +7,7 @@ import setor from "./setorRouter.js";
 import itens from "./itemRoutes.js";
 import inventarios from "./inventarioRoutes.js";
 import campus from "./campusRouter.js";
+import relatorio from "./pdfRouter.js";
 
 const routes = (app) => {
 
@@ -26,7 +27,8 @@ const routes = (app) => {
         itens,
         inventarios,
         setor,
-        campus
+        campus,
+        relatorio
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );
