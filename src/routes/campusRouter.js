@@ -9,6 +9,7 @@ router
     .get("/campus", AuthMiddleware, CampusController.pesquisarCampus)
     .get("/campus/:id", AuthMiddleware, CampusController.listarCampusID)
     .post("/campus", AuthMiddleware, ValidateCampus.validateCriar, CampusController.criarCampus)
+    .patch("/campus/:id", AuthMiddleware, CampusController.atualizarCampus)
     .delete("/campus/:id", AuthMiddleware, CampusController.deletarCampus);
 
 export default router;
