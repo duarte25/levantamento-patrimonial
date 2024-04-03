@@ -80,7 +80,7 @@ export default class ItemController {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrado!"] });
             }
             item = await Item.findByIdAndUpdate(id, req.body, { new: true });
-            return res.status(200).json({ data: [], error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+            return res.status(200).json({ data: [item], error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         }
         catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
