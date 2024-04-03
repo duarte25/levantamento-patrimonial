@@ -6,6 +6,53 @@ export const inventarioPaths = {
       tags: ["Inventários"],
       summary: "Listar inventários",
       description: "Retorna uma lista de todos os inventários",
+      parameters: [
+        {
+          name: "pagina",
+          in: "query",
+          description: "Pagina",
+          required: false,
+          schema: {
+            type: "integer"
+          }
+        },
+        {
+          name: "data_inicial_inicial",
+          in: "query",
+          description: "Data inicial do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        },
+        {
+          name: "data_inicial_final",
+          in: "query",
+          description: "Data inicial_final do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        },
+        {
+          name: "data_final_inicial",
+          in: "query",
+          description: "Data final_inicial do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        },
+        {
+          name: "data_final_final",
+          in: "query",
+          description: "Data final do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        }
+      ],
       responses: {
         200: {
           description: messages.httpCodes[200],
