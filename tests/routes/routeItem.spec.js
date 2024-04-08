@@ -42,21 +42,6 @@ describe("Rotas de Item", () => {
         return setorID = setorSelecionado._id;
     }
 
-    // eslint-disable-next-line no-undef
-    async function obterInventario() {
-        const res = await req
-            .get("/inventarios")
-            .set("Accept", "aplication/json")
-            .set("Authorization", `Bearer ${token}`)
-            .expect(200);
-
-        const inventarioSelecionado = res.body.data[0];
-        expect(inventarioSelecionado).toBeDefined();
-        expect(inventarioSelecionado._id).toBeDefined();
-
-        return inventarioID = inventarioSelecionado._id;
-    }
-
     async function obterUsuario() {
         const res = await req
             .get("/usuarios")
@@ -113,7 +98,6 @@ describe("Rotas de Item", () => {
     it("Deve cadastrar um item", async () => {
 
         setorID = await obterSetor();
-        inventarioID = await obterInventario();
 
         const resposta = await req
             .post("/itens")
@@ -126,10 +110,8 @@ describe("Rotas de Item", () => {
                 ativo: "Ativo",
                 ocioso: false,
                 descricao: "radical",
-                inventario: inventarioID,
                 setor: setorID,
-                responsavel: usuarioID,
-                auditor: usuarioID
+                responsavel: usuarioID
             })
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${token}`)
@@ -156,10 +138,8 @@ describe("Rotas de Item", () => {
                 ativo: "Ativo",
                 ocioso: false,
                 descricao: "radical",
-                inventario: inventarioID,
                 setor: setorID,
-                responsavel: usuarioID,
-                auditor: usuarioID
+                responsavel: usuarioID
             });
         expect(200);
         expect(dados.body.message).toEqual(messages.httpCodes[200]);

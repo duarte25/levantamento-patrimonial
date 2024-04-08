@@ -45,7 +45,7 @@ export default class SetorController {
                   },
                 });
 
-            return sendResponse(res, 200, { data: setores });
+            return sendResponse(res, 200, setores );
         } catch (error) {
             return sendError(res, 500, messages.httpCodes[500]);
         }
