@@ -4,7 +4,7 @@ import Grupo from "../models/GruposUsuarios.js";
 import jwt from "jsonwebtoken";
 
 
-export function GrupoMiddleware(regras) {
+export function GrupoMiddleware(regra) {
     return async (req, res, next) => {
         try {
             let token = req.headers.authorization;
@@ -21,14 +21,11 @@ export function GrupoMiddleware(regras) {
 
                 const findGroupo = await Grupo.findById(grupo)
 
-                for (let regra of findGroupo.regras) {
-
-                    if (regra.nome === regras) {
-                        return next()
-                    }
+                if (findGroupo.regras.some(regra => regra.nome === regra)) {
+                    return next();
                 }
             }
-            
+
             return res.status(401).json({ data: [], error: true, code: 401, message: messages.httpCodes[401], errors: [messages.auth.invalidPermission] });
 
         } catch (err) {
