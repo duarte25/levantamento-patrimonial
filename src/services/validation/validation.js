@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import messages from "../../utils/mensagens.js";
-
 import { isCPF, isCNPJ, isCNH } from "validation-br";
 
 // Acessar objeto com caminho "a.b.c"
@@ -333,17 +332,19 @@ export class ValidationFuncs {
      * YYYY-MM-DD
     */
     static toUTCDate = (opcoes = {}) => async (value, val) => {
+        // GUSTAVO trocou UTC de 0 para 4 aqui já que estamos no timezone Manaus
         let dateString;
         if(/^\d\d\d\d\-\d\d\-\d\d$/.test(value)) { // YYYY-MM-DD
-            dateString = value + "T00:00:00Z";
+            dateString = value + "T04:00:00Z";
         } else if(/^\d\d\d\d\-\d\d$/.test(value)) { // YYYY-MM
-            dateString = value + "-01T00:00:00Z";
+            dateString = value + "-01T04:00:00Z";
         } else {
             return opcoes.message || messages.customValidation.invalidDate;
         }
 
         // https://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
         let timestamp = Date.parse(dateString);
+        
         if (isNaN(timestamp)) {
             return opcoes.message || messages.customValidation.invalidDate;
         }
@@ -438,7 +439,7 @@ export class ValidationFuncs {
 
     static min = (opcoes = {min: false}) => async (value, val) => {
         if(opcoes.min === false) throw new Error("A função de validação min deve receber o valor mínimo min");
-
+    
         if (value < opcoes.min) {
             return opcoes.message || messages.validationGeneric.invalidInputFormatForField(val.path).message;
         } else return true;
