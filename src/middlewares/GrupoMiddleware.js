@@ -1,6 +1,7 @@
 import Usuario from "../models/Usuario.js";
 import messages from "../utils/mensagens.js";
-import jwt  from "jsonwebtoken";
+import Grupo from "../models/GruposUsuarios.js";
+import jwt from "jsonwebtoken";
 
 
 export function GrupoMiddleware(regras) {
@@ -10,20 +11,28 @@ export function GrupoMiddleware(regras) {
 
             [, token] = token.split(" ");
 
-            const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const userid = decoded.id
 
-            const usuario = Usuario.aggregate([  { $match: { _id: userid } },{ $project: {grupos} }])
+            const findUser = await Usuario.findById(userid)
+            const grupos = findUser.grupos
 
-            console.log(userid)
+            for (let grupo of grupos) {
 
-            console.log(usuario.nome)
+                const findGroupo = await Grupo.findById(grupo)
 
-            return res.status(498).json({ data: ["oito"], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.auth.invalidToken] });
-            next();
+                for (let regra of findGroupo.regras) {
+
+                    if (regra.nome === regras) {
+                        return next()
+                    }
+                }
+            }
+            
+            return res.status(401).json({ data: [], error: true, code: 401, message: messages.httpCodes[401], errors: [messages.auth.invalidPermission] });
 
         } catch (err) {
+
             console.log(err.message)
             return res.status(498).json({ data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.auth.invalidToken] });
         }

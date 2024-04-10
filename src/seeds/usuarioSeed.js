@@ -17,7 +17,8 @@ export default async function usuarioSeed(quantidade) {
         cpf: faker.br.cpf(),
         email: "dev@gmail.com",
         senha: bcrypt.hashSync("Dev@1234", 8),
-        campus: faker.random.arrayElement(campusID.map(campus => campus._id))
+        campus: faker.random.arrayElement(campusID.map(campus => campus._id)),
+        grupos: [{_id: faker.random.arrayElement(gruposID.map(grupo => grupo._id))}]
     })
 
     for (let i = 0; i < quantidade; i++) {
@@ -28,7 +29,7 @@ export default async function usuarioSeed(quantidade) {
             email: faker.internet.email(),
             senha: bcrypt.hashSync("Dev@1234", 8),
             campus: faker.random.arrayElement(campusID.map(campus => campus._id)),
-            grupos: [faker.random.arrayElement(gruposID.map(grupo => grupo._id))]
+            grupos: [{_id: faker.random.arrayElement(gruposID.map(grupo => grupo._id))}]
         })
     }
 

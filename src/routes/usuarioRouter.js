@@ -7,7 +7,7 @@ import { GrupoMiddleware } from "../middlewares/GrupoMiddleware.js";
 const router = express.Router();
 
 router
-    .post("/usuarios", AuthMiddleware,GrupoMiddleware("teste"), usuarioValidation.criarUsuarioValidate, UsuarioController.CriarUsuario)
+    .post("/usuarios", AuthMiddleware,GrupoMiddleware("criar_usuarioss"), usuarioValidation.criarUsuarioValidate, UsuarioController.CriarUsuario)
     .get("/usuarios", AuthMiddleware, UsuarioController.listarUsuario)
     .get("/usuarios/:id", AuthMiddleware, UsuarioController.listarUsuarioID)
     .patch("/usuarios/:id", AuthMiddleware, usuarioValidation.alterarUsuarioValidate, UsuarioController.alterarUsuario)
