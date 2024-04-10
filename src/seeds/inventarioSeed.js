@@ -8,21 +8,12 @@ export default async function inventarioSeed(quantidade) {
 
     const campusID = await Campus.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
     const usuarios = await Usuario.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
-    // const setores = await Setor.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }]);
-    const dataInicio = faker.date.between("2021-01-01", "2024-12-31");
+    const dataInicio = faker.date.between("2024-01-01", "2024-12-31").toDateString();
     const inventariosCriados = [];
    
     for (let i = 0; i < quantidade; i++) {
 
         inventariosCriados.push({
-            // setores:  [
-            //     {
-            //         _id: faker.random.arrayElement(setores.map(setor => setor._id))
-            //     },
-            //     {
-            //         _id: faker.random.arrayElement(setores.map(setor => setor._id))
-            //     }
-            // ],
             campus: faker.random.arrayElement(campusID.map(campus => campus._id)),
             responsavel:  faker.random.arrayElement(usuarios.map(usuario => usuario._id)),
             auditores: [
@@ -34,7 +25,7 @@ export default async function inventarioSeed(quantidade) {
                 }
             ],
             data_inicio: dataInicio,
-            data_fim: faker.date.between(dataInicio, "2026-12-31")
+            data_fim: faker.date.between(dataInicio, "2025-12-31").toDateString()
         });
     }
 

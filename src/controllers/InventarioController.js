@@ -23,33 +23,30 @@ export default class InventarioController {
             const filtros = { campus };
             let sort = { sigla: 1 };
 
-            // const idSetor = await Setor.find({ campus }).select("_id");
-            // const idsArray = idSetor.map(setor => setor._id);
-
             if (responsavel) filtros.responsavel = responsavel;
 
             if (data_inicial_inicial || data_final_inicial) {
-                filtros.data_inicial_reserva = {};
-                if (data_inicial_inicial) filtros.data_inicial_reserva.$gte = new Date(data_inicial_inicial);
+                filtros.data_inicio = {};
+                if (data_inicial_inicial) filtros.data_inicio.$gte = new Date(data_inicial_inicial);
                 if (data_final_inicial) {
                     const dataFinal = new Date(data_final_inicial);
                     dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
-                    filtros.data_inicial_reserva.$lte = dataFinal;
+                    filtros.data_inicio.$lte = dataFinal;
                 }
 
-                sort = { data_inicial_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+                sort = { data_inicio: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
             }
 
             if (data_inicial_final || data_final_final) {
-                filtros.data_final_reserva = {};
-                if (data_inicial_final) filtros.data_final_reserva.$gte = new Date(data_inicial_final);
+                filtros.data_final = {};
+                if (data_inicial_final) filtros.data_final.$gte = new Date(data_inicial_final);
                 if (data_final_final) {
                     const dataFinal = new Date(data_final_final);
                     dataFinal.setDate(dataFinal.getDate() + 1); // Adiciona 1 dia para incluir a data final
-                    filtros.data_final_reserva.$lte = dataFinal;
+                    filtros.data_final.$lte = dataFinal;
                 }
 
-                sort = { data_final_reserva: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+                sort = { data_final: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
             }
 
             const inventarios = await Inventario.paginate(
