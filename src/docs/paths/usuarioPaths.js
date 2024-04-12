@@ -1,11 +1,31 @@
 import messages from "../../utils/mensagens.js";
 
-export const usuarioPath = {
+export const usuarioPaths = {
   "/usuarios": {
     get: {
-      tags: ["Usuário"],
+      tags: ["Usuários"],
       summary: "Listar Usuários",
       description: "Lista todos os usuários",
+      parameters: [
+        {
+          name: "pagina",
+          in: "query",
+          description: "Pagina",
+          required: false,
+          schema: {
+            type: "integer"
+          }
+        },
+        {
+          name: "cpf",
+          in: "query",
+          description: "CPF do usuário",
+          required: false,
+          schema: {
+            type: "number"
+          }
+        },
+      ],
       responses: {
         200: {
           description: messages.httpCodes[200],
@@ -26,7 +46,7 @@ export const usuarioPath = {
       }
     },
     post: {
-      tags: ["Usuário"],
+      tags: ["Usuários"],
       summary: "Criar Usuário",
       description: "Cria um novo usuário",
       requestBody: {
@@ -58,7 +78,7 @@ export const usuarioPath = {
   },
   "/usuarios/{id}": {
     get: {
-      tags: ["Usuário"],
+      tags: ["Usuários"],
       summary: "Obter Usuário por ID",
       description: "Retorna um usuário por ID",
       parameters: [
@@ -89,7 +109,7 @@ export const usuarioPath = {
       }
     },
     patch: {
-      tags: ["Usuário"],
+      tags: ["Usuários"],
       summary: "Atualizar Usuário",
       description: "Atualiza um usuário",
       parameters: [
@@ -130,7 +150,7 @@ export const usuarioPath = {
       }
     },
     delete: {
-      tags: ["Usuário"],
+      tags: ["Usuários"],
       summary: "Deletar Usuário",
       description: "Deleta um usuário por ID",
       parameters: [

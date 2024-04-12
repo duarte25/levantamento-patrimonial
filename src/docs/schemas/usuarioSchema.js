@@ -11,7 +11,7 @@ export const usuarioSchema = {
 			cpf: {
 				type: "string",
 				description: "CPF do usuário",
-				example: "123.456.789-00"
+				example: "89601807004"
 			},
 			email: {
 				type: "string",
@@ -21,7 +21,7 @@ export const usuarioSchema = {
 			senha: {
 				type: "string",
 				description: "Senha do usuário",
-				example: "senha123"
+				example: "Senha123@"
 			},
 			ativo: {
 				type: "boolean",

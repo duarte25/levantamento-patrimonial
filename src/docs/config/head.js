@@ -9,7 +9,7 @@ import { campusPaths } from "../paths/campusPaths.js";
 import { setorSchema } from "../schemas/setorSchema.js";
 import { setorPaths } from "../paths/setorPaths.js";
 import { usuarioSchema } from "../schemas/usuarioSchema.js";
-import { usuarioPatch } from "../paths/usuarioPaths.js";
+import { usuarioPaths } from "../paths/usuarioPaths.js";
 import { inventarioSchema } from "../schemas/inventarioSchema.js";
 import { inventarioPaths } from "../paths/inventarioPaths.js";
 import relatorioPath from "../paths/relatorioPath.js";
@@ -109,7 +109,7 @@ const swaggerOptions = {
     paths: {
       ...imagePaths,
       ...loginPaths,
-      ...usuarioPatch,
+      ...usuarioPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
       ...inventarioPaths,
