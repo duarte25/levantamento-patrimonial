@@ -1,11 +1,19 @@
 export const setorSchema = {
-    Setor: {
-      type: "object",
-      properties: {
-        id: { type: "string", example: "1" },
-        campus: { type: "string", example: "Campus01" },
-        local: { type: "string", example: "Setor01" },
-        status: { type: "boolean", example: true },
+  Setor: {
+    type: "object",
+    properties: {
+      campus: {
+        type: "string",
+        example: "6605ad8fcd03e0e45692c91c"
+      },
+      local: {
+        type: "string",
+        example: "Setor01"
+      },
+      status: {
+        type: "boolean",
+        example: true
       },
     },
-  };
+  },
+};

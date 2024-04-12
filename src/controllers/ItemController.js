@@ -1,4 +1,3 @@
-
 import Item from "../models/Item.js";
 import messages from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
@@ -11,7 +10,7 @@ export default class ItemController {
             // Atributos esperados na requisição, validação foi feita no middleware antes de chegar aqui
             const {
                 etiqueta,
-                nao_etiquetado,
+                nao_tiquetado,
                 encontrado,
                 nome,
                 estado,
@@ -26,7 +25,7 @@ export default class ItemController {
             const filtros = {};
 
             if (etiqueta) filtros.etiqueta = etiqueta;
-            if (nao_etiquetado) filtros.nao_etiquetado = nao_etiquetado;
+            if (nao_tiquetado) filtros.nao_tiquetado = nao_tiquetado;
             if (encontrado) filtros.encontrado = encontrado;
             if (nome) filtros.nome = { $regex: new RegExp(nome, "i") };
             if (estado) filtros.estado = estado;
@@ -65,6 +64,7 @@ export default class ItemController {
             if (!item) {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrada!"] });
             }
+
             res.status(200).json({ item, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (err) {
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });

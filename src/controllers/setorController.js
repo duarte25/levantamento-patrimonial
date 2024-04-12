@@ -1,8 +1,25 @@
 import Setor from "../models/Setor.js";
-import messages from "../utils/mensagens.js";
+import messages, { sendError, sendResponse } from "../utils/mensagens.js";
+import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
 import { paginateOptions } from "./common.js";
+import Campus from "../models/Campus.js";
 
 export default class SetorController {
+    static async criarSetor(req, res) {
+        try {
+            const {local, campus } = req.body;
+      
+            const setor = new Setor({ local, campus});
+            const savedSetor = await setor.save();
+
+            return sendResponse(res, 201, { data: savedSetor });
+        } catch (err) {
+          console.log(err);
+            return sendError(res, 500, messages.httpCodes[500]);
+        }
+
+    }
+
     static async pesquisarSetor(req, res) {
         try {
             const pagina = parseInt(req.query.pagina) || 1;
@@ -22,79 +39,66 @@ export default class SetorController {
             const setores = await Setor.paginate(
                 { ...filtros },
                 {
-                    ...paginateOptions, ...{
-                        sort: { nome: 1 },
-                        page: pagina,
-                    },
+                  ...paginateOptions, ...{
+                    sort: { local: 1 },
+                    page: pagina,
+                  },
                 });
 
-            setores.code = 200;
-            setores.error = false;
-            setores.errors = [];
-
-            res.status(200).json({ ...setores, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+            return sendResponse(res, 200, setores );
         } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
     static async listarSetorID(req, res) {
         try {
-            const { id } = req.params;
-            const setor = await Setor.findById(id);
+            let val = new Validator(req.params);
+            await val.validate("id", v.required(), v.mongooseID());
+            if (val.anyErrors()) return sendError(res, 400, val.getErrors());
+
+            const setor = await Setor.findById(req.params.id);
 
             if (!setor) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Setor não encontrado!"] });
+                return sendError(res, 404);
             }
 
-            res.status(200).json({ data: setor, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+            return sendResponse(res, 200, { data: setor });
         } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
     static async atualizarSetor(req, res) {
         try {
             const { id } = req.params;
-            let setor = await Setor.findById(id);
+            const { local, status } = req.body;
+            const setor = await Setor.findByIdAndUpdate(id, { local, status}, { new: true });
+
+
             if (!setor) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Setor não encontrado!"] });
+              return res.status(404).json({ error: true, code: 404, message: "Setor não encontrado" });
             }
-            setor = await Setor.findByIdAndUpdate(id, req.body, { new: true });
-            return res.status(200).json({ data: setor, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+
+            return sendResponse(res, 200, { data: setor });
         }
         catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
-        }
-    }
-
-    static async criarSetor(req, res) {
-        try {
-            const setor = new Setor(req.body);
-            const savedSetor = await setor.save();
-
-            return res.status(201).json({
-                data: savedSetor, error: false, code: 201, message: messages.httpCodes[201], errors: []
-            });
-        } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 
     static async deletarSetor(req, res) {
         try {
             const { id } = req.params;
-            const setor = await Setor.findById(id);
+            const setor = await Setor.findByIdAndDelete(id);
 
             if (!setor) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Setor não encontrado!"] });
+                return res.status(404).json({ error: true, code: 404, message: "Setor não encontrado" });
             }
-            
-            await Setor.findByIdAndDelete(id);
-            res.status(200).json({ data: setor, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+
+            return sendResponse(res, 200, { data: setor });
         } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+            return sendError(res, 500, messages.httpCodes[500]);
         }
     }
 }

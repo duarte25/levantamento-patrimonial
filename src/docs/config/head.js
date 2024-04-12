@@ -5,10 +5,13 @@ import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
 import { itensPaths } from "../paths/itensPath.js";
 import { itensSchemas } from "../schemas/itensSchema.js";
 import { campusSchema } from "../schemas/campusSchema.js";
+import { campusPaths } from "../paths/campusPaths.js";
 import { setorSchema } from "../schemas/setorSchema.js";
 import { setorPaths } from "../paths/setorPaths.js";
 import { usuarioSchema } from "../schemas/usuarioSchema.js";
 import { usuarioPatch } from "../paths/usuarioPaths.js";
+import { inventarioSchema } from "../schemas/inventarioSchema.js";
+import { inventarioPaths } from "../paths/inventarioPaths.js";
 import relatorioPath from "../paths/relatorioPath.js";
 
 const swaggerOptions = {
@@ -49,6 +52,7 @@ const swaggerOptions = {
       schemas: {
         ...imageSchemas,
         ...itensSchemas,
+        ...inventarioSchema,
         ...campusSchema,
         ...setorSchema,
         ...usuarioSchema,
@@ -88,11 +92,19 @@ const swaggerOptions = {
         name: "Itens",
         description: "Itens do inventário",
       },
+      { 
+        name: "Inventários",
+        description: "Invetários do campus"
+      },
       {
         name: "Setores",
         description: "Setores do inventário",
       },
 
+      {
+        name: "Campus",
+        description: "Campus do usuário"
+      },
     ],
     paths: {
       ...imagePaths,
@@ -100,7 +112,9 @@ const swaggerOptions = {
       ...usuarioPatch,
       ...recuperarSenhaPaths,
       ...itensPaths,
+      ...inventarioPaths,
       ...setorPaths,
+      ...campusPaths,
       ...relatorioPath
     },
   },

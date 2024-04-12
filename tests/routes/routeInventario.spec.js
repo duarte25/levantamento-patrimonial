@@ -28,24 +28,6 @@ describe("Rotas de Inventario", () => {
         return token = resposta.body.token;
     });
 
-    // eslint-disable-next-line no-undef
-    async function obterSetor() {
-        for (let i = 0; i < 2; i++) {
-            const res = await req
-                .get("/setores")
-                .set("Accept", "aplication/json")
-                .set("Authorization", `Bearer ${token}`)
-                .expect(200);
-
-            const setorSelecionado = res.body.data[i];
-            expect(setorSelecionado).toBeDefined();
-            expect(setorSelecionado._id).toBeDefined();
-            setorID.push(setorSelecionado._id);
-        }
-
-        return setorID;
-    }
-
     async function obterUsuario() {
         for (let i = 0; i < 3; i++) {
             const res = await req
@@ -79,7 +61,6 @@ describe("Rotas de Inventario", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um inventario", async () => {
 
-        setorID = await obterSetor();
         usuarioID = await obterUsuario();
 
         const resposta = await req
