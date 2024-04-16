@@ -7,6 +7,44 @@ export const campusPaths = {
       tags: ["Campus"],
       summary: "Listar todos os Campus",
       description: "Retorna uma lista de campus",
+      parameters: [
+        {
+          name: "pagina",
+          in: "query",
+          description: "Pagina",
+          required: false,
+          schema: {
+            type: "integer"
+          }
+        },
+        {
+          name: "nome",
+          in: "query",
+          description: "Nome do campus",
+          required: false,
+          schema: {
+            type: "string"
+          }
+        },
+        {
+          name: "cidade",
+          in: "query",
+          description: "Cidade do campus",
+          required: false,
+          schema: {
+            type: "string"
+          }
+        },
+        {
+          name: "ativo",
+          in: "query",
+          description: "status do campus",
+          required: false,
+          schema: {
+            type: "boolean"
+          }
+        },
+      ],
       responses: {
         200: {
           description: messages.httpCodes[200],
@@ -91,7 +129,7 @@ export const campusPaths = {
     patch: {
       tags: ["Campus"],
       summary: "Atualizar Campus",
-      description: "Atualiza um campus",
+      description: "Atualiza um campus por ID",
       parameters: [
         {
           name: "id",
@@ -132,7 +170,7 @@ export const campusPaths = {
     delete: {
       tags: ["Campus"],
       summary: "Deletar Campus",
-      description: "Deleta um campus",
+      description: "Deleta um campus por ID",
       parameters: [
         {
           name: "id",
