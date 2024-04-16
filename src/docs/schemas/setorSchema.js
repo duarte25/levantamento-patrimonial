@@ -3,7 +3,7 @@ export const setorSchema = {
     type: "object",
     properties: {
       campus: {
-        type: "string",
+        type: "object",
         example: "6605ad8fcd03e0e45692c91c"
       },
       local: {
