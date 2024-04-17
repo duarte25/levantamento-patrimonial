@@ -1,12 +1,31 @@
-
 import messages from "../../utils/mensagens.js";
 
-export const campusPaths = {
-  "/campus": {
+export const usuarioPaths = {
+  "/usuarios": {
     get: {
-      tags: ["Campus"],
-      summary: "Listar todos os Campus",
-      description: "Retorna uma lista de campus",
+      tags: ["Usuários"],
+      summary: "Listar Usuários",
+      description: "Lista todos os usuários",
+      parameters: [
+        {
+          name: "pagina",
+          in: "query",
+          description: "Pagina",
+          required: false,
+          schema: {
+            type: "integer"
+          }
+        },
+        {
+          name: "cpf",
+          in: "query",
+          description: "CPF do usuário",
+          required: false,
+          schema: {
+            type: "number"
+          }
+        },
+      ],
       responses: {
         200: {
           description: messages.httpCodes[200],
@@ -15,7 +34,7 @@ export const campusPaths = {
               schema: {
                 type: "array",
                 items: {
-                  $ref: "#/components/schemas/Campus"
+                  $ref: "#/components/schemas/Usuario"
                 }
               }
             }
@@ -27,14 +46,15 @@ export const campusPaths = {
       }
     },
     post: {
-      tags: ["Campus"],
-      summary: "Cadastrar Campus",
-      description: "Cadastra um novo campus",
+      tags: ["Usuários"],
+      summary: "Criar Usuário",
+      description: "Cria um novo usuário",
       requestBody: {
+        required: true,
         content: {
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/Campus"
+              $ref: "#/components/schemas/Usuario"
             }
           }
         }
@@ -45,7 +65,7 @@ export const campusPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Campus"
+                $ref: "#/components/schemas/Usuario"
               }
             }
           }
@@ -54,18 +74,18 @@ export const campusPaths = {
           description: messages.httpCodes[500],
         }
       }
-    }
+    },
   },
-  "/campus/{id}": {
+  "/usuarios/{id}": {
     get: {
-      tags: ["Campus"],
-      summary: "Buscar Campus por ID",
-      description: "Retorna um campus po ID",
+      tags: ["Usuários"],
+      summary: "Obter Usuário por ID",
+      description: "Retorna um usuário por ID",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do campus",
+          description: "ID do usuário",
           required: true,
           schema: {
             type: "string"
@@ -78,7 +98,7 @@ export const campusPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Campus"
+                $ref: "#/components/schemas/Usuario"
               }
             }
           }
@@ -89,14 +109,14 @@ export const campusPaths = {
       }
     },
     patch: {
-      tags: ["Campus"],
-      summary: "Atualizar Campus",
-      description: "Atualiza um campus",
+      tags: ["Usuários"],
+      summary: "Atualizar Usuário",
+      description: "Atualiza um usuário",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do campus",
+          description: "ID do usuário",
           required: true,
           schema: {
             type: "string"
@@ -108,7 +128,7 @@ export const campusPaths = {
         content: {
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/Campus"
+              $ref: "#/components/schemas/Usuario"
             }
           }
         }
@@ -119,7 +139,7 @@ export const campusPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Campus"
+                $ref: "#/components/schemas/Usuario"
               }
             }
           }
@@ -130,14 +150,14 @@ export const campusPaths = {
       }
     },
     delete: {
-      tags: ["Campus"],
-      summary: "Deletar Campus",
-      description: "Deleta um campus",
+      tags: ["Usuários"],
+      summary: "Deletar Usuário",
+      description: "Deleta um usuário por ID",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do campus",
+          description: "ID do usuário",
           required: true,
           schema: {
             type: "string"

@@ -1,12 +1,58 @@
-
 import messages from "../../utils/mensagens.js";
 
-export const campusPaths = {
-  "/campus": {
+export const inventarioPaths = {
+  "/inventarios": {
     get: {
-      tags: ["Campus"],
-      summary: "Listar todos os Campus",
-      description: "Retorna uma lista de campus",
+      tags: ["Inventários"],
+      summary: "Listar inventários",
+      description: "Retorna uma lista de todos os inventários",
+      parameters: [
+        {
+          name: "pagina",
+          in: "query",
+          description: "Pagina",
+          required: false,
+          schema: {
+            type: "integer"
+          }
+        },
+        {
+          name: "data_inicial_inicial",
+          in: "query",
+          description: "Data inicial do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        },
+        {
+          name: "data_inicial_final",
+          in: "query",
+          description: "Data inicial_final do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        },
+        {
+          name: "data_final_inicial",
+          in: "query",
+          description: "Data final_inicial do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        },
+        {
+          name: "data_final_final",
+          in: "query",
+          description: "Data final do inventário",
+          required: false,
+          schema: {
+            type: "date"
+          }
+        }
+      ],
       responses: {
         200: {
           description: messages.httpCodes[200],
@@ -15,7 +61,7 @@ export const campusPaths = {
               schema: {
                 type: "array",
                 items: {
-                  $ref: "#/components/schemas/Campus"
+                  $ref: "#/components/schemas/Inventario"
                 }
               }
             }
@@ -27,14 +73,14 @@ export const campusPaths = {
       }
     },
     post: {
-      tags: ["Campus"],
-      summary: "Cadastrar Campus",
-      description: "Cadastra um novo campus",
+      tags: ["Inventários"],
+      summary: "Cadastrar inventário",
+      description: "Cadastra um novo inventário",
       requestBody: {
         content: {
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/Campus"
+              $ref: "#/components/schemas/Inventario"
             }
           }
         }
@@ -45,7 +91,7 @@ export const campusPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Campus"
+                $ref: "#/components/schemas/Inventario"
               }
             }
           }
@@ -56,16 +102,16 @@ export const campusPaths = {
       }
     }
   },
-  "/campus/{id}": {
+  "/inventarios/{id}": {
     get: {
-      tags: ["Campus"],
-      summary: "Buscar Campus por ID",
-      description: "Retorna um campus po ID",
+      tags: ["Inventários"],
+      summary: "Buscar um inventário por ID",
+      description: "Retorna um inventário pelo seu ID",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do campus",
+          description: "ID do inventário",
           required: true,
           schema: {
             type: "string"
@@ -78,7 +124,7 @@ export const campusPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Campus"
+                $ref: "#/components/schemas/Inventario"
               }
             }
           }
@@ -89,14 +135,14 @@ export const campusPaths = {
       }
     },
     patch: {
-      tags: ["Campus"],
-      summary: "Atualizar Campus",
-      description: "Atualiza um campus",
+      tags: ["Inventários"],
+      summary: "Atualizar inventário",
+      description: "Atualiza o inventário",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do campus",
+          description: "ID do inventário",
           required: true,
           schema: {
             type: "string"
@@ -108,7 +154,7 @@ export const campusPaths = {
         content: {
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/Campus"
+              $ref: "#/components/schemas/Inventario"
             }
           }
         }
@@ -119,7 +165,7 @@ export const campusPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Campus"
+                $ref: "#/components/schemas/Inventario"
               }
             }
           }
@@ -130,14 +176,14 @@ export const campusPaths = {
       }
     },
     delete: {
-      tags: ["Campus"],
-      summary: "Deletar Campus",
-      description: "Deleta um campus",
+      tags: ["Inventários"],
+      summary: "Deletar inventário",
+      description: "Deleta o inventário",
       parameters: [
         {
           name: "id",
           in: "path",
-          description: "ID do campus",
+          description: "ID do inventário",
           required: true,
           schema: {
             type: "string"

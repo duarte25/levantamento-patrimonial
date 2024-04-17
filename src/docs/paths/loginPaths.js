@@ -18,7 +18,7 @@ const loginPaths = {
                                     example: "dev@gmail.com"
                                 },
                                 senha: {
-                                    type: "id",
+                                    type: "string",
                                     example: "Dev@1234"
                                 }
                             }
@@ -54,7 +54,7 @@ const loginPaths = {
                                                 example: "dev@gmail.com"
                                             },
                                             ativo: {
-                                                type: "bollean",
+                                                type: "boolean",
                                                 example: true
                                             }
                                         }
@@ -76,7 +76,7 @@ const loginPaths = {
                                         example: "[]"
                                     },
                                     error: {
-                                        type: "bollean",
+                                        type: "boolean",
                                         example: "true"
                                     },
                                     code: {

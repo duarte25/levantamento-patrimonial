@@ -1,163 +1,161 @@
+import messages from "../../utils/mensagens.js";
+
 export const setorPaths = {
-    "/buscarSetores": {
-      post: {
-        tags: ["Setores"],
-        summary: "Cadastrar um novo setor",
-        description: "Faça o cadastro de um novo setor.",
-        requestBody: {
-          required: true,
+  "/Setores": {
+    get: {
+      tags: ["Setores"],
+      summary: "Listar todos os setores",
+      description: "Retorna uma lista de todos os setores.",
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Setor",
-              },
-            },
-          },
+                type: "array",
+                items: {
+                  $ref: "#/components/schemas/Setor"
+                }
+              }
+            }
+          }
         },
-        responses: {
-          201: {
-            description: "Setor cadastrado com sucesso!",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Setor",
-                },
-              },
-            },
-          },
-          500: {
-            description: "Erro interno no servidor.",
-          },
-        },
-      },
+        500: {
+          escription: messages.httpCodes[500]
+        }
+      }
     },
-      get: {
-        tags: ["Setores"],
-        summary: "Listar todos os setores",
-        description: "Retorna uma lista de todos os setores cadastrados.",
-        responses: {
-          200: {
-            description: "Retorna os setores cadastrados.",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Setor",
-                },
-              },
-            },
-          },
-          500: {
-            description: "Erro interno no servidor.",
-          },
-        },
-      },
-      
-    "/setores/{id}": {
-      get: {
-        tags: ["Setores"],
-        summary: "Buscar setor por ID",
-        description: "Retorna um setor com base no ID fornecido.",
-        parameters: [
-          {
-            in: "path",
-            name: "id",
-            required: true,
-            description: "ID do setor",
+    post: {
+      tags: ["Setores"],
+      summary: "Cadastrar Setor",
+      description: "Cadastra um novo setor.",
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
             schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "Retorna o setor encontrado.",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Setor",
-                },
-              },
-            },
-          },
-          404: {
-            description: "Setor não encontrado!",
-          },
-          500: {
-            description: "Erro interno no servidor.",
-          },
-        },
+              $ref: "#/components/schemas/Setor",
+            }
+          }
+        }
       },
-      patch: {
-        tags: ["Setores"],
-        summary: "Atualizar um setor",
-        description: "Atualiza um setor existente com novos dados.",
-        parameters: [
-          {
-            in: "path",
-            name: "id",
-            required: true,
-            description: "ID do setor",
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        requestBody: {
-          required: true,
+      responses: {
+        201: {
+          description: messages.httpCodes[201],
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Setor",
-              },
-            },
-          },
+                $ref: "#/components/schemas/Setor"
+              }
+            }
+          }
         },
-        responses: {
-          200: {
-            description: "Setor atualizado com sucesso!",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Setor",
-                },
-              },
-            },
-          },
-          404: {
-            description: "Setor não encontrado!",
-          },
-          500: {
-            description: "Erro interno no servidor.",
-          },
+        500: {
+          escription: messages.httpCodes[500]
+        }
+      }
+    }
+  },
+
+  "/setores/{id}": {
+    get: {
+      tags: ["Setores"],
+      summary: "Buscar setor por ID",
+      description: "Retorna um setor.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "ID do setor",
+          required: true,
+          schema: {
+            type: "string",
+          }
+        }
+      ],
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Setor"
+              }
+            }
+          }
         },
-      },
-      delete: {
-        tags: ["Setores"],
-        summary: "Excluir um setor",
-        description: "Remove um setor com base no ID fornecido.",
-        parameters: [
-          {
-            in: "path",
-            name: "id",
-            required: true,
-            description: "ID do setor",
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "Setor excluído com sucesso!",
-          },
-          404: {
-            description: "Setor não encontrado!",
-          },
-          500: {
-            description: "Erro interno no servidor.",
-          },
-        },
-      },
+        500: {
+          description: messages.httpCodes[500]
+        }
+      }
     },
-  };
-  
+    patch: {
+      tags: ["Setores"],
+      summary: "Atualizar setor",
+      description: "Atualiza um setor.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "ID do setor",
+          required: true,
+          schema: {
+            type: "string",
+          }
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/Setor",
+            }
+          }
+        }
+      },
+      responses: {
+        200: {
+          description: messages.httpCodes[200],
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Setor"
+              }
+            }
+          }
+        },
+        500: {
+          description: messages.httpCodes[500]
+        }
+      }
+    },
+    delete: {
+      tags: ["Setores"],
+      summary: "Deletar setor",
+      description: "Deleta um Setor.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "ID do setor",
+          required: true,
+          schema: {
+            type: "string",
+          }
+        }
+      ],
+      responses: {
+        200: {
+          description: messages.httpCodes[200]
+        },
+        404: {
+          description: messages.httpCodes[404]
+        },
+        500: {
+          description: messages.httpCodes[500]
+        }
+      }
+    }
+  }
+};
