@@ -6,6 +6,44 @@ export const setorPaths = {
       tags: ["Setores"],
       summary: "Listar todos os setores",
       description: "Retorna uma lista de todos os setores.",
+      parameters: [
+        {
+          name: "pagina",
+          in: "query",
+          description: "Pagina",
+          required: false,
+          schema: {
+            type: "integer"
+          }
+        },
+        {
+          name: "local",
+          in: "query",
+          description: "Local do setor",
+          required: false,
+          schema: {
+            type: "string"
+          }
+        },
+        {
+          name: "status",
+          in: "query",
+          description: "Status do setor",
+          required: false,
+          schema: {
+            type: "boolean"
+          }
+        },
+        {
+          name: "campus",
+          in: "query",
+          description: "Campus do setor",
+          required: false,
+          schema: {
+            type: "string"
+          }
+        }
+      ],
       responses: {
         200: {
           description: messages.httpCodes[200],
