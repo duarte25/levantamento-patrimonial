@@ -31,7 +31,7 @@ class ImagensControllers {
 
       res.status(201).send({ codigo: 201, mensagem: messages.httpCodes[201], dados: imagem, });
     } catch (error) {
-      console.error("Erro ao enviar imagem:", error);
+      // console.error("Erro ao enviar imagem:", error);
       return res.status(500).send({ codigo: 500, mensagem: messages.httpCodes[500] });
     }
   }
@@ -63,7 +63,7 @@ class ImagensControllers {
       `imagens/${imagem.id_imagem}.${imagem.tipo_arquivo}`,
       async (err) => {
         if (err) {
-          console.error("Erro ao deletar imagem:", err);
+          // console.error("Erro ao deletar imagem:", err);
           return res.status(500).send(messages.httpCodes[500]);
         } else {
           await imagem.deleteOne();

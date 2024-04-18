@@ -14,7 +14,7 @@ export default class SetorController {
 
             return sendResponse(res, 201, { data: savedSetor });
         } catch (err) {
-          console.log(err);
+        //  console.log(err);
             return sendError(res, 500, messages.httpCodes[500]);
         }
 

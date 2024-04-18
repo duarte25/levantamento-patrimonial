@@ -18,19 +18,19 @@ async function conectarBanco() {
         mongoose.set("strictQuery", true);
 
         if (process.env.DEBUGLOG === "true")
-            // console.log("Tentando conexão com banco...");
+            console.log("Tentando conexão com banco...");
 
         mongoose.connection
             .on("open", () => {
-                if (process.env.DEBUGLOG === "true");
-                //  console.log("Conexão com banco estabelecida com sucesso!");
+                if (process.env.DEBUGLOG === "true")
+                    console.log("Conexão com banco estabelecida com sucesso!");
             })
             .on("error", err => {
-                // console.log("Erro no banco de dados:", err);
+                console.log("Erro no banco de dados:", err);
             })
             .on("disconnected", () => {
-                if (process.env.DEBUGLOG === "true"); 
-                //console.log("Desconectou do banco de dados.");
+                if (process.env.DEBUGLOG === "true")
+                    console.log("Desconectou do banco de dados.");
             });
 
         await mongoose.connect(bancoUrl);
@@ -44,7 +44,7 @@ async function conectarBanco() {
 await conectarBanco();
 
 export async function desconetarBanco() {
-    if (process.env.DEBUGLOG === "true") //console.log("Solicitando encerramento da conexão com banco");
+    if (process.env.DEBUGLOG === "true") console.log("Solicitando encerramento da conexão com banco");
 
     await mongoose.connection.close();
 }
