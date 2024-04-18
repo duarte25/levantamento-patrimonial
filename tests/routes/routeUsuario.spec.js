@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test, it } from "@jest/globals";
 import request from "supertest";
 import app from "../../src/app.js";
 import messages from "../../src/utils/mensagens.js";
@@ -8,13 +8,13 @@ describe("Rotas de Usuario", () => {
     const req = request(app);
     let usuarioID;
     let token;
+    let campusID;
 
     const userlogin = {
         email: "dev@gmail.com",
         senha: "Dev@1234"
     };
 
-    // eslint-disable-next-line no-undef
     it("Deve autenticar o usuário e retornar um token", async () => {
         const resposta = await request(app)
             .post("/login")
@@ -26,8 +26,21 @@ describe("Rotas de Usuario", () => {
         return token = resposta.body.token;
     });
 
+    async function obterCampus() {
+        const res = await req
+            .get("/campus")
+            .set("Accept", "aplication/json")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200);
+
+        const campusSelecionado = res.body.data[0];
+        expect(campusSelecionado).toBeDefined();
+        expect(campusSelecionado._id).toBeDefined();
+
+        return campusSelecionado._id;
+    }
+
     // Teste de listar USUARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de usuarios", async () => {
         const dados = await req
             .get("/usuarios")
@@ -39,8 +52,9 @@ describe("Rotas de Usuario", () => {
     });
 
     // Teste de criar USUARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve cadastrar um usuario", async () => {
+        
+        campusID = await obterCampus();
 
         const resposta = await req
             .post("/usuarios")
@@ -50,6 +64,7 @@ describe("Rotas de Usuario", () => {
                 cpf: "66217086026",
                 email: "Teste68@live.com",
                 senha: "Teste@22",
+                campus: campusID,
                 ativo: true,
             })
             .set("Accept", "application/json")
@@ -62,7 +77,6 @@ describe("Rotas de Usuario", () => {
     });
 
     // Teste de atualizar USUARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve atualizar um usuario pelo ID", async () => {
         const dados = await req
             .patch(`/usuarios/${usuarioID}`)
@@ -79,7 +93,6 @@ describe("Rotas de Usuario", () => {
     });
 
     // Teste de listar por ID USUARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de usuario por ID", async () => {
         const dados = await req
             .get(`/usuarios/${usuarioID}`)
@@ -91,7 +104,6 @@ describe("Rotas de Usuario", () => {
     });
 
     // Teste de deletar USUARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve deletar um usuario", async () => {
         const resposta = await req
             .delete(`/usuarios/${usuarioID}`)

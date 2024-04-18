@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
-import paginate from "mongoose-paginate-v2"
+import mongoose from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 const grupoSchema = new mongoose.Schema({
     nome: {
@@ -33,11 +33,11 @@ const grupoSchema = new mongoose.Schema({
         timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
         versionKey: "_version"
     }
-)
+);
 
 // Configurações do modelo para que seja usada para buscar dados de usuário de forma paginada em nossa aplicação
-grupoSchema.plugin(paginate)
+grupoSchema.plugin(paginate);
 
-const grupo = mongoose.model("grupos", grupoSchema)
+const grupo = mongoose.model("grupos", grupoSchema);
 
-export default grupo
+export default grupo;

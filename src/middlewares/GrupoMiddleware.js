@@ -12,14 +12,14 @@ export function GrupoMiddleware(regra) {
             [, token] = token.split(" ");
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const userid = decoded.id
+            const userid = decoded.id;
 
-            const findUser = await Usuario.findById(userid)
-            const grupos = findUser.grupos
+            const findUser = await Usuario.findById(userid);
+            const grupos = findUser.grupos;
 
             for (let grupo of grupos) {
 
-                const findGroupo = await Grupo.findById(grupo)
+                const findGroupo = await Grupo.findById(grupo);
 
                 if (findGroupo.regras.some(regra => regra.nome === regra)) {
                     return next();
@@ -30,8 +30,8 @@ export function GrupoMiddleware(regra) {
 
         } catch (err) {
 
-            console.log(err.message)
+            // console.log(err.message);
             return res.status(498).json({ data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.auth.invalidToken] });
         }
-    }
+    };
 }

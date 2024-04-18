@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test, it } from "@jest/globals";
 import request from "supertest";
 import app from "../../src/app.js";
 import messages from "../../src/utils/mensagens.js";
@@ -9,7 +9,7 @@ describe("Rotas de Inventario", () => {
     let inventarioID;
     let setorID = [];
     let usuarioID = [];
-    let campusID = ""
+    let campusID = "";
     let token;
 
     const userlogin = {
@@ -17,12 +17,11 @@ describe("Rotas de Inventario", () => {
         senha: "Dev@1234"
     };
 
-    // eslint-disable-next-line no-undef
     it("Deve autenticar o usuário e retornar um token", async () => {
         const resposta = await request(app)
             .post("/login")
             .send(userlogin)
-            .set("Accept", "aplication/json")
+            .set("Accept", "aplication/json");
 
         expect(resposta.body.token).toBeDefined();
         return token = resposta.body.token;
@@ -67,11 +66,10 @@ describe("Rotas de Inventario", () => {
             .delete(`/campus/${campusID}`)
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${token}`)
-            .expect(200)
+            .expect(200);
     }
 
     // Teste de listar de INVENTARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de inventarios", async () => {
         const dados = await req
             .get("/inventarios")
@@ -83,7 +81,6 @@ describe("Rotas de Inventario", () => {
     });
 
     // Teste de criar INVENTARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve cadastrar um inventario", async () => {
 
         usuarioID = await obterUsuario();
@@ -115,7 +112,6 @@ describe("Rotas de Inventario", () => {
     });
 
     // Teste de atualizar INVENTARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve atualizar um inventario pelo ID", async () => {
         const dados = await req
             .patch(`/inventarios/${inventarioID}`)
@@ -138,7 +134,6 @@ describe("Rotas de Inventario", () => {
     });
 
     // Teste de listar por ID INVENTARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve retornar uma lista de inventario por ID", async () => {
         const dados = await req
             .get(`/inventarios/${inventarioID}`)
@@ -150,7 +145,6 @@ describe("Rotas de Inventario", () => {
     });
 
     // Teste de deletar INVENTARIO ---------------------------------------------------
-    // eslint-disable-next-line no-undef
     it("Deve deletar um inventario", async () => {
         const resposta = await req
             .delete(`/inventarios/${inventarioID}`)
@@ -159,6 +153,6 @@ describe("Rotas de Inventario", () => {
             .expect(200);
 
         expect(resposta.body.message).toContain(messages.httpCodes[200]);
-        apagarCampus()
+        apagarCampus();
     });
 });
