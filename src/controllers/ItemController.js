@@ -51,7 +51,7 @@ export default class ItemController {
 
             res.status(200).json({ ...itens, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
         }
     }
@@ -97,7 +97,7 @@ export default class ItemController {
                 data: savedItem, error: false, code: 201, message: messages.httpCodes[201], errors: []
             });
         } catch (err) {
-            console.log("erro", err);
+            // console.log("erro", err);
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
     }

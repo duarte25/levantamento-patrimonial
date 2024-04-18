@@ -1,5 +1,5 @@
 import Item from "../models/Item.js";
-import PdfPrinter from 'pdfmake';
+import PdfPrinter from "pdfmake";
 import messages from "../utils/mensagens.js";
 
 export default class PdfController {
@@ -138,14 +138,14 @@ export default class PdfController {
                     tableHeader: {
                         bold: true,
                         fontSize: 10,
-                        color: 'white',
-                        alignment: 'center',
-                        fillColor: '#2c3e50'
+                        color: "white",
+                        alignment: "center",
+                        fillColor: "#2c3e50"
                     },
                     R_data: {
                         fontSize: 12,
                         italics: true,
-                        alignment: 'right'
+                        alignment: "right"
                     },
                 }
             };
@@ -163,7 +163,7 @@ export default class PdfController {
                 res.end(result);
             });
         } catch (error) {
-            console.error('Erro ao gerar PDF:', error);
+            // console.error("Erro ao gerar PDF:", error);
             res.status(500).send(messages.httpCodes[500]);
         }
     }

@@ -27,5 +27,4 @@ await inventarioSeed(quantidade);
 await db.collection("itens").deleteMany();
 await itemSeed(quantidade * 10);
 
-
 db.close();

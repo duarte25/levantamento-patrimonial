@@ -3,11 +3,11 @@ import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 
 export const createStorage = (req, res, next) => {
-  if (!fs.existsSync('imagens')) {
-      fs.mkdirSync('imagens');
+  if (!fs.existsSync("imagens")) {
+      fs.mkdirSync("imagens");
   }
-  next()
-}
+  next();
+};
 
 const storage = multer.diskStorage({
 
