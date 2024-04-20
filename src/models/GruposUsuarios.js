@@ -9,25 +9,10 @@ const grupoSchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    regras:
+    {
 
-    regras: [
-        {
-            nome: {
-                type: String,
-                minlength: 3,
-                maxlength: 200,
-                required: true,
-                index: true
-            },
-
-            descricao: {
-                type: String,
-                minlength: 3,
-                maxlength: 200,
-                required: true,
-            }
-        }
-    ]
+    }
 },
     {
         timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },

@@ -8,7 +8,7 @@ await db.collection("grupos").deleteMany();
 
 
 
-await AdicionarRegrasNosGrupos("Administrador", ["criar_usuarios"]);
+await AdicionarRegrasNosGrupos("Administrador");
 
 
 
