@@ -19,18 +19,23 @@ export function GrupoMiddleware(regra) {
 
             for (let grupo of grupos) {
 
-                const findGroupo = await Grupo.findById(grupo);
+                const findGrupo = await Grupo.findById(grupo);
+                
+                const regras = findGrupo.regras
 
-                if (findGroupo.regras.some(regra => regra.nome === regra)) {
-                    return next();
+                for(let categoria in regras){
+                    const permissoes = regras[categoria]
+                    if(permissoes.includes(regra)){
+                        return next()
+                    }
                 }
             }
 
             return res.status(401).json({ data: [], error: true, code: 401, message: messages.httpCodes[401], errors: [messages.auth.invalidPermission] });
 
         } catch (err) {
+            if (process.env.DEBUGLOG) console.log(err.message)
 
-            // console.log(err.message);
             return res.status(498).json({ data: [], error: true, code: 498, message: messages.httpCodes[498], errors: [messages.auth.invalidToken] });
         }
     };

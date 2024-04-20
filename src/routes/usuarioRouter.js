@@ -8,9 +8,9 @@ const router = express.Router();
 
 router
     .post("/usuarios", AuthMiddleware,GrupoMiddleware("criar_usuarios"), usuarioValidation.criarUsuarioValidate, UsuarioController.CriarUsuario)
-    .get("/usuarios", AuthMiddleware, UsuarioController.listarUsuario)
-    .get("/usuarios/:id", AuthMiddleware, UsuarioController.listarUsuarioID)
-    .patch("/usuarios/:id", AuthMiddleware, usuarioValidation.alterarUsuarioValidate, UsuarioController.alterarUsuario)
-    .delete("/usuarios/:id", AuthMiddleware, UsuarioController.deletarUsuario);
+    .get("/usuarios", AuthMiddleware, GrupoMiddleware("visualizar_usuarios"), UsuarioController.listarUsuario)
+    .get("/usuarios/:id", AuthMiddleware, GrupoMiddleware("criar_usuarios"), UsuarioController.listarUsuarioID)
+    .patch("/usuarios/:id", AuthMiddleware, GrupoMiddleware("criar_usuarios"), usuarioValidation.alterarUsuarioValidate, UsuarioController.alterarUsuario)
+    .delete("/usuarios/:id", AuthMiddleware, GrupoMiddleware("criar_usuarios"), UsuarioController.deletarUsuario);
 
 export default router;
