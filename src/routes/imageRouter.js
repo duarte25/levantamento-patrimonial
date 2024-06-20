@@ -1,13 +1,15 @@
+import ImagensControllers from "../controllers/imageController.js";
 import express from "express";
-import ImagemController from "../controllers/imageController.js";
-import upload from "../config/multer.js";
-import { AuthMiddleware } from "../middlewares/AuthMiddleware.js";
+import { AuthMiddleware } from "../middlewares/AuthMiddleware.js"
+import { createStorage, upload } from "../config/image_config.js";
+import { GrupoMiddleware } from "../middlewares/GrupoMiddleware.js";
 
 const router = express.Router();
 
 router
-    .post("/images/uploads", AuthMiddleware, upload.single("file"), ImagemController.uploadImage)
-    .get("/images", AuthMiddleware, ImagemController.findAllImage)
-    .delete("/images/remover/:id", AuthMiddleware, ImagemController.removeImage);
+    .post("/imagens", AuthMiddleware, GrupoMiddleware("criar_imagens"),  createStorage, upload.single("image"), ImagensControllers.enviarImagem)
+    .get("/imagens", AuthMiddleware, GrupoMiddleware("visualizar_imagens"),  ImagensControllers.listarImagens)
+    .delete("/imagens/:id", AuthMiddleware, GrupoMiddleware("deletar_imagens"),  ImagensControllers.deletarImagem)
+    .get("/imagens/:id", AuthMiddleware, GrupoMiddleware("visualizar_imagens"),  ImagensControllers.mostrarImagem);
 
 export default router;

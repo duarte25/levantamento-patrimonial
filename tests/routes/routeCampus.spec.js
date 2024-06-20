@@ -66,5 +66,3 @@ describe("Campus", () => {
     });
 
 });
-
-

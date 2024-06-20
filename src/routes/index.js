@@ -1,5 +1,5 @@
 import logRoutes from "../middlewares/LogRoutesMiddleware.js";
-import uploads from "./imageRouter.js";
+import imagens from "../routes/imageRouter.js"
 import auth from "./authRouter.js";
 import usuarios from "./usuarioRouter.js";
 import recuperarSenha from "./recuperaSenhaRouter.js";
@@ -7,6 +7,7 @@ import setor from "./setorRouter.js";
 import itens from "./itemRoutes.js";
 import inventarios from "./inventarioRoutes.js";
 import campus from "./campusRouter.js";
+import relatorio from "./pdfRouter.js";
 
 const routes = (app) => {
 
@@ -19,14 +20,15 @@ const routes = (app) => {
     });
 
     app.use(
-        uploads,
+        imagens,
         auth,
         usuarios,
         recuperarSenha,
         itens,
         inventarios,
         setor,
-        campus
+        campus,
+        relatorio
         
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );

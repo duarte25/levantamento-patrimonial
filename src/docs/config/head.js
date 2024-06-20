@@ -1,12 +1,18 @@
-import { imagePaths } from "../paths/imagePaths.js";
+import imagePaths from "../paths/imagePaths.js";
 import { imageSchemas } from "../schemas/imageSchema.js";
 import loginPaths from "../paths/loginPaths.js";
 import recuperarSenhaPaths from "../paths/recuperarSenhaPaths.js";
 import { itensPaths } from "../paths/itensPath.js";
 import { itensSchemas } from "../schemas/itensSchema.js";
-import { campusPaths } from "../paths/capusPaths.js";
 import { campusSchema } from "../schemas/campusSchema.js";
-
+import { campusPaths } from "../paths/campusPaths.js";
+import { setorSchema } from "../schemas/setorSchema.js";
+import { setorPaths } from "../paths/setorPaths.js";
+import { usuarioSchema } from "../schemas/usuarioSchema.js";
+import { usuarioPaths } from "../paths/usuarioPaths.js";
+import { inventarioSchema } from "../schemas/inventarioSchema.js";
+import { inventarioPaths } from "../paths/inventarioPaths.js";
+import relatorioPath from "../paths/relatorioPath.js";
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -28,12 +34,34 @@ const swaggerOptions = {
     servers: [
       {
         url: `http://localhost:${process.env.PORT}`,
-        description: `API em desenvovlvimento`,
+        description: "API em desenvolvimento",
       },
       {
         url: `http://localhost:${process.env.PORT}`,
-        description: `API em produção`,
+        description: "API em produção",
       }
+    ],
+    components: {
+      securitySchemes: {
+        jwtAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+      schemas: {
+        ...imageSchemas,
+        ...itensSchemas,
+        ...inventarioSchema,
+        ...campusSchema,
+        ...setorSchema,
+        ...usuarioSchema,
+      },
+    },
+    security: [
+      {
+        jwtAuth: [],
+      },
     ],
     tags: [
       {
@@ -49,6 +77,14 @@ const swaggerOptions = {
         description: "Upload de imagens",
       },
       {
+        name: "Campus",
+        description: "Campus do IFRO",
+      },
+      {
+        name: "Relatórios",
+        description: "Relatórios do sistema",
+      },
+      {
         name: "Usuários",
         description: "Usuários do sistema",
       },
@@ -56,27 +92,30 @@ const swaggerOptions = {
         name: "Itens",
         description: "Itens do inventário",
       },
+      { 
+        name: "Inventários",
+        description: "Invetários do campus"
+      },
+      {
+        name: "Setores",
+        description: "Setores do inventário",
+      },
+
+      {
+        name: "Campus",
+        description: "Campus do usuário"
+      },
     ],
     paths: {
       ...imagePaths,
       ...loginPaths,
+      ...usuarioPaths,
       ...recuperarSenhaPaths,
       ...itensPaths,
+      ...inventarioPaths,
+      ...setorPaths,
       ...campusPaths,
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-      schemas: {
-        ...imageSchemas,
-        ...itensSchemas,
-        ...campusSchema,
-      },
+      ...relatorioPath
     },
   },
   apis: ["./src/routes/*.js"],

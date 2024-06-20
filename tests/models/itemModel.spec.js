@@ -19,11 +19,11 @@ describe("Modelo de Item", () => {
     await mongoose.connection.close();
     });
 
-    it("Deve criar um novo Abastecimento", async () => {
+    it("Deve criar um novo item", async () => {
         itemData = {
             _id: new mongoose.Types.ObjectId(),
             etiqueta: 1234,
-            nao_tiquetado: false,
+            nao_etiquetado: false,
             encontrado: true,
             nome: "Computador Mac mini",
             estado: "Bem em condições de uso",
@@ -41,7 +41,7 @@ describe("Modelo de Item", () => {
 
         expect(itemSaved._id).toBe(itemData._id);
         expect(itemSaved.etiqueta).toBe(itemData.etiqueta);
-        expect(itemSaved.nao_tiquetado).toBe(itemData.nao_tiquetado);
+        expect(itemSaved.nao_etiquetado).toBe(itemData.nao_etiquetado);
         expect(itemSaved.encontrado).toBe(itemData.encontrado);
         expect(itemSaved.nome).toBe(itemData.nome);
         expect(itemSaved.estado).toBe(itemData.estado);

@@ -1,10 +1,27 @@
 import mongoose from "mongoose";
 
-const imageSchema = new mongoose.Schema({
-  nome: { type: String },
-  src: { type: String, require: true },
-  createdAt: { type: Date, default: Date.now}
-});
+const imagemSchema = new mongoose.Schema(
+  {
+    tipo_arquivo: {
+      type: String,
+    },
+    enviado_por: {
+      type: mongoose.Types.ObjectId,
+      ref: "usuarios",
+    },
+    caminho: {
+      type: String,
+    },
+    id_imagem: {
+      type: String
+    }
+  },
+  {
+    timestamps: { createdAt: "criado_em", updatedAt: "atualizado_em" },
+    versionKey: "_version"
+  }
+);
 
-const image = mongoose.model("imagens", imageSchema);
-export default image;
+const ImagemModel = mongoose.model("imagens", imagemSchema);
+
+export default ImagemModel;

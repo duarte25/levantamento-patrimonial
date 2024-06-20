@@ -35,15 +35,20 @@ const usuarioSchema = new mongoose.Schema({
         index: true,
         select: false
     },
+    campus: {
+        type: mongoose.Types.ObjectId,
+        ref: "campus"
+    },
+    grupos: [{
+        _id: {
+            type: mongoose.Types.ObjectId,
+            ref: "grupos"
+        }
+    }],
     ativo: {
         type: Boolean,
         required: true,
         default: true
-    },
-    campus: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "campus",
-        // O required aqui não está funcionando não sei pq, ele cracha o seed
     }
 },
     {

@@ -1,60 +1,86 @@
-import Image from "../models/Image.js";
 import fs from "fs";
+import ImagemModel from "../models/Image.js";
+import messages from "../utils/mensagens.js";
 
-export default class ImagemController {
-  static uploadImage = async (req, res) => {
-    try {
-      const { nome } = req.body;
-      const file = req.file;
+class ImagensControllers {
 
-      const image = new Image({
-        nome,
-        src: file.path,
-      });
 
-      await image.save();
-      res.status(200).json({ image, message: "Imagem salva com sucesso!" });
-    } catch (error) {
-      console.log(error);
-      return res
-        .status(500)
-        .json({ error: true, code: 500, message: "Erro interno no servidor" });
+  static async enviarImagem(req, res, next) {
+    if (!req.file) {
+      return res.status(400).send({ codigo: 400, mensagem: messages.httpCodes[400]});
     }
-  };
-  static findAllImage = async (req, res) => {
-    try {
-      const image = await Image.find();
-      res.json(image);
-    } catch (error) {
-      console.log(error);
-      return res
-        .status(500)
-        .json({ error: true, code: 500, message: "Erro interno no servidor" });
+
+    const arquivo = req.file;
+    const usuarioId = req.user_id; // Id do usuario que está logado 
+
+
+
+    if (!usuarioId) {
+      return res.status(401).send({ codigo: 401, mensagem: messages.httpCodes[401] });
     }
-  };
-  static removeImage = async (req, res) => {
+
+    const imagem = new ImagemModel({
+      id_imagem: arquivo.filename.split(".")[0],
+      tipo_arquivo: arquivo.filename.split(".")[1],
+      enviado_por: usuarioId, // Usa o ID do usuário em vez do objeto completo
+      caminho: "/imagens/" + arquivo.filename,
+    });
+
     try {
-        const { id } = req.params;
-        
-        // Busca o documento de imagem pelo ID
-        const image = await Image.findById(id);
-        
-        // Verifica se a imagem foi encontrada
-        if (!image) {
-            return res.status(404).json({ error: true, code: 404, message: "Imagem não encontrada!" });
+      await imagem.save();
+
+      res.status(201).send({ codigo: 201, mensagem: messages.httpCodes[201], dados: imagem, });
+    } catch (error) {
+      // console.error("Erro ao enviar imagem:", error);
+      return res.status(500).send({ codigo: 500, mensagem: messages.httpCodes[500] });
+    }
+  }
+  static async mostrarImagem(req, res, next) {
+    const { id } = req.params;
+
+    const imagem = await ImagemModel.findOne({
+      id_imagem: id
+    });
+
+    if (!imagem) {
+      return res.status(404).send(messages.httpCodes[404]);
+    }
+
+    res.sendFile(imagem.caminho, { root: "." });
+  }
+  static async deletarImagem(req, res, next) {
+    const { id } = req.params;
+
+    const imagem = await ImagemModel.findOne({
+      id_imagem: id
+    });
+
+    if (!imagem) {
+      return res.status(404).send(messages.httpCodes[404]);
+    }
+
+    fs.unlink(
+      `imagens/${imagem.id_imagem}.${imagem.tipo_arquivo}`,
+      async (err) => {
+        if (err) {
+          // console.error("Erro ao deletar imagem:", err);
+          return res.status(500).send(messages.httpCodes[500]);
+        } else {
+          await imagem.deleteOne();
+          res.send("Imagem deletada com sucesso");
         }
+      }
+    );
+  }
 
-        // Remove o documento de imagem do banco de dados
-        await image.deleteOne();
-        
-        // Remove o arquivo físico da imagem do sistema de arquivos
-        fs.unlinkSync(image.src);
-
-        res.status(200).json({ message: "Imagem removida com Sucesso!" });
+  static async listarImagens(req, res, next) {
+    try {
+      const imagens = await ImagemModel.find();
+      res.status(200).json(imagens);
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: true, code: 500, message: "Erro interno no servidor" });
+      res.status(500).json({ error: 500, message: messages.httpCodes[500]});
     }
-};
-
+  }
 }
+
+export default ImagensControllers;
