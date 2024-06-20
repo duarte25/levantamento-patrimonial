@@ -12,7 +12,7 @@ let quantidade = parseInt(50);
 await db.collection("campus").deleteMany();
 await campusSeed();
 
-
+// Grupos
 await db.collection("grupos").deleteMany();
 await gruposSeed();
 

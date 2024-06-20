@@ -1,3 +1,4 @@
+import Grupo from "../models/Grupo.js";
 import Usuario from "../models/Usuario.js";
 import jwt from "jsonwebtoken";
 
@@ -8,7 +9,7 @@ export default class AuthController{
         const {email} = req.body;
 
         const userExist = await Usuario.findOne({ email });
-
+    
         return res.status(200).json({
             
             token: jwt.sign(
@@ -18,7 +19,8 @@ export default class AuthController{
                     email: userExist.email,
                     user: userExist.user,
                     ativo: userExist.ativo,
-                    campus: userExist.campus
+                    campus: userExist.campus,
+                    grupos: userExist.grupos
                 },
                 process.env.JWT_SECRET,
                 {expiresIn: process.env.JWT_EXPIREIN}
@@ -30,7 +32,8 @@ export default class AuthController{
                 email: userExist.email,
                 user: userExist.user,
                 ativo: userExist.ativo,
-                campus: userExist.campus
+                campus: userExist.campus,
+                token: userExist.grupos
             }   
         });
 

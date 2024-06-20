@@ -1,5 +1,5 @@
 import logRoutes from "../middlewares/LogRoutesMiddleware.js";
-import imagens from "../routes/imageRouter.js"
+import imagens from "../routes/imageRouter.js";
 import auth from "./authRouter.js";
 import usuarios from "./usuarioRouter.js";
 import recuperarSenha from "./recuperaSenhaRouter.js";

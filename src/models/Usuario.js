@@ -40,10 +40,8 @@ const usuarioSchema = new mongoose.Schema({
         ref: "campus"
     },
     grupos: [{
-        _id: {
-            type: mongoose.Types.ObjectId,
-            ref: "grupos"
-        }
+        type: String,
+        ref: "grupos"
     }],
     ativo: {
         type: Boolean,

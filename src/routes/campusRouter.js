@@ -2,15 +2,19 @@ import express from "express";
 import CampusController from "../controllers/CampusController.js";
 import ValidateCampus from "../services/validation/campusValidation.js";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware.js";
-import { GrupoMiddleware } from "../middlewares/GrupoMiddleware.js";
+import { verificarPermissao } from "../middlewares/PermissaoMiddleware.js";
+import { ACAO, PERM } from "../models/Grupo.js";
 
 const router = express.Router();
 
-router
-    .get("/campus", AuthMiddleware, GrupoMiddleware("visualizar_campus"),  CampusController.pesquisarCampus)
-    .get("/campus/:id", AuthMiddleware, GrupoMiddleware("visualizar_campus"),  CampusController.listarCampusID)
-    .post("/campus", AuthMiddleware, GrupoMiddleware("criar_campus"),  ValidateCampus.validateCriar, CampusController.criarCampus)
-    .patch("/campus/:id", AuthMiddleware, GrupoMiddleware("alterar_campus"),  CampusController.atualizarCampus)
-    .delete("/campus/:id", AuthMiddleware, GrupoMiddleware("deletar_campus"),  CampusController.deletarCampus);
+router.get("/campus", AuthMiddleware,
+    verificarPermissao(PERM.CAMPUS, ACAO.VER),
+    CampusController.pesquisarCampus);
+
+
+router.get("/campus/:id", AuthMiddleware, CampusController.listarCampusID);
+router.post("/campus", AuthMiddleware, ValidateCampus.validateCriar, CampusController.criarCampus);
+router.patch("/campus/:id", AuthMiddleware, CampusController.atualizarCampus);
+router.delete("/campus/:id", AuthMiddleware, CampusController.deletarCampus);
 
 export default router;
