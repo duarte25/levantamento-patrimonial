@@ -8,6 +8,7 @@ import itens from "./itemRoutes.js";
 import inventarios from "./inventarioRoutes.js";
 import campus from "./campusRouter.js";
 import relatorio from "./pdfRouter.js";
+import GrupoController from "../controllers/GrupoController.js";
 
 const routes = (app) => {
 
@@ -19,6 +20,9 @@ const routes = (app) => {
         res.status(200).redirect("/docs");
     });
 
+    // Para, se necessário, atualizar as informações dos grupos antes de verificar as permissões
+    app.use(GrupoController.carregarGrupos);
+
     app.use(
         imagens,
         auth,
@@ -29,7 +33,7 @@ const routes = (app) => {
         setor,
         campus,
         relatorio
-        
+
         // Aqui ficarão as rotas da API, que serão definidas posteriormente
     );
 };

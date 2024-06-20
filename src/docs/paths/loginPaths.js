@@ -15,7 +15,7 @@ const loginPaths = {
                             properties: {
                                 email: {
                                     type: "string",
-                                    example: "dev@gmail.com"
+                                    example: "administrador@gmail.com"
                                 },
                                 senha: {
                                     type: "string",

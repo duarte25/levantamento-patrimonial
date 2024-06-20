@@ -11,7 +11,6 @@ export const grupos = {};
  * FAZER DEPOIS: SALVAR EM SISTEMA DE CACHE NO REDIS
  */
 export default class GrupoService {
-
     /** Inicializa o cache de grupos para ser o mais rápido possível verificar
     as permissões de um usuário */
     static async inicializarGrupos() {

@@ -46,6 +46,10 @@ const recriarGruposPadrao = async () => {
         oculto: false,
         permissoes: [
             {
+                nome: PERM.CAMPUS,
+                acoes: [{nome: ACAO.VER}]
+            },
+            {
                 nome: PERM.INVENTARIO,
                 acoes: [{nome: ACAO.CRIAR}, {nome: ACAO.VER, qualquer_campus: true}, {nome: ACAO.EDITAR}, {nome: ACAO.DELETAR}]
             },
@@ -69,6 +73,10 @@ const recriarGruposPadrao = async () => {
         nivel: 3,
         oculto: false,
         permissoes: [
+            {
+                nome: PERM.CAMPUS,
+                acoes: [{nome: ACAO.CRIAR, qualquer_campus: true}, {nome: ACAO.VER, qualquer_campus: true}, {nome: ACAO.EDITAR, qualquer_campus: true}, {nome: ACAO.DELETAR, qualquer_campus: true}]
+            },
             {
                 nome: PERM.INVENTARIO,
                 acoes: [{nome: ACAO.CRIAR, qualquer_campus: true}, {nome: ACAO.VER, qualquer_campus: true}, {nome: ACAO.EDITAR, qualquer_campus: true}, {nome: ACAO.DELETAR, qualquer_campus: true}]
