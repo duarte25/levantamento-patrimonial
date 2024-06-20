@@ -23,10 +23,11 @@ export default async function itemSeed(quantidade) {
         return etiqueta;
     }
    
+    // ** DEVE FAZER UMA REGRA DE NEGOCIO COM QUE A ETIQUETA SEJA UNICA NO MESMO INVENTARIO
     for (let i = 0; i < quantidade; i++) {
 
         itensCriados.push({
-            etiqueta: gerarEtiquetaUnica(),
+            etiqueta: faker.random.number({ digits: 10 }),
             nome: faker.commerce.productName(),
             estado: faker.random.arrayElement(estado),
             ativo: faker.random.arrayElement(ativo),

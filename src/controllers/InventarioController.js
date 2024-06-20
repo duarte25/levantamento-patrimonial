@@ -35,6 +35,7 @@ export default class InventarioController {
                 }
 
                 sort = { data_inicio: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+
             }
 
             if (data_inicial_final || data_final_final) {
@@ -47,6 +48,7 @@ export default class InventarioController {
                 }
 
                 sort = { data_final: -1, _id: -1 }; // Se não é único precisa ter um segundo campo único para ordenar
+
             }
 
             const inventarios = await Inventario.paginate(

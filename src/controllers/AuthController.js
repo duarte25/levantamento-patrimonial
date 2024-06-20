@@ -8,8 +8,6 @@ export default class AuthController{
         const {email} = req.body;
 
         const userExist = await Usuario.findOne({ email });
-        
-        // console.log(userExist);
 
         return res.status(200).json({
             

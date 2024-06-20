@@ -72,8 +72,7 @@ describe("Rotas de Item", () => {
     // eslint-disable-next-line no-undef
     it("Deve cadastrar um inventario", async () => {
 
-        usuarioID = await obterUsuario();
-
+        setorID = await obterSetor();
         const resposta = await req
             .post("/inventarios")
             .send({

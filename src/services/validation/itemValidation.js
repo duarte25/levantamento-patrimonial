@@ -18,8 +18,8 @@ class ValidateItem {
         const auditor = tokenDecoded.id;
 
         val.body.auditor = auditor;
-        
-        const inventario = await Inventario.distinct("_id",{
+
+        const inventario = await Inventario.distinct("_id", {
             $and: [
                 { auditor: { $elemMatch: { _id: auditor } } },
                 { data_fim: { $exists: false } }
@@ -28,9 +28,16 @@ class ValidateItem {
 
         val.body.inventario = inventario.toString();
 
-        // console.log(val);
         const valuesEstado = ["Bem danificado", "Bem em condições de uso", "Bem inservível"];
         const valuesAtivo = ["Ativo", "Inativo", "Pendente"];
+
+        const etiqueta = req.body.etiqueta;
+
+        const etiquetaUnica = await Item.find({ etiqueta, inventario });
+
+        if (etiquetaUnica.length != 0) {
+            return sendError(res, 422, messages.customValidation.itemCadastrado);
+        }
 
         await val.validate("etiqueta", v.required(), v.toInt());
         await val.validate("nao_etiquetado", v.optional(), v.toBoolean());
@@ -40,7 +47,7 @@ class ValidateItem {
         await val.validate("ativo", v.optional(), v.enum(valuesAtivo));
         await val.validate("ocioso", v.optional(), v.toBoolean());
         await val.validate("descricao", v.optional(), v.length({ max: 256 }));
-        await val.validate("inventario", v.required(), v.mongooseID(), v.exists({ model: Inventario, query: { _id: req.body.inventario } })); 
+        await val.validate("inventario", v.required(), v.mongooseID(), v.exists({ model: Inventario, query: { _id: req.body.inventario } }));
         await val.validate("setor", v.required(), v.mongooseID(), v.exists({ model: Setor, query: { _id: req.body.setor } }));
         await val.validate("auditor", v.required(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.auditor } }));
         await val.validate("responsavel", v.required(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
@@ -52,13 +59,27 @@ class ValidateItem {
 
     // Crie uma rota PATCH para alterar amigo
     static async validateAlterar(req, res, next) {
-
         // Etiqueta, nao_etiquetado, encontrado, nome, estado, ativo, ocioso, descricao, inventario, setor, auditor, responsavel, imagem
         const val = new Validator(req.body);
+        const token = req.headers.authorization;
+        const tokenDecoded = jwtDecode(token);
+        const auditor = tokenDecoded.id;
+
+        val.body.auditor = auditor;
+
+        const inventario = await Inventario.distinct("_id", {
+            $and: [
+                { auditor: { $elemMatch: { _id: auditor } } },
+                { data_fim: { $exists: false } }
+            ]
+        });
+
+        val.body.inventario = inventario.toString();
+
         const valuesEstado = ["Bem danificado", "Bem em condições de uso", "Bem inservível"];
         const valuesAtivo = ["Ativo", "Inativo", "Pendente"];
 
-        await val.validate("etiqueta", v.optional(), v.toInt(), v.unique({ model: Item, query: { etiqueta: req.body.item } }));
+        await val.validate("etiqueta", v.optional(), v.toInt(), v.exists({ model: Item, query: { etiqueta: req.body.etiqueta } }));
         await val.validate("nao_etiquetado", v.optional(), v.toBoolean());
         await val.validate("encontrado", v.optional(), v.toBoolean());
         await val.validate("nome", v.optional());
@@ -66,10 +87,8 @@ class ValidateItem {
         await val.validate("ativo", v.optional(), v.enum(valuesAtivo));
         await val.validate("ocioso", v.optional(), v.toBoolean());
         await val.validate("descricao", v.optional(), v.length({ max: 256 }));
-        // PUXARA PELO TOKEN QUANDO ESTIVER LOGADO OU VER OUTRA FORMA PARA NÃO FICAR ESCOLHENDO TODA HORA
-        await val.validate("inventario", v.optional(), v.mongooseID(), v.exists({ model: Inventario, query: { _id: req.body.inventario } })); 
+        await val.validate("inventario", v.optional(), v.mongooseID(), v.exists({ model: Inventario, query: { _id: req.body.inventario } }));
         await val.validate("setor", v.optional(), v.mongooseID(), v.exists({ model: Setor, query: { _id: req.body.setor } }));
-        // PUXARA TAMBÉM AUTOMATICAMENTE, ELE E RESPONSAVEL VAMOS VE COMO FAREMOS (ESTUDAR O CASO)
         await val.validate("auditor", v.optional(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.auditor } }));
         await val.validate("responsavel", v.optional(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
 
