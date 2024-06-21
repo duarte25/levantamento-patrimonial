@@ -230,12 +230,7 @@ export default class GrupoService {
                 return sendError(res, 403, permissaoRecurso);
             }
      */
-    static possuiPermissaoRecurso(req, nomeRecurso, secretariaRecurso, usuarioRecurso, qualPermissao, qualAcao = false) {
-        if(secretariaRecurso) {
-            if(!GrupoService.possuiPermissaoQualquerSecretaria(req, secretariaRecurso, qualPermissao, qualAcao)) {
-                return `Você não tem permissão para manipular um ${nomeRecurso} que não é de sua secretaria`;
-            }
-        }
+    static possuiPermissaoRecurso(req, nomeRecurso, usuarioRecurso, qualPermissao, qualAcao = false) {
 
         if(usuarioRecurso) {
             if (!GrupoService.possuiPermissaoQualquerUsuario(req, usuarioRecurso, qualPermissao, qualAcao)) {

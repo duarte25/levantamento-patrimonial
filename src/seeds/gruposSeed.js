@@ -13,10 +13,10 @@ const recriarGruposPadrao = async () => {
         nivel: 1,
         oculto: false,
         permissoes: [
-            {
-                nome: PERM.CAMPUS,
-                acoes: [{nome: ACAO.VER}]
-            },
+            // {
+            //     nome: PERM.CAMPUS,
+            //     acoes: [{nome: ACAO.VER}]
+            // },
             {
                 nome: PERM.INVENTARIO,
                 acoes: [{nome: ACAO.VER}]

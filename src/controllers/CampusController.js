@@ -1,18 +1,20 @@
 import Campus from "../models/Campus.js";
 import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
-import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
+import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
+import GrupoService from "../services/auth/GrupoService.js";
+import { PERM, ACAO } from "../models/Grupo.js";
 
 export default class CampusController {
     static async pesquisarCampus(req, res) {
         try {
-         const pagina = parseInt(req.query.pagina) || 1;
+            const pagina = parseInt(req.query.pagina) || 1;
             const { nome, cidade, ativo } = req.query;
             const filtros = {};
             if (nome) filtros.nome = { $regex: new RegExp(nome, "i") };
             if (cidade) filtros.cidade = cidade;
             if (ativo) filtros.ativo = ativo;
-            
+
             const campus = await Campus.paginate(
                 { ...filtros },
                 {
@@ -51,44 +53,40 @@ export default class CampusController {
     }
 
     static async criarCampus(req, res) {
-        try {
-            const { nome, cidade, ativo } = req.body;
-            const campus = await Campus.create({ nome, cidade, ativo });
 
-            return sendResponse(res, 201, { data: campus });
-        } catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
+        const campus = await Campus.create({ ...req.body });
+
+        return sendResponse(res, 201, {
+            data: campus
+        });
     }
 
     static async atualizarCampus(req, res) {
-        try {
-            const { id } = req.params;
-            const { nome, cidade, ativo } = req.body;
-            const campus = await Campus.findByIdAndUpdate(id, { nome, cidade, ativo }, { new: true });
+        // Campturar do validador
+        const { campus } = req.validateResult;
 
-            if (!campus) {
-                return res.status(404).json({ error: true, code: 404, message: "Campus não encontrado" });
-            }
+        // Insira aqui a permissão igual temos de usuario porém com campus
+        // Para somente se ele tiver nesse campus ou tiver permissão de editar todos possa editar esse
 
-            return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200], campus });
-        } catch (error) {
-            return sendError(res, 500, messages.httpCodes[500]);
+        for (let key in req.body) {
+            campus[key] = req.body[key];
         }
+
+        await campus.save();
+
+        return sendResponse(res, 200, {
+            data: campus
+        })
     }
 
     static async deletarCampus(req, res) {
-        try {
-            const { id } = req.params;
-            const campus = await Campus.findByIdAndDelete(id);
 
-            if (!campus) {
-                return res.status(404).json({ error: true, code: 404, message: "Campus não encontrado" });
-            }
+        const { id } = req.params;
 
-            return res.status(200).json({ error: false, code: 200, message: messages.httpCodes[200] });
-        } catch (error) {
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
+        // Provavelmente irei refatorar esses códigos de deletar incluir todos em um lugar só e chamar essa função e incluir o valor que necessita
+        // Acredito no novo pensamento que não tem como devo na vdd sómente incluir as permissão aqui e jae
+
+        await Campus.deleteOne({ _id: id });
+        return sendResponse(res, 200);
     }
 }

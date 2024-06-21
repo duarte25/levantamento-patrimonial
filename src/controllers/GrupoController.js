@@ -1,7 +1,7 @@
 import Grupo, { ACAO, GRUPO, PERM } from "../models/Grupo.js";
 import { sendError, sendResponse } from "../utils/mensagens.js";
 import GrupoService, { grupos } from "../services/auth/GrupoService.js";
-import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
+import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
 
 export default class GrupoController {
     // Obtêm todos os grupos, permissões e suas ações

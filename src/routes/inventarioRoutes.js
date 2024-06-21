@@ -1,6 +1,6 @@
 import express from "express";
 import InventarioController from "../controllers/InventarioController.js";
-import ValidateInventario from "../services/validation/inventarioValidation.js";
+import ValidateInventario from "../middlewares/validation/inventarioValidation.js";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware.js";
 
 const router = express.Router();

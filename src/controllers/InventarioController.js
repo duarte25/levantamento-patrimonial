@@ -2,7 +2,7 @@ import Inventario from "../models/Inventario.js";
 import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
 import { jwtDecode } from "jwt-decode";
-import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
+import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
 
 export default class InventarioController {
     static async pesquisarInventario(req, res) {

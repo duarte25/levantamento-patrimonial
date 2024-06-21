@@ -1,6 +1,6 @@
 import express from "express";
 import SetorController from "../controllers/setorController.js";
-import ValidadeSetor from "../services/validation/setorValidation.js";
+import ValidadeSetor from "../middlewares/validation/setorValidation.js";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware.js";
 //import setorValidation from "../services/validation/setorValidation.js";
 

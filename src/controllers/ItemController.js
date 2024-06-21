@@ -97,7 +97,6 @@ export default class ItemController {
                 data: savedItem, error: false, code: 201, message: messages.httpCodes[201], errors: []
             });
         } catch (err) {
-            // console.log("erro", err);
             return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
         }
     }

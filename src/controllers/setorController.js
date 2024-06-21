@@ -1,6 +1,6 @@
 import Setor from "../models/Setor.js";
 import messages, { sendError, sendResponse } from "../utils/mensagens.js";
-import { Validator, ValidationFuncs as v } from "../services/validation/validation.js";
+import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
 import { paginateOptions } from "./common.js";
 import Campus from "../models/Campus.js";
 
