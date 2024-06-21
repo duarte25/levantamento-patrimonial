@@ -91,14 +91,12 @@ export default class InventarioController {
     }
 
     static async criarInventario(req, res) {
-        try {
-            const inventario = new Inventario(req.body);
-            const savedInventario = await inventario.save();
 
-            return sendResponse(res, 201, { data: savedInventario });
-        } catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
+        const inventario = await Inventario({ ...req.body });
+
+        return sendResponse(res, 201, {
+            data: inventario
+        });
     }
 
     static atualizarInventario = async (req, res) => {

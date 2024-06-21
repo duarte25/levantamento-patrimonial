@@ -13,8 +13,7 @@ class ValidateInventario {
     static async validateCriar(req, res, next) {
         // Setores, responsavel, auditores, data_inicio, data_fim data fim apenas ao finalizar que seria editado
         const val = new Validator(req.body);
-        const token = req.headers.authorization;
-        const tokenDecoded = jwtDecode(token);
+        const tokenDecoded = req.decodedToken;
         const campus = tokenDecoded.campus;
 
         // Inseri em val.body o id do usuario e o campus
