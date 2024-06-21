@@ -3,23 +3,10 @@ import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
 import { paginateOptions } from "./common.js";
 import Campus from "../models/Campus.js";
+import { ACAO, PERM } from "../models/Grupo.js";
+import GrupoService from "../services/auth/GrupoService.js";
 
 export default class SetorController {
-    static async criarSetor(req, res) {
-        try {
-            const {local, campus } = req.body;
-      
-            const setor = new Setor({ local, campus});
-            const savedSetor = await setor.save();
-
-            return sendResponse(res, 201, { data: savedSetor });
-        } catch (err) {
-        //  console.log(err);
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
-
-    }
-
     static async pesquisarSetor(req, res) {
         try {
             const pagina = parseInt(req.query.pagina) || 1;
@@ -39,13 +26,13 @@ export default class SetorController {
             const setores = await Setor.paginate(
                 { ...filtros },
                 {
-                  ...paginateOptions, ...{
-                    sort: { local: 1 },
-                    page: pagina,
-                  },
+                    ...paginateOptions, ...{
+                        sort: { local: 1 },
+                        page: pagina,
+                    },
                 });
 
-            return sendResponse(res, 200, setores );
+            return sendResponse(res, 200, setores);
         } catch (error) {
             return sendError(res, 500, messages.httpCodes[500]);
         }
@@ -69,36 +56,48 @@ export default class SetorController {
         }
     }
 
+    static async criarSetor(req, res) {
+
+        const campus = req.body.campus;
+
+        let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "reserva", campus, false, PERM.SETOR, ACAO.CRIAR);
+        if (permissaoRecurso !== true) {
+            return sendError(res, 403, "Você não tem permissão para criar um setor neste campus");
+        }
+
+        if (!req.body.campus) {
+            req.body.campus = req.decodedToken.campus;
+        }
+
+        const setor = await Setor.create({ ...req.body });
+
+        return sendResponse(res, 201, {
+            data: setor
+        });
+    }
+
     static async atualizarSetor(req, res) {
-        try {
-            const { id } = req.params;
-            const { local, status } = req.body;
-            const setor = await Setor.findByIdAndUpdate(id, { local, status}, { new: true });
 
+        // Capturar do validador
+        const { setor } = req.validateResult;
 
-            if (!setor) {
-              return res.status(404).json({ error: true, code: 404, message: "Setor não encontrado" });
-            }
-
-            return sendResponse(res, 200, { data: setor });
+        for (let key in req.body) {
+            setor[key] = req.body[key];
         }
-        catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
+
+        await setor.save();
+
+        return sendResponse(res, 200, {
+            data: setor
+        });
+
     }
 
     static async deletarSetor(req, res) {
-        try {
-            const { id } = req.params;
-            const setor = await Setor.findByIdAndDelete(id);
 
-            if (!setor) {
-                return res.status(404).json({ error: true, code: 404, message: "Setor não encontrado" });
-            }
+        const { id } = req.params;
 
-            return sendResponse(res, 200, { data: setor });
-        } catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
-        }
+        await Setor.deleteOne({ _id: id });
+        return sendResponse(res, 200);
     }
 }

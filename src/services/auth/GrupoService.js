@@ -105,7 +105,7 @@ export default class GrupoService {
 
             // Chegou até aqui é porque precisa de modificadores, verifica se possui todos os necessários
             if (modificadores.qualquer_usuario && acao.qualquer_usuario !== true) continue;
-            if (modificadores.qualquer_secretaria && acao.qualquer_secretaria !== true) continue;
+            if (modificadores.qualquer_campus && acao.qualquer_campus !== true) continue;
             if (modificadores.qualquer_grupo && acao.qualquer_grupo !== true) continue;
 
             // Se passou por todos os modificadores, retorna verdadeiro
@@ -196,40 +196,14 @@ export default class GrupoService {
 
 
     static possuiPermissaoQualquerCampus(req, campusRecurso, qualPermissao, qualAcao = false) {
-        // Se é a mesma secretaria ou o recurso não possui secretaria, retorna verdadeiro
-        let mesmoCampus = !secretariaRecurso || (secretariaRecurso._id ? secretariaRecurso._id : secretariaRecurso).toString() === req.decodedToken.secretaria;
-        // Se possui a permissão de ver qualquer secretaria desta permissão/ação, retorna verdadeiro
-        let podeQualquerSecretaria = GrupoService.possuiPermissao(req.decodedToken.grupos, qualPermissao, qualAcao, { qualquer_secretaria: true });
-
-        return mesmoCampus || podeQualquerSecretaria;
+        // Se é o mesmo campus ou o recurso não possui campus, retorna verdadeiro
+        let mesmoCampus = !campusRecurso || (campusRecurso._id ? campusRecurso._id : campusRecurso).toString() === req.decodedToken.campus;
+        // Se possui a permissão de ver qualquer campus desta permissão/ação, retorna verdadeiro
+        let podeQualquerCampus = GrupoService.possuiPermissao(req.decodedToken.grupos, qualPermissao, qualAcao, { qualquer_campus: true });
+        console.log(podeQualquerCampus);
+        return mesmoCampus || podeQualquerCampus;
     }
 
-    /**
-        Retorna verdadeiro se o usuário possui a permissão
-
-        ## Exemplo código antes
-        
-            let mesmaSecretaria = deslocamento.secretaria._id.toString() === req.decodedToken.secretaria;
-            let verSecretaria = GrupoService.possuiPermissao(req.decodedToken.grupos, PERM.DESLOCAMENTO, ACAO.VER, { qualquer_secretaria: true });
-
-            if (!mesmaSecretaria && !verSecretaria) {
-                return sendError(res, 403, "Você não tem permissão para ver deslocamentos de outras secretarias.");
-            }
-
-            let mesmoUsuario = deslocamento.usuario?.toString() === req.decodedToken._id;
-            let verDeslocamento = GrupoService.possuiPermissao(req.decodedToken.grupos, PERM.DESLOCAMENTO, ACAO.VER, { qualquer_usuario: true });
-
-            if (!mesmoUsuario && !verDeslocamento) {
-                return sendError(res, 403, "Você não tem permissão para ver esse deslocamento.");
-            }
-        
-        ## Exemplo código depois
-
-            let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "deslocamento", deslocamento.secretaria, deslocamento.usuario, PERM.DESLOCAMENTO, ACAO.VER);
-            if(permissaoRecurso !== true) {
-                return sendError(res, 403, permissaoRecurso);
-            }
-     */
     static possuiPermissaoRecurso(req, nomeRecurso, campusRecurso, usuarioRecurso, qualPermissao, qualAcao = false) {
 
         if (campusRecurso) {

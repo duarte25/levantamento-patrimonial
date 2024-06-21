@@ -13,10 +13,6 @@ const recriarGruposPadrao = async () => {
         nivel: 1,
         oculto: false,
         permissoes: [
-            // {
-            //     nome: PERM.CAMPUS,
-            //     acoes: [{nome: ACAO.VER}]
-            // },
             {
                 nome: PERM.INVENTARIO,
                 acoes: [{nome: ACAO.VER}]
@@ -51,7 +47,7 @@ const recriarGruposPadrao = async () => {
             },
             {
                 nome: PERM.INVENTARIO,
-                acoes: [{nome: ACAO.CRIAR}, {nome: ACAO.VER, qualquer_campus: true}, {nome: ACAO.EDITAR}, {nome: ACAO.DELETAR}]
+                acoes: [{nome: ACAO.CRIAR}, {nome: ACAO.VER}, {nome: ACAO.EDITAR}, {nome: ACAO.DELETAR}]
             },
             {
                 nome: PERM.ITEM,
@@ -87,11 +83,11 @@ const recriarGruposPadrao = async () => {
             },
             {
                 nome: PERM.SETOR,
-                acoes: [{nome: ACAO.CRIAR}, {nome: ACAO.VER}, {nome: ACAO.EDITAR}, {nome: ACAO.DELETAR}]
+                acoes: [{nome: ACAO.CRIAR, qualquer_campus: true}, {nome: ACAO.VER, qualquer_campus: true}, {nome: ACAO.EDITAR, qualquer_campus: true}, {nome: ACAO.DELETAR, qualquer_campus: true}]
             },
             {
                 nome: PERM.USUARIO,
-                acoes: [{nome: ACAO.CRIAR, qualquer_campus: true}, {nome: ACAO.VER, qualquer_usuario: true}, {nome: ACAO.EDITAR, qualquer_usuario: true}, {nome: ACAO.DELETAR, qualquer_usuario: true}]
+                acoes: [{nome: ACAO.CRIAR, qualquer_campus: true}, {nome: ACAO.VER, qualquer_usuario: true, qualquer_campus: true}, {nome: ACAO.EDITAR, qualquer_usuario: true, qualquer_campus: true}, {nome: ACAO.DELETAR, qualquer_usuario: true, qualquer_campus: true}]
             }
         ]
     });

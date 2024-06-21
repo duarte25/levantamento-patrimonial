@@ -37,8 +37,8 @@ class ValidateCampus {
 
         val = new Validator(req.body);
 
-        await val.validate("nome", v.optional(), v.trim(), v.unique({ model: Campus, query: { nome: req.body.nome } }));
-        await val.validate("cidade", v.optional(), v.trim());
+        await val.validate("nome", v.optional(), v.trim(), v.length({ max: 50 }), v.unique({ model: Campus, query: { nome: req.body.nome } }));
+        await val.validate("cidade", v.optional(), v.trim(), v.length({ max: 50 }));
         await val.validate("ativo", v.optional(), v.toBoolean());
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
@@ -46,7 +46,7 @@ class ValidateCampus {
 
         req.validateResult = {
             campus: campus
-        }
+        };
 
         return next();
     }

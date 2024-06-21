@@ -90,6 +90,7 @@ export default class ItemController {
         try {
             const item = new Item(req.body);
             const savedItem = await item.save();
+            
 
             // Corrigir ****
             // O campos inventario tem que vim automaticamente ao ser definido pelo responsavel?

@@ -2,8 +2,6 @@ import Campus from "../models/Campus.js";
 import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
 import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
-import GrupoService from "../services/auth/GrupoService.js";
-import { PERM, ACAO } from "../models/Grupo.js";
 
 export default class CampusController {
     static async pesquisarCampus(req, res) {
@@ -62,11 +60,8 @@ export default class CampusController {
     }
 
     static async atualizarCampus(req, res) {
-        // Campturar do validador
+        // Capturar do validador
         const { campus } = req.validateResult;
-
-        // Insira aqui a permissão igual temos de usuario porém com campus
-        // Para somente se ele tiver nesse campus ou tiver permissão de editar todos possa editar esse
 
         for (let key in req.body) {
             campus[key] = req.body[key];
@@ -76,15 +71,12 @@ export default class CampusController {
 
         return sendResponse(res, 200, {
             data: campus
-        })
+        });
     }
 
     static async deletarCampus(req, res) {
 
         const { id } = req.params;
-
-        // Provavelmente irei refatorar esses códigos de deletar incluir todos em um lugar só e chamar essa função e incluir o valor que necessita
-        // Acredito no novo pensamento que não tem como devo na vdd sómente incluir as permissão aqui e jae
 
         await Campus.deleteOne({ _id: id });
         return sendResponse(res, 200);

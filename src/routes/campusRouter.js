@@ -21,10 +21,10 @@ router.post("/campus", AuthMiddleware,
 
 router.patch("/campus/:id", AuthMiddleware,
     verificarPermissao(PERM.CAMPUS, ACAO.EDITAR),
-    CampusController.atualizarCampus);
+    ValidateCampus.validateAtualizar, CampusController.atualizarCampus);
 
 router.delete("/campus/:id", AuthMiddleware,
     verificarPermissao(PERM.CAMPUS, ACAO.DELETAR),
-    CampusController.deletarCampus);
+    ValidateCampus.validateDeletar, CampusController.deletarCampus);
 
 export default router;
