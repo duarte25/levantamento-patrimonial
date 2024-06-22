@@ -10,7 +10,7 @@ class ValidateSetor {
         const val = new Validator(req.body);
 
         await val.validate("campus", v.optional(), v.mongooseID(), v.exists({ model: Campus, query: { _id: req.body.campus } }));
-        await val.validate("local", v.required(), v.trim(), v.length({ max: 256 }));
+        await val.validate("local", v.required(), v.trim(), v.length({ max: 256 }), v.unique({ model: Setor, query: { local: req.body.local } }));
         await val.validate("status", v.optional(), v.toBoolean());
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
@@ -39,7 +39,7 @@ class ValidateSetor {
         val = new Validator(req.body);
 
         await val.validate("campus", v.optional(), v.mongooseID(), v.exists({ model: Campus, query: { _id: req.body.campus } }));
-        await val.validate("local", v.optional(), v.trim(), v.length({ max: 256 }));
+        await val.validate("local", v.optional(), v.trim(), v.length({ max: 256 }), v.unique({ model: Setor, query: { local: req.body.local } }));
         await val.validate("status", v.optional(), v.toBoolean());
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
