@@ -2,7 +2,6 @@ import Setor from "../models/Setor.js";
 import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
 import { paginateOptions } from "./common.js";
-import Campus from "../models/Campus.js";
 import { ACAO, PERM } from "../models/Grupo.js";
 import GrupoService from "../services/auth/GrupoService.js";
 

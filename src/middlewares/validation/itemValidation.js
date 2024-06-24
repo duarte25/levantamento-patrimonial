@@ -1,5 +1,5 @@
 import messages, { sendError } from "../../utils/mensagens.js";
-import Item from "../../models/Item.js";
+import Item, { ATIVO_ITEM, ESTADO_ITEM } from "../../models/Item.js";
 import Inventario from "../../models/Inventario.js";
 import Setor from "../../models/Setor.js";
 import Usuario from "../../models/Usuario.js";
@@ -13,23 +13,19 @@ class ValidateItem {
 
         // Etiqueta, nao_etiquetado, encontrado, nome, estado, ativo, ocioso, descricao, inventario, setor, auditor, responsavel, imagem
         const val = new Validator(req.body);
-        const token = req.headers.authorization;
-        const tokenDecoded = jwtDecode(token);
-        const auditor = tokenDecoded.id;
+        const auditor = req.decodedToken.id;
 
-        val.body.auditor = auditor;
-
+        // Isso e lá em inventario bora mudar para o status se status tiver finalizada não utilizamos
+        // Para alterar isso o usuario devera somente se incluir a inventarios que são do campus dele
+        // Já tenho em mente
         const inventario = await Inventario.distinct("_id", {
             $and: [
                 { auditor: { $elemMatch: { _id: auditor } } },
-                { data_fim: { $exists: false } }
+                { data_fim: null }
             ]
         });
 
         val.body.inventario = inventario.toString();
-
-        const valuesEstado = ["Bem danificado", "Bem em condições de uso", "Bem inservível"];
-        const valuesAtivo = ["Ativo", "Inativo", "Pendente"];
 
         const etiqueta = req.body.etiqueta;
 
@@ -43,16 +39,17 @@ class ValidateItem {
         await val.validate("nao_etiquetado", v.optional(), v.toBoolean());
         await val.validate("encontrado", v.optional(), v.toBoolean());
         await val.validate("nome", v.required());
-        await val.validate("estado", v.optional(), v.enum(valuesEstado));
-        await val.validate("ativo", v.optional(), v.enum(valuesAtivo));
+        await val.validate("estado", v.optional(), v.enum({ values: Object.values(ESTADO_ITEM) }));
+        await val.validate("ativo", v.optional(), v.enum({ values: Object.values(ATIVO_ITEM) }));
         await val.validate("ocioso", v.optional(), v.toBoolean());
         await val.validate("descricao", v.optional(), v.length({ max: 256 }));
-        await val.validate("inventario", v.required(), v.mongooseID(), v.exists({ model: Inventario, query: { _id: req.body.inventario } }));
         await val.validate("setor", v.required(), v.mongooseID(), v.exists({ model: Setor, query: { _id: req.body.setor } }));
-        await val.validate("auditor", v.required(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.auditor } }));
+
+        // Discutir sobre este responsavel, todos os responsaveis por itens no ifro serão cadastrado??
         await val.validate("responsavel", v.required(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
+        req.body = val.getSanitizedBody();
 
         return next();
     }

@@ -1,6 +1,18 @@
 import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
+export const ESTADO_ITEM = {
+    DANIFICADO: "Bem danificado",
+    CONDICAO_USO: "Bem em condições de uso",
+    INSERSIVEL:  "Bem inservível"
+};
+
+export const ATIVO_ITEM = {
+    ATIVO: "Ativo",
+    INATIVO: "Inativo",
+    PENDENTE: "Pendente"
+};
+
 const itemSchema = new mongoose.Schema({
     etiqueta: {
         type: Number,
@@ -22,11 +34,13 @@ const itemSchema = new mongoose.Schema({
     },
     estado: {
         type: String, // Bem danificado, Bem em condições de uso, Bem inservivel
-        default: "Bem em condições de uso"
+        enum: Object.values(ESTADO_ITEM),
+        default: ESTADO_ITEM.CONDICAO_USO
     },
     ativo: {
         type: String,
-        default: "Ativo"  // Ativo, Inativo, Pendente
+        enum: Object.values(ATIVO_ITEM),
+        default: ATIVO_ITEM.ATIVO  // Ativo, Inativo, Pendente
     },
     ocioso: {
         type: Boolean, // Não está sendo usado

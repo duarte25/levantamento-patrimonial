@@ -1,6 +1,10 @@
 import Item from "../models/Item.js";
-import messages from "../utils/mensagens.js";
+import Campus from "../models/Campus.js";
+import Setor from "../models/Setor.js";
+import GrupoService from "../services/auth/GrupoService.js";
+import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
+import { ACAO, PERM } from "../models/Grupo.js";
 
 export default class ItemController {
     static async pesquisarItem(req, res) {
@@ -57,49 +61,50 @@ export default class ItemController {
     }
 
     static async listarItemID(req, res) {
-        try {
-            const { id } = req.params;
-            const item = await Item.findById(id);
 
-            if (!item) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrada!"] });
-            }
+        const { id } = req.params;
+        const item = await Item.findById(id);
 
-            res.status(200).json({ item, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
-        } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+        if (!item) {
+            return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrada!"] });
         }
+
+        res.status(200).json({ item, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
+
     }
 
-    static atualizarItem = async (req, res) => {
-        try {
-            const { id } = req.params;
-            let item = await Item.findById(id);
-            if (!item) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrado!"] });
-            }
-            item = await Item.findByIdAndUpdate(id, req.body, { new: true });
-            return res.status(200).json({ data: [], error: false, code: 200, message: messages.httpCodes[200], errors: [] });
-        }
-        catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
-        }
-    };
-
     static async criarItem(req, res) {
-        try {
-            const item = new Item(req.body);
-            const savedItem = await item.save();
-            
 
-            // Corrigir ****
-            // O campos inventario tem que vim automaticamente ao ser definido pelo responsavel?
-            return res.status(201).json({
-                data: savedItem, error: false, code: 201, message: messages.httpCodes[201], errors: []
-            });
-        } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
+        const setor = await Setor.findById(req.body.setor);
+
+        const campus = await Campus.findById(setor.campus);
+
+        let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "reserva", campus, false, PERM.INVENTARIO, ACAO.EDITAR);
+        if (permissaoRecurso !== true) {
+            return sendError(res, 403, "Você não tem permissão para alterar este inventário!");
         }
+
+        // const item = await Item.create({ ...req.body });
+        
+        return sendResponse(res, 201, {
+            // data: item
+        });
+    }
+
+    static async atualizarItem(req, res) {
+
+        const { id } = req.params;
+        let item = await Item.findById(id);
+
+        if (!item) {
+            return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrado!"] });
+        }
+
+        item = await Item.findByIdAndUpdate(id, req.body, { new: true });
+
+        return sendResponse(res, 200, {
+            data: item
+        });
     }
 
     static async deletarItem(req, res) {
@@ -110,7 +115,7 @@ export default class ItemController {
             if (!item) {
                 return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Item não encontrado!"] });
             }
-            
+
             await Item.findByIdAndDelete(id);
             res.status(200).json({ data: item, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
         } catch (err) {
