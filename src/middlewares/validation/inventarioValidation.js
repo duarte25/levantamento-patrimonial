@@ -114,6 +114,13 @@ class ValidateInventario {
         // Erro 404 quando id não existe
         if (val.anyErrors()) return sendError(res, 404, val.getErrors());
 
+        const inventario = val.getValue("id");
+
+        req.body = val.getSanitizedBody();
+        req.validateResult = {
+            inventario: inventario,
+        };
+
         return next();
     }
 }

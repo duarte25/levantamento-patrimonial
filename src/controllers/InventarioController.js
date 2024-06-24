@@ -106,32 +106,35 @@ export default class InventarioController {
     }
 
     static atualizarInventario = async (req, res) => {
-        try {
-            const inventario = req.validateResult.inventario;
 
-            let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "reserva", inventario.campus, inventario.responsavel, PERM.INVENTARIO, ACAO.EDITAR);
-            if (permissaoRecurso !== true) {
-                return sendError(res, 403, "Você não tem permissão para alterar este inventário!");
-            }
+        const inventario = req.validateResult.inventario;
 
-            // Só atualiza os campos que foram enviados
-            for (let key in req.body) {
-                inventario[key] = req.body[key];
-            }
-
-            await inventario.save();
-            return sendResponse(res, 200, { data: inventario });
+        let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "reserva", inventario.campus, inventario.responsavel, PERM.INVENTARIO, ACAO.EDITAR);
+        if (permissaoRecurso !== true) {
+            return sendError(res, 403, "Você não tem permissão para alterar este inventário!");
         }
-        catch (err) {
-            return sendError(res, 500, messages.httpCodes[500]);
+
+        // Só atualiza os campos que foram enviados
+        for (let key in req.body) {
+            inventario[key] = req.body[key];
         }
+
+        await inventario.save();
+        return sendResponse(res, 200, {
+            data: inventario
+        });
     };
 
     static async deletarInventario(req, res) {
 
-        const { id } = req.params;
+        const inventario = req.validateResult.inventario;
 
-        await Inventario.deleteOne({ _id: id });
+        let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "reserva", inventario.campus, inventario.responsavel, PERM.INVENTARIO, ACAO.DELETAR);
+        if (permissaoRecurso !== true) {
+            return sendError(res, 403, "Você não tem permissão para deletar este inventário!");
+        }
+
+        await Inventario.deleteOne({ _id: inventario._id });
         return sendResponse(res, 200);
     }
 }
