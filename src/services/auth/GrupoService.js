@@ -187,10 +187,10 @@ export default class GrupoService {
 
     static possuiPermissaoQualquerUsuario(req, usuarioRecurso, qualPermissao, qualAcao = false) {
         // Se é o mesmo usuário ou o recurso não possui usuário, retorna verdadeiro
-        let mesmoUsuario = !usuarioRecurso || (usuarioRecurso._id ? usuarioRecurso._id : usuarioRecurso).toString() === req.decodedToken._id;
+        let mesmoUsuario = !usuarioRecurso || (usuarioRecurso._id ? usuarioRecurso._id : usuarioRecurso).toString() === req.decodedToken.id;
         // Se possui a permissão de ver qualquer usuário desta permissão/ação, retorna verdadeiro
         let podeQualquerUsuario = GrupoService.possuiPermissao(req.decodedToken.grupos, qualPermissao, qualAcao, { qualquer_usuario: true });
-
+   
         return mesmoUsuario || podeQualquerUsuario;
     }
 
@@ -200,7 +200,7 @@ export default class GrupoService {
         let mesmoCampus = !campusRecurso || (campusRecurso._id ? campusRecurso._id : campusRecurso).toString() === req.decodedToken.campus;
         // Se possui a permissão de ver qualquer campus desta permissão/ação, retorna verdadeiro
         let podeQualquerCampus = GrupoService.possuiPermissao(req.decodedToken.grupos, qualPermissao, qualAcao, { qualquer_campus: true });
-        console.log(podeQualquerCampus);
+
         return mesmoCampus || podeQualquerCampus;
     }
 

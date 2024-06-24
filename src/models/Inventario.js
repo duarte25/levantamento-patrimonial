@@ -1,15 +1,12 @@
 import mongoose, { mongo } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
+export const STATUS_INVENTARIO = {
+    ANDAMENTO: "Em andamento",
+    FINALIZADA: "Finalizada"
+};  
+
 const inventarioSchema = new mongoose.Schema({
-    // setores: [
-    //     {
-    //         _id: {
-    //             type: mongoose.Schema.Types.ObjectId,
-    //             ref: "setores"
-    //         }
-    //     }
-    // ],
     campus: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "campus"
@@ -33,7 +30,13 @@ const inventarioSchema = new mongoose.Schema({
         require: true,
     },
     data_fim: {
-        type: Date
+        type: Date,
+        default: null
+    },
+    status: {
+        type: String,
+        enum: Object.values(STATUS_INVENTARIO),
+        required: true
     }
 },
     { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }

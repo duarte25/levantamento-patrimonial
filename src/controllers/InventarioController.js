@@ -1,8 +1,10 @@
-import Inventario from "../models/Inventario.js";
+import Inventario, { STATUS_INVENTARIO } from "../models/Inventario.js";
 import messages, { sendError, sendResponse } from "../utils/mensagens.js";
 import { paginateOptions } from "./common.js";
 import { jwtDecode } from "jwt-decode";
 import { Validator, ValidationFuncs as v } from "../middlewares/validation/validation.js";
+import { ACAO, PERM } from "../models/Grupo.js";
+import GrupoService from "../services/auth/GrupoService.js";
 
 export default class InventarioController {
     static async pesquisarInventario(req, res) {
@@ -92,7 +94,11 @@ export default class InventarioController {
 
     static async criarInventario(req, res) {
 
-        const inventario = await Inventario({ ...req.body });
+        req.body.responsavel = req.decodedToken.id;
+        req.body.campus = req.decodedToken.campus;
+        req.body.status = STATUS_INVENTARIO.ANDAMENTO;
+
+        const inventario = await Inventario.create({ ...req.body });
 
         return sendResponse(res, 201, {
             data: inventario
@@ -102,6 +108,11 @@ export default class InventarioController {
     static atualizarInventario = async (req, res) => {
         try {
             const inventario = req.validateResult.inventario;
+
+            let permissaoRecurso = GrupoService.possuiPermissaoRecurso(req, "reserva", inventario.campus, inventario.responsavel, PERM.INVENTARIO, ACAO.EDITAR);
+            if (permissaoRecurso !== true) {
+                return sendError(res, 403, "Você não tem permissão para alterar este inventário!");
+            }
 
             // Só atualiza os campos que foram enviados
             for (let key in req.body) {
@@ -117,19 +128,10 @@ export default class InventarioController {
     };
 
     static async deletarInventario(req, res) {
-        try {
-            const { id } = req.params;
-            const inventario = await Inventario.findById(id);
 
-            if (!inventario) {
-                return res.status(404).json({ data: [], error: true, code: 404, message: messages.httpCodes[404], errors: ["Inventario não encontrado!"] });
-            }
+        const { id } = req.params;
 
-            await Inventario.findByIdAndDelete(id);
-            res.status(200).json({ data: inventario, error: false, code: 200, message: messages.httpCodes[200], errors: [] });
-        } catch (err) {
-            return res.status(500).json({ data: [], error: true, code: 500, message: messages.httpCodes[500], errors: ["Servidor encontrou um erro interno."] });
-        }
+        await Inventario.deleteOne({ _id: id });
+        return sendResponse(res, 200);
     }
-
 }

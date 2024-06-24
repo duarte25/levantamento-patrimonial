@@ -1,5 +1,5 @@
 import messages, { sendError } from "../../utils/mensagens.js";
-import Inventario from "../../models/Inventario.js";
+import Inventario, { STATUS_INVENTARIO } from "../../models/Inventario.js";
 import Campus from "../../models/Campus.js";
 import Usuario from "../../models/Usuario.js";
 import { jwtDecode } from "jwt-decode";
@@ -15,31 +15,26 @@ class ValidateInventario {
         const tokenDecoded = req.decodedToken;
         const campus = tokenDecoded.campus;
 
-        val.body.responsavel = tokenDecoded.id;
-        val.body.campus = campus;
-
         /*e Código faz uma consulta ao banco de dados Inventario para obter uma lista de valores distintos
          para o campo _id de documentos que pertencem a um determinado campus e onde o campo data_fim não está presente. */
-
         const inventario = await Inventario.distinct("_id", {
             $and: [
                 { campus: campus },
-                { data_fim: { $exists: false } }
+                { data_fim: null }
             ]
         });
 
+        console.log(inventario);
         if (inventario.length !== 0) {
             return sendError(res, 422, messages.customValidation.inventarioAndamento);
         }
 
-        await val.validate("campus", v.required(), v.mongooseID(), v.exists({ model: Campus, query: { _id: req.body.campus } }));
-        await val.validate("responsavel", v.required(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
         await val.validate("auditores", v.required());
-        
+
         // Esses auditores devem pertencer a o mesmo campus? ou não importa??
         for (const auditor of val.body.auditores) {
             const valorID = auditor._id;
-            
+
             await val.validate("auditores", v.mongooseID({ valorMongo: valorID }), v.exists({ model: Usuario, query: { _id: valorID } }));
         }
 
@@ -49,13 +44,13 @@ class ValidateInventario {
         await val.validate("data_fim", v.optional(), v.toUTCDate(), v.min({ min: moment(req.body.data_inicio).toDate() }));
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
+        req.body = val.getSanitizedBody();
 
-        // return next();
+        return next();
     }
 
     static async validateAlterar(req, res, next) {
-        // Setores, responsavel, auditores, data_inicio, data_fim data fim apenas ao finalizar que seria editado
-        // * INCLUIR NO CODIGO REGRA DE NEGOCIO PARA DATA QUE A DATA FINAL NUNCA PODERA SER MENOR QUE DATA INICIO
+
         let val = new Validator(req.params);
 
         // Validar id
@@ -69,9 +64,14 @@ class ValidateInventario {
         if (val.anyErrors()) return sendError(res, 404, val.getErrors());
 
         const inventario = val.getValue("id");
+
+        // Se o inventario já estiver em finalizada 
+        if (inventario.status === STATUS_INVENTARIO.FINALIZADA) {
+            return sendError(res, 422, messages.customValidation.statusFinalizado);
+        }
+
         val = new Validator(req.body);
 
-        await val.validate("responsavel", v.optional(), v.mongooseID(), v.exists({ model: Usuario, query: { _id: req.body.responsavel } }));
         await val.validate("auditores", v.optional());
 
         if (req.body.auditores) {
@@ -82,8 +82,14 @@ class ValidateInventario {
             }
         }
 
-        await val.validate("data_inicio", v.optional(), v.toUTCDate());
-        await val.validate("data_fim", v.optional(), v.toUTCDate());
+        const dataAtual = moment().format("YYYY-MM-DD");
+
+        await val.validate("data_inicio", v.optional(), v.toUTCDate(), v.min({ min: moment(dataAtual).toDate() }));
+
+        if (req.body.status === STATUS_INVENTARIO.FINALIZADA) {
+            await val.validate("data_fim", v.required(), v.toUTCDate(), v.min({ min: moment(req.body.data_inicio || inventario.data_inicio).toDate() }));
+            await val.validate("status", v.required(), v.enum({ values: [STATUS_INVENTARIO.FINALIZADA] }));
+        }
 
         if (val.anyErrors()) return sendError(res, 422, val.getErrors());
 

@@ -4,13 +4,13 @@ import { isCPF, isCNPJ, isCNH } from "validation-br";
 
 // Acessar objeto com caminho "a.b.c"
 const getValueByPath = (obj, path) => {
-    if(!path.includes(".")) 
+    if (!path.includes("."))
         return obj[path];
 
     let parts = path.split(".");
     let current = obj;
-    for(let p of parts) {
-        if(current === undefined || current === null || current[p] === undefined) return undefined;
+    for (let p of parts) {
+        if (current === undefined || current === null || current[p] === undefined) return undefined;
         current = current[p];
     }
     return current;
@@ -18,7 +18,7 @@ const getValueByPath = (obj, path) => {
 };
 
 const setValueByPath = (obj, path, value) => {
-    if(!path.includes(".")) {
+    if (!path.includes(".")) {
         obj[path] = value;
         return;
     }
@@ -26,8 +26,8 @@ const setValueByPath = (obj, path, value) => {
     let parts = path.split(".");
     let lastPart = parts.pop();
     let current = obj;
-    for(let p of parts) {
-        if(current[p] === undefined || current[p] === null ) current[p] = {};
+    for (let p of parts) {
+        if (current[p] === undefined || current[p] === null) current[p] = {};
         current = current[p];
     }
     current[lastPart] = value;
@@ -97,7 +97,7 @@ export class ValidationResult {
 export class Validator {
 
     constructor(bodyObj) {
-        if(bodyObj === undefined || typeof bodyObj !== "object" || bodyObj === null)
+        if (bodyObj === undefined || typeof bodyObj !== "object" || bodyObj === null)
             throw new Error("O construtor de Validator deve receber um objeto body com os valores a serem validados!");
 
         this.validations = {};
@@ -116,7 +116,7 @@ export class Validator {
         for (let funcao of funcoes) {
             let continuar = await funcao(val.getValue(), val);
 
-            if(continuar === true) {
+            if (continuar === true) {
                 // continua nas verificações
             } else {
                 // Se retornar qualquer coisa que não seja true, não continua
@@ -159,7 +159,7 @@ export class Validator {
         let sanitizedBody = {};
         Object.keys(this.validations).forEach((path) => {
             let value = this.validations[path].getValue();
-            if(value !== undefined) {
+            if (value !== undefined) {
                 setValueByPath(sanitizedBody, path, value);
             }
         });
@@ -170,8 +170,8 @@ export class Validator {
      * Retorna o valor sanitizado do campo 'name' 
      */
     getValue(path) {
-        if(this.validations[path] === undefined) return undefined;
-        
+        if (this.validations[path] === undefined) return undefined;
+
         return this.validations[path].getValue();
     }
 
@@ -179,8 +179,8 @@ export class Validator {
      * Retorna verdadeiro caso o campo 'name' tenha passado por todas as validações sem erros
      */
     isValid(path) {
-        return path in this.validations 
-            && this.validations[path] !== undefined 
+        return path in this.validations
+            && this.validations[path] !== undefined
             && this.validations[path].error === false;
     }
 }
@@ -203,7 +203,7 @@ export class ValidationFuncs {
     // Funções de sanitização
     // ---------------------------------------------------
 
-    static trim = (opcoes = {allowEmpty: false}) => async (value, val) => {
+    static trim = (opcoes = { allowEmpty: false }) => async (value, val) => {
         if (typeof value?.trim !== "function") return opcoes.message || messages.validationGeneric.invalid(val.path).message;
 
         value = value.trim();
@@ -260,12 +260,12 @@ export class ValidationFuncs {
     /**
      * Converte o valor para um objeto do Mongoose ou dá erro que o valor não foi encontrado
      */
-    static toMongooseObj = (opcoes = {model: false, query: false}) => async (value, val) => {
+    static toMongooseObj = (opcoes = { model: false, query: false }) => async (value, val) => {
         const path = val.path;
 
-        if(opcoes.model === false) throw new Error("A função de validação existe deve receber o Model que irá pesquisar!");
+        if (opcoes.model === false) throw new Error("A função de validação existe deve receber o Model que irá pesquisar!");
 
-        let resultado = await opcoes.model.findOne(opcoes.query || {[path]: value});
+        let resultado = await opcoes.model.findOne(opcoes.query || { [path]: value });
         if (!resultado) {
             return opcoes.message || messages.validationGeneric.notFound(path).message;
         }
@@ -287,7 +287,7 @@ export class ValidationFuncs {
      * 
      * Obs: se defaultTimezoneLocal for falso, então datas sem timezone serão convertidas usando o tempo UTC
      */
-    static toDateTime = (opcoes = {defaultTimezoneLocal: true}) => async (value, val) => {
+    static toDateTime = (opcoes = { defaultTimezoneLocal: true }) => async (value, val) => {
         let dateString;
         // Se é uma data apenas com a data, sem hora, então adiciona a hora 00:00:00
         // Pois caso contrário a data será interpretada como UTC
@@ -302,9 +302,9 @@ export class ValidationFuncs {
         // Com informação de hora, a data é interpretada como local
         //  new Date('2017-04-08T08:30').toISOString() 
         //  "2017-04-08T15:30:00.000Z"
-        if(/^\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d(\:\d\d(\.\d+)?)?([+-]\d\d\:\d\d|Z)?$/.test(value)) {
+        if (/^\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d(\:\d\d(\.\d+)?)?([+-]\d\d\:\d\d|Z)?$/.test(value)) {
             // YYYY-MM-DDTHH:mm, YYYY-MM-DDTHH:mm:ss, YYYY-MM-DDTHH:mm:ss.sss (with or without timezone offset +HH:mm or Z)
-            if(!opcoes.defaultTimezoneLocal && !value.endsWith("Z") && !(/^.*[+-]\d\d\:\d\d$/.test(value))) {
+            if (!opcoes.defaultTimezoneLocal && !value.endsWith("Z") && !(/^.*[+-]\d\d\:\d\d$/.test(value))) {
                 // Se não possui timezone e deve ser default UTC, então adiciona Z para indicar que é UTC
                 dateString = value + "Z";
             }
@@ -334,9 +334,9 @@ export class ValidationFuncs {
     static toUTCDate = (opcoes = {}) => async (value, val) => {
         // GUSTAVO trocou UTC de 0 para 4 aqui já que estamos no timezone Manaus
         let dateString;
-        if(/^\d\d\d\d\-\d\d\-\d\d$/.test(value)) { // YYYY-MM-DD
+        if (/^\d\d\d\d\-\d\d\-\d\d$/.test(value)) { // YYYY-MM-DD
             dateString = value + "T04:00:00Z";
-        } else if(/^\d\d\d\d\-\d\d$/.test(value)) { // YYYY-MM
+        } else if (/^\d\d\d\d\-\d\d$/.test(value)) { // YYYY-MM
             dateString = value + "-01T04:00:00Z";
         } else {
             return opcoes.message || messages.customValidation.invalidDate;
@@ -344,7 +344,7 @@ export class ValidationFuncs {
 
         // https://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
         let timestamp = Date.parse(dateString);
-        
+
         if (isNaN(timestamp)) {
             return opcoes.message || messages.customValidation.invalidDate;
         }
@@ -358,7 +358,7 @@ export class ValidationFuncs {
     // Funções de validação genéricas, isto é, sem regras de negócio específicas
     // ---------------------------------------------------
 
-    /** Se não existir irá parar as validações (sem dar erro). */ 
+    /** Se não existir irá parar as validações (sem dar erro). */
     static optional = (opcoes = {}) => async (value) => {
         if (value === undefined) return false;
         else return true;
@@ -372,21 +372,21 @@ export class ValidationFuncs {
     };
 
     /** Se não existir continua com o valor default */
-    static requiredOrDefault = (opcoes = {default: ""}) => async (value, val) => {
+    static requiredOrDefault = (opcoes = { default: "" }) => async (value, val) => {
         if (!value) {
             val.setValue(opcoes.default);
         }
-        
+
         return true;
     };
 
     /**
      * Pesquisa no banco Mongo se existe este valor, se existir irá parar as validações
      */
-    static unique = (opcoes = {model: false, query: false}) => async (value, val) => {
-        if(opcoes.model === false) throw new Error("A função de validação unique deve receber o Model que irá pesquisar!");
+    static unique = (opcoes = { model: false, query: false }) => async (value, val) => {
+        if (opcoes.model === false) throw new Error("A função de validação unique deve receber o Model que irá pesquisar!");
 
-        let resultado = await opcoes.model.findOne(opcoes.query || {[val.path]: value});
+        let resultado = await opcoes.model.findOne(opcoes.query || { [val.path]: value });
         if (resultado) {
             return opcoes.message || messages.validationGeneric.fieldIsRepeated(val.path).message;
         } else return true;
@@ -395,9 +395,9 @@ export class ValidationFuncs {
     /**
      * Pesquisa no banco Mongo se existe este valor, se não existir irá parar as validações
      */
-    static exists = (opcoes = {model: false, query: false}) => async (value, val) => {
-        if(opcoes.model === false) throw new Error("A função de validação exists deve receber o Model que irá pesquisar!");
-        let resultado = await opcoes.model.findOne(opcoes.query || {[val.path]: value});
+    static exists = (opcoes = { model: false, query: false }) => async (value, val) => {
+        if (opcoes.model === false) throw new Error("A função de validação exists deve receber o Model que irá pesquisar!");
+        let resultado = await opcoes.model.findOne(opcoes.query || { [val.path]: value });
         if (!resultado) {
             return opcoes.message || messages.validationGeneric.notFound(val.path).message;
         } else return true;
@@ -406,47 +406,47 @@ export class ValidationFuncs {
     /**
      * Verifica se o valor se está entre min e max caracteres (Deve ser uma string, produz erro se o valor for undefined)
      */
-    static length = (opcoes = {max: false, min: false}) => async (value, val) => {
-        if(opcoes.min === false && opcoes.max === false) throw new Error("A função de validação length deve receber um objeto com as propriedades min e/ou max");
-        if(value === undefined) throw new Error("A função de validação length não consegue verificar o tamanho de um valor undefined");
+    static length = (opcoes = { max: false, min: false }) => async (value, val) => {
+        if (opcoes.min === false && opcoes.max === false) throw new Error("A função de validação length deve receber um objeto com as propriedades min e/ou max");
+        if (value === undefined) throw new Error("A função de validação length não consegue verificar o tamanho de um valor undefined");
 
         if (opcoes.min !== false && value.length < opcoes.min) {
             return opcoes.message || messages.validationGeneric.invalidInputFormatForField(val.path).message;
-        } 
+        }
 
         if (opcoes.max !== false && value.length > opcoes.max) {
             return opcoes.message || messages.validationGeneric.invalidInputFormatForField(val.path).message;
-        } 
-        
+        }
+
         return true;
     };
 
-    static regex = (opcoes = {regex: false}) => async (value, val) => {
-        if(opcoes.regex === false) throw new Error("A função de validação regex deve receber um objeto com a propriedade regex");
+    static regex = (opcoes = { regex: false }) => async (value, val) => {
+        if (opcoes.regex === false) throw new Error("A função de validação regex deve receber um objeto com a propriedade regex");
 
         if (!opcoes.regex.test(value)) {
             return opcoes.message || messages.validationGeneric.invalidInputFormatForField(val.path).message;
         } else return true;
     };
 
-    static enum = (opcoes = {values: []}) => async (value, val) => {
-        if(!Array.isArray(opcoes) || opcoes.length === 0) throw new Error("A função de validação enum deve receber um array values");
+    static enum = (opcoes = { values: [] }) => async (value, val) => {
+        if (!Array.isArray(opcoes.values) || opcoes.values.length === 0) throw new Error("A função de validação enum deve receber um array values");
 
-        if (!opcoes.includes(value)) {
-            return opcoes.message || messages.validationGeneric.mustBeOneOf(val.path,opcoes).message;
+        if (!opcoes.values.includes(value)) {
+            return opcoes.message || messages.validationGeneric.mustBeOneOf(val.path, opcoes.values).message;
         } else return true;
     };
 
-    static min = (opcoes = {min: false}) => async (value, val) => {
-        if(opcoes.min === false) throw new Error("A função de validação min deve receber o valor mínimo min");
-    
+    static min = (opcoes = { min: false }) => async (value, val) => {
+        if (opcoes.min === false) throw new Error("A função de validação min deve receber o valor mínimo min");
+
         if (value < opcoes.min) {
             return opcoes.message || messages.validationGeneric.invalidInputFormatForField(val.path).message;
         } else return true;
     };
 
-    static max = (opcoes = {max: false}) => async (value, val) => {
-        if(opcoes.max === false) throw new Error("A função de validação max deve receber o valor máximo max");
+    static max = (opcoes = { max: false }) => async (value, val) => {
+        if (opcoes.max === false) throw new Error("A função de validação max deve receber o valor máximo max");
 
         if (value > opcoes.max) {
             return opcoes.message || messages.validationGeneric.invalidInputFormatForField(val.path).message;
@@ -461,8 +461,8 @@ export class ValidationFuncs {
     /**
      * Verifica se o valor é um id do Mongoose válido
      */
-    static mongooseID = (opcoes = {valorMongo: false}) => async (value, val) => {
-        if(!mongoose.Types.ObjectId.isValid(opcoes.valorMongo || value)) {
+    static mongooseID = (opcoes = { valorMongo: false }) => async (value, val) => {
+        if (!mongoose.Types.ObjectId.isValid(opcoes.valorMongo || value)) {
             return opcoes.message || messages.validationGeneric.invalid(val.path).message;
         } else return true;
     };
@@ -486,8 +486,8 @@ export class ValidationFuncs {
      *     v.birthdateAge({ min: 18 })
      * );
      */
-    static birthdateAge = (opcoes = {max: 120, min: 18}) => async (value, val) => {
-        if(value instanceof Date === false) throw new Error("A função de validação data de nascimento deve ser precedida de uma sanitização v.toDate()");
+    static birthdateAge = (opcoes = { max: 120, min: 18 }) => async (value, val) => {
+        if (value instanceof Date === false) throw new Error("A função de validação data de nascimento deve ser precedida de uma sanitização v.toDate()");
         // https://stackoverflow.com/questions/7091130/how-can-i-validate-that-someone-is-over-18-from-their-date-of-birth
         let nascimento = value;
         let hoje = new Date();
@@ -496,7 +496,7 @@ export class ValidationFuncs {
         if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
             idade--;
         }
-        
+
         if (opcoes.min !== false && (idade < opcoes.min)) {
             return opcoes.message || messages.customValidation.invalidDataNascimento.message;
         }
@@ -504,7 +504,7 @@ export class ValidationFuncs {
         if (opcoes.max !== false && (idade > opcoes.max)) {
             return opcoes.message || messages.customValidation.invalidDataNascimento.message;
         }
-        
+
         return true;
     };
 
@@ -514,11 +514,11 @@ export class ValidationFuncs {
         } else return true;
     };
 
-    static CEP = (opcoes = {}) => ValidationFuncs.regex({regex: /^\d{8}$/, message: opcoes.message});
+    static CEP = (opcoes = {}) => ValidationFuncs.regex({ regex: /^\d{8}$/, message: opcoes.message });
 
-    static telephone = (opcoes = {}) => ValidationFuncs.regex({regex: /^\d{11}$/, message: opcoes.message});
+    static telephone = (opcoes = {}) => ValidationFuncs.regex({ regex: /^\d{11}$/, message: opcoes.message });
 
-    static email = (opcoes = {}) => ValidationFuncs.regex({regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/, message: opcoes.message});
+    static email = (opcoes = {}) => ValidationFuncs.regex({ regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/, message: opcoes.message });
 
 
     // =============================================================
@@ -534,8 +534,8 @@ export class ValidationFuncs {
     //    - uma string com a mensagem de erro, que deve ser mensagem passada em opcoes, ou uma mensagem padrão quando não for passada
     // O exemplo abaixo produz um erro caso o conteúdo do campo não seja igual à "EXEMPLO"
     static EXEMPLO_VALIDADOR = (opcoes = {}) => async (value, val) => {
-        if(value != "EXEMPLO") {
-            return opcoes.message || val.path+" deve ser igual a 'EXEMPLO'";
+        if (value != "EXEMPLO") {
+            return opcoes.message || val.path + " deve ser igual a 'EXEMPLO'";
         }
 
         return true;
@@ -545,7 +545,7 @@ export class ValidationFuncs {
     // Porém alterando o valor da chave 'value' do objeto recebido como parâmetro
     // O exemplo abaixo irá deixar TUDO EM MAIÚSCULAS no campo que for aplicado
     static EXEMPLO_SANITIZADOR = (opcoes = {}) => async (value, val) => {
-        
+
         val.setValue(value.toUpperCase());
         return true;
     };

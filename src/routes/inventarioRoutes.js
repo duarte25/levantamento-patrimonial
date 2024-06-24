@@ -8,23 +8,23 @@ import { ACAO, PERM } from "../models/Grupo.js";
 const router = express.Router();
 
 router.get("/inventarios", AuthMiddleware,
-    verificarPermissao(PERM.CAMPUS, ACAO.VER),
+    verificarPermissao(PERM.INVENTARIO, ACAO.VER),
     InventarioController.pesquisarInventario);
 
 router.get("/inventarios/:id", AuthMiddleware,
-    verificarPermissao(PERM.CAMPUS, ACAO.VER),
+    verificarPermissao(PERM.INVENTARIO, ACAO.VER),
     InventarioController.listarInventarioID);
 
 router.patch("/inventarios/:id", AuthMiddleware,
-    verificarPermissao(PERM.CAMPUS, ACAO.VER),
+    verificarPermissao(PERM.INVENTARIO, ACAO.EDITAR),
     ValidateInventario.validateAlterar, InventarioController.atualizarInventario);
 
 router.post("/inventarios", AuthMiddleware,
-    verificarPermissao(PERM.CAMPUS, ACAO.VER),
+    verificarPermissao(PERM.INVENTARIO, ACAO.CRIAR),
     ValidateInventario.validateCriar, InventarioController.criarInventario);
 
 router.delete("/inventarios/:id", AuthMiddleware,
-    verificarPermissao(PERM.CAMPUS, ACAO.VER),
+    verificarPermissao(PERM.INVENTARIO, ACAO.DELETAR),
     ValidateInventario.validateDeletar, InventarioController.deletarInventario);
 
 export default router;
